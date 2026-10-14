@@ -200,8 +200,12 @@ def current(conn, season: int = 2026) -> pl.DataFrame:
                                 pl.lit(0, dtype=pl.UInt32).alias("n"), pl.lit(0.0).alias("raw_sum"),
                                 pl.lit(0.0).alias("adj_sum"), pl.lit(0.0).alias("adj_sq"))
                   .select(sub.columns).cast(dict(sub.schema)))
+        last_game = sub.group_by("gsis_id").agg(pl.col("kickoff_utc").max().alias("last_game"))
         d = with_prior_sums(pl.concat([sub, nxt]).sort("gsis_id", "kickoff_utc"), ch[p]["h"])
         d = rate(d.filter(pl.col("game_id").is_null()), pri)
+        # current players only: on a roster this season and played within the last year
+        d = (d.join(team, on="gsis_id", how="inner").join(last_game, on="gsis_id")
+              .filter(pl.col("last_game") >= pl.col("kickoff_utc") - pl.duration(days=372)))
         d = d.with_columns((pl.col("post_mean") - Z80 * pl.col("post_sd")).alias("lo80"),
                            (pl.col("post_mean") + Z80 * pl.col("post_sd")).alias("hi80"))
         q = d.filter(pl.col("N8") >= QUALIFY[p])
@@ -209,7 +213,7 @@ def current(conn, season: int = 2026) -> pl.DataFrame:
         pct = lambda v: (np.searchsorted(ref, v.to_numpy(), side="right") / max(len(ref), 1) * 100)
         d = d.with_columns(pl.Series("rating", pct(d["post_mean"])), pl.Series("rating_lo", pct(d["lo80"])),
                            pl.Series("rating_hi", pct(d["hi80"])), (pl.col("N8") >= QUALIFY[p]).alias("qualified"))
-        out.append(d.join(team, on="gsis_id", how="left"))
+        out.append(d)
     return pl.concat(out).select("gsis_id", "name", "pos", "team", "season", "week", "post_mean", "post_sd", "lo80", "hi80",
                                  "W_n", "N8", "qualified", "rating", "rating_lo", "rating_hi", "raw_mean")
 

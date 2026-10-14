@@ -70,6 +70,27 @@ def dedupe(df: pl.DataFrame, key: list[str], name: str, report: dict) -> pl.Data
     return out
 
 
+# Franchise relocations / alternate codes. nflverse player stats and play-by-play
+# use current codes (LV, LAC) for every season, while schedules, rosters and snap
+# counts use the code of the time (OAK, SD). We rewrite every team column to the
+# schedule's code for that game so all tables join.
+FRANCHISE = {"OAK": "LV", "SD": "LAC", "STL": "LA", "LAR": "LA", "JAC": "JAX", "WSH": "WAS"}
+
+
+def align_teams(df: pl.DataFrame, sched: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
+    canon = lambda e: e.replace(FRANCHISE)
+    sides = pl.concat([
+        sched.select("game_id", pl.col("home_team").alias("_code")),
+        sched.select("game_id", pl.col("away_team").alias("_code")),
+    ]).with_columns(canon(pl.col("_code")).alias("_canon"))
+    for c in cols:
+        df = (df.with_columns(canon(pl.col(c)).alias("_canon"))
+                .join(sides, on=["game_id", "_canon"], how="left")
+                .with_columns(pl.coalesce("_code", c).alias(c))
+                .drop("_canon", "_code"))
+    return df
+
+
 def to_bool(cols: list[str]) -> list[pl.Expr]:
     return [pl.when(pl.col(c).is_null()).then(None).otherwise(pl.col(c) != 0).alias(c) for c in cols]
 
@@ -180,6 +201,7 @@ def run(seasons: list[int]) -> dict:
     ps = nfl.load_player_stats(season_list, summary_level="week")
     ps = ps.filter(pl.col("player_id").is_not_null() & pl.col("game_id").is_in(list(game_ids)))
     ps = ps.rename({"player_id": "gsis_id", "opponent_team": "opponent"})
+    ps = align_teams(ps, sched, ["team", "opponent"])
     ps = dedupe(ps, ["gsis_id", "game_id"], "player_game", report)
     player_game = ps.join(kick, on="game_id").select(
         "gsis_id", "game_id", "season", "week", "team", "opponent", "position",
@@ -198,6 +220,7 @@ def run(seasons: list[int]) -> dict:
         pbp = nfl.load_pbp([season])
         cols = [c for c in PBP_COLUMNS if c in pbp.columns]
         pbp = pbp.select(cols).filter(pl.col("play_id").is_not_null() & pl.col("game_id").is_in(list(game_ids)))
+        pbp = align_teams(pbp, sched, ["posteam", "defteam"])
         pbp = pbp.with_columns(to_bool([c for c in PBP_BOOL if c in cols]))
         pbp = pbp.with_columns([pl.col(c).cast(pl.Int32, strict=False) for c in PBP_INT if c in cols])
         part: dict = {}
@@ -215,6 +238,7 @@ def run(seasons: list[int]) -> dict:
     snaps_raw = nfl.load_snap_counts([s for s in season_list if s >= 2012])
     snaps_raw = snaps_raw.filter(pl.col("game_id").is_in(list(game_ids)) & pl.col("pfr_player_id").is_not_null())
     snaps_raw = dedupe(snaps_raw, ["pfr_player_id", "game_id"], "snaps", report)
+    snaps_raw = align_teams(snaps_raw, sched, ["team"])
     snaps = snaps_raw.join(pfr_map, on="pfr_player_id", how="left").join(kick, on="game_id").select(
         "pfr_player_id", "gsis_id", "game_id", "team", "position",
         *[pl.col(c).cast(pl.Int32, strict=False) for c in ["offense_snaps", "defense_snaps", "st_snaps"]],

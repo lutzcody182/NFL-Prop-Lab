@@ -127,7 +127,29 @@ def run_checks(conn: psycopg.Connection, run_id: int, seasons: list[int], report
     add("player_game_ids_in_players", tot > 0 and unknown / tot < 0.005,
         f"{unknown:,} of {tot:,} player-game rows have no players record")
 
-    # 9. Pre-game rows that could not be placed on a kickoff (dropped).
+    # 9. Team codes in game-level tables must be one of that game's two teams
+    #    (catches relocation codes like LV vs OAK not lining up with the schedule).
+    mism = _one(conn, """
+        SELECT
+          (SELECT count(*) FROM player_game t JOIN games g USING (game_id)
+            WHERE t.team NOT IN (g.home_team, g.away_team) OR t.opponent NOT IN (g.home_team, g.away_team)),
+          (SELECT count(*) FROM plays t JOIN games g USING (game_id)
+            WHERE (t.posteam IS NOT NULL AND t.posteam NOT IN (g.home_team, g.away_team))
+               OR (t.defteam IS NOT NULL AND t.defteam NOT IN (g.home_team, g.away_team))),
+          (SELECT count(*) FROM snaps t JOIN games g USING (game_id) WHERE t.team NOT IN (g.home_team, g.away_team))""")
+    add("team_codes_match_schedule", sum(mism) == 0,
+        f"mismatched rows: player_game {mism[0]}, plays {mism[1]}, snaps {mism[2]}")
+
+    # 10. Every completed game has receiving targets recorded for both teams.
+    (no_tgt,) = _one(conn, """
+        SELECT count(*) FROM games g JOIN game_results r USING (game_id)
+        CROSS JOIN LATERAL (VALUES (g.home_team), (g.away_team)) s(team)
+        WHERE g.season = ANY(%s) AND NOT EXISTS (
+            SELECT 1 FROM player_game pg WHERE pg.game_id = g.game_id AND pg.team = s.team AND pg.targets > 0)""",
+        (seasons,))
+    add("every_team_game_has_targets", no_tgt == 0, f"{no_tgt} completed team-games with no recorded targets")
+
+    # 11. Pre-game rows that could not be placed on a kickoff (dropped).
     dropped = sum(r.get("no_week_kickoff", 0) for r in report.values())
     add("pregame_rows_without_kickoff", dropped == 0 or dropped < 50,
         f"{dropped} roster/injury rows had no matching week and were dropped")

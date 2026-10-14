@@ -176,12 +176,9 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
     pos = pl.col("pos")
     prior = lambda d: pos.replace_strict(d, default=None, return_dtype=pl.Float64)
 
-    # Catch-rate prior that tracks the current season (prior weeks only). Earlier
-    # seasons count as one season's worth of targets at that position.
-    base_t = prior(k.season_targets)
-    feat =(feat.join(in_season_catch_prior(feat, k), on=["season", "week", "pos"], how="left")
-                .with_columns(pl.col("r_sofar").fill_null(0), pl.col("t_sofar").fill_null(0)))
-    catch_prior = ((prior(k.prior_catch) * base_t + pl.col("r_sofar")) / (base_t + pl.col("t_sofar")))
+    # (An in-season league catch-rate prior was tried on 2024 and removed:
+    #  it made the tuning objective slightly worse. See PREREGISTRATION deviation 6.)
+    catch_prior = prior(k.prior_catch)
 
     df = feat.with_columns(
         ((pl.col("S_tgt") + cfg.a_share * prior(k.prior_share)) / (pl.col("S_tt") + cfg.a_share)).alias("share"),

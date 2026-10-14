@@ -34,7 +34,7 @@ def load_universe(conn) -> pl.DataFrame:
         LEFT JOIN player_game pg ON pg.gsis_id = r.gsis_id AND pg.game_id = g.game_id
         LEFT JOIN game_results res ON res.game_id = g.game_id
         WHERE r.status = 'ACT' AND r.position IN ('WR', 'TE', 'RB')""")
-    return df.sort("gsis_id", "kickoff_utc")
+    return df.sort("gsis_id", "kickoff_utc", "team")
 
 
 def load_team_games(conn) -> pl.DataFrame:
@@ -63,7 +63,8 @@ def load_catch_yards(conn) -> pl.DataFrame:
         SELECT pl.season, p.position AS pos, pl.yards_gained::float AS yds
         FROM plays pl JOIN players p ON p.gsis_id = pl.receiver_player_id
         WHERE pl.complete_pass AND p.position IN ('WR', 'TE', 'RB')
-          AND pl.yards_gained IS NOT NULL""")
+          AND pl.yards_gained IS NOT NULL
+        ORDER BY pl.game_id, pl.play_id""")  # fixed order: seeded draws must be reproducible
 
 
 def ewm_prior_sums(keys: np.ndarray, values: np.ndarray, decay: float) -> np.ndarray:

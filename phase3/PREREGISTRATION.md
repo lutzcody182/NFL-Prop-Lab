@@ -68,4 +68,26 @@ A market passes if all apply-able criteria pass. 2026 weeks 1–5 are reported a
 
 ## Deviations
 
-(none yet)
+Clarifications made before any 2025 score was computed:
+
+1. **TD and INT rates use 5× the efficiency shrinkage** (50 or 150 pseudo-units instead of 10 or 30). A
+   single TD moves a per-catch TD rate far more than one catch moves a catch rate, so the same
+   shrinkage would let one-game flukes dominate. The opponent adjustment for TD rates likewise uses 5×
+   the pseudo-count of the other defensive rates.
+2. **QB rushing yards uses the QB pass-attempt eligibility** (≥ 50% of team pass attempts, i.e. starters);
+   the pre-registered table names the market but not its population rule.
+3. **QB population = the projected starter.** On 2021–2024, 10% of QB rows meeting the ≥ 50% share rule were
+   benched former starters with 0–4 attempts (their recent share lingers after losing the job). The rule now
+   also requires being the active QB with the highest recent share in that game, which is known before kickoff.
+4. **Calibration and coverage criteria now scale with sample size.** At QB sample sizes (~500 games), noise
+   alone produces an ECE around 0.03, so the fixed "ECE ≤ 0.02" would fail a perfectly calibrated model; Phase 1
+   had ~13,000 line-pairs per market, where the noise floor was ~0.01. New criteria 2 and 3:
+   - **2.** Observed ECE ≤ the 95th percentile of ECE when outcomes are simulated from the model's own
+     probabilities (300 simulations), i.e. no detectable miscalibration at this sample size.
+   - **3.** |coverage − 80%| ≤ max(3 points, 1.96·√(0.16/n)).
+   Phase 1's gate is unchanged. These were decided after looking at 2024 diagnostics and before any 2025 score.
+5. **QB volume = negative binomial + early-exit mixture.** Even projected starters leave about 5% of games early
+   (injury, benching). A single negative binomial stretched to cover those had 80% intervals covering 87–89%
+   on 2024. Now: with probability π the game is an early exit and keeps a uniform 0–35% of a full game's volume;
+   π and the full-game dispersion are fit on the three prior seasons (a start below 35% of expectation counts as an
+   exit). 2024 QB coverage became 78–84%. Applied to QBs only: for RBs it widened intervals (coverage up to 86%).

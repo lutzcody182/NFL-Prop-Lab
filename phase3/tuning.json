@@ -1,0 +1,290 @@
+{
+  "chosen": {
+    "att": {
+      "model": "B2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 0.0
+    },
+    "car": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.5
+    },
+    "tgt": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 1.0
+    }
+  },
+  "grids": {
+    "att": [
+      {
+        "config": "M2(h=4,as=40,ae=30,lam=0,gam=0)",
+        "objective": 0.9843660856137315,
+        "crps_qb_pass_att": 5.620456440677967,
+        "crps_qb_pass_yds": 46.73851482912338,
+        "crps_qb_pass_tds": 0.6180434470338982,
+        "crps_qb_ints": 0.4126080360169491
+      },
+      {
+        "config": "M2(h=4,as=40,ae=30,lam=0,gam=0.5)",
+        "objective": 0.9850366288380915,
+        "crps_qb_pass_att": 5.620456440677967,
+        "crps_qb_pass_yds": 46.82583448505974,
+        "crps_qb_pass_tds": 0.6204018347457628,
+        "crps_qb_ints": 0.411381220338983
+      },
+      {
+        "config": "M2(h=4,as=10,ae=30,lam=0,gam=0)",
+        "objective": 0.9856713678929119,
+        "crps_qb_pass_att": 5.6541700953389835,
+        "crps_qb_pass_yds": 46.906624785477575,
+        "crps_qb_pass_tds": 0.6172271758474577,
+        "crps_qb_ints": 0.4114124237288136
+      },
+      {
+        "config": "M2(h=4,as=10,ae=30,lam=0,gam=0.5)",
+        "objective": 0.9885440853678288,
+        "crps_qb_pass_att": 5.6541700953389835,
+        "crps_qb_pass_yds": 47.00340738337936,
+        "crps_qb_pass_tds": 0.6206801016949153,
+        "crps_qb_ints": 0.4130501398305085
+      },
+      {
+        "config": "M2(h=4,as=40,ae=30,lam=0,gam=1)",
+        "objective": 0.9894559338145943,
+        "crps_qb_pass_att": 5.620456440677967,
+        "crps_qb_pass_yds": 46.98317366905412,
+        "crps_qb_pass_tds": 0.6274972097457626,
+        "crps_qb_ints": 0.4126306673728813
+      },
+      {
+        "config": "M2(h=4,as=40,ae=10,lam=0,gam=0)",
+        "objective": 0.9899195346377268,
+        "crps_qb_pass_att": 5.620456440677967,
+        "crps_qb_pass_yds": 47.029421413010255,
+        "crps_qb_pass_tds": 0.6205600656779662,
+        "crps_qb_ints": 0.4176507987288135
+      },
+      {
+        "config": "M2(h=4,as=40,ae=10,lam=0,gam=0.5)",
+        "objective": 0.9927892446199492,
+        "crps_qb_pass_att": 5.620456440677967,
+        "crps_qb_pass_yds": 47.13552741054168,
+        "crps_qb_pass_tds": 0.6248598262711864,
+        "crps_qb_ints": 0.4186338644067797
+      },
+      {
+        "config": "M2(h=4,as=10,ae=10,lam=0,gam=0)",
+        "objective": 0.992977271462586,
+        "crps_qb_pass_att": 5.6541700953389835,
+        "crps_qb_pass_yds": 47.18702203319341,
+        "crps_qb_pass_tds": 0.6196412076271186,
+        "crps_qb_ints": 0.4195458707627118
+      },
+      {
+        "config": "M2(h=8,as=40,ae=30,lam=0,gam=0)",
+        "objective": 0.9932710839119476,
+        "crps_qb_pass_att": 5.732311021186441,
+        "crps_qb_pass_yds": 47.45980527839767,
+        "crps_qb_pass_tds": 0.6164152902542372,
+        "crps_qb_ints": 0.41412855084745764
+      },
+      {
+        "config": "M2(h=4,as=10,ae=30,lam=0,gam=1)",
+        "objective": 0.9934549565343632,
+        "crps_qb_pass_att": 5.6541700953389835,
+        "crps_qb_pass_yds": 47.17220170164372,
+        "crps_qb_pass_tds": 0.6295483220338982,
+        "crps_qb_ints": 0.41383216101694914
+      }
+    ],
+    "car": [
+      {
+        "config": "M2(h=4,as=10,ae=10,lam=1,gam=0.5)",
+        "objective": 0.9549012699629108,
+        "crps_qb_rush_yds": 9.588406400338155,
+        "crps_rb_rush_att": 2.968009966770509,
+        "crps_rb_rush_yds": 16.72498079073713
+      },
+      {
+        "config": "M2(h=4,as=10,ae=10,lam=1,gam=1)",
+        "objective": 0.9550180798213738,
+        "crps_qb_rush_yds": 9.58629061075544,
+        "crps_rb_rush_att": 2.968009966770509,
+        "crps_rb_rush_yds": 16.73535494285628
+      },
+      {
+        "config": "M2(h=4,as=10,ae=10,lam=1,gam=0)",
+        "objective": 0.9557760003662058,
+        "crps_qb_rush_yds": 9.606222038013568,
+        "crps_rb_rush_att": 2.968009966770509,
+        "crps_rb_rush_yds": 16.737616867497994
+      },
+      {
+        "config": "M2(h=4,as=10,ae=30,lam=1,gam=0.5)",
+        "objective": 0.9559437940273358,
+        "crps_qb_rush_yds": 9.591820089196906,
+        "crps_rb_rush_att": 2.968009966770509,
+        "crps_rb_rush_yds": 16.77447851789385
+      },
+      {
+        "config": "M2(h=4,as=10,ae=30,lam=1,gam=1)",
+        "objective": 0.9560455167097297,
+        "crps_qb_rush_yds": 9.590368686084766,
+        "crps_rb_rush_att": 2.968009966770509,
+        "crps_rb_rush_yds": 16.782756882917127
+      },
+      {
+        "config": "M2(h=4,as=10,ae=30,lam=1,gam=0)",
+        "objective": 0.9568126362707677,
+        "crps_qb_rush_yds": 9.608490391055746,
+        "crps_rb_rush_att": 2.968009966770509,
+        "crps_rb_rush_yds": 16.78901124546643
+      },
+      {
+        "config": "M2(h=4,as=40,ae=10,lam=1,gam=0.5)",
+        "objective": 0.9587488327632813,
+        "crps_qb_rush_yds": 9.524815821028579,
+        "crps_rb_rush_att": 3.003167253374871,
+        "crps_rb_rush_yds": 16.86389680483017
+      },
+      {
+        "config": "M2(h=4,as=40,ae=10,lam=1,gam=1)",
+        "objective": 0.958926619706444,
+        "crps_qb_rush_yds": 9.523441301305368,
+        "crps_rb_rush_att": 3.003167253374871,
+        "crps_rb_rush_yds": 16.87611936937255
+      },
+      {
+        "config": "M2(h=4,as=40,ae=10,lam=1,gam=0)",
+        "objective": 0.9595250516281254,
+        "crps_qb_rush_yds": 9.54091571595154,
+        "crps_rb_rush_att": 3.003167253374871,
+        "crps_rb_rush_yds": 16.87454812061854
+      },
+      {
+        "config": "M2(h=4,as=40,ae=30,lam=1,gam=0.5)",
+        "objective": 0.9605643472819754,
+        "crps_qb_rush_yds": 9.546474517146212,
+        "crps_rb_rush_att": 3.003167253374871,
+        "crps_rb_rush_yds": 16.919726495418203
+      }
+    ],
+    "tgt": [
+      {
+        "config": "M2(h=4,as=40,ae=30,lam=0,gam=1)",
+        "objective": 0.9927432460875505,
+        "crps_rb_rec": 0.9206237496871088,
+        "crps_rb_rec_yds": 8.9569534131296
+      },
+      {
+        "config": "M2(h=8,as=10,ae=30,lam=0,gam=1)",
+        "objective": 0.9930325774808538,
+        "crps_rb_rec": 0.9239968473091364,
+        "crps_rb_rec_yds": 8.929527860796913
+      },
+      {
+        "config": "M2(h=8,as=10,ae=30,lam=0,gam=0.5)",
+        "objective": 0.9930433369024556,
+        "crps_rb_rec": 0.9247038973717145,
+        "crps_rb_rec_yds": 8.922881385202267
+      },
+      {
+        "config": "M2(h=8,as=40,ae=30,lam=0,gam=0.5)",
+        "objective": 0.9939359214903876,
+        "crps_rb_rec": 0.9252232916145182,
+        "crps_rb_rec_yds": 8.93391764667224
+      },
+      {
+        "config": "M2(h=4,as=40,ae=30,lam=0,gam=0.5)",
+        "objective": 0.9939603799055475,
+        "crps_rb_rec": 0.9214500838548185,
+        "crps_rb_rec_yds": 8.970860160112306
+      },
+      {
+        "config": "M2(h=8,as=40,ae=30,lam=0,gam=1)",
+        "objective": 0.9939611564898416,
+        "crps_rb_rec": 0.9248107847309135,
+        "crps_rb_rec_yds": 8.938362354411497
+      },
+      {
+        "config": "M2(h=4,as=40,ae=30,lam=0,gam=0)",
+        "objective": 0.9940107430673878,
+        "crps_rb_rec": 0.9221120287859825,
+        "crps_rb_rec_yds": 8.965362655866082
+      },
+      {
+        "config": "M2(h=8,as=10,ae=30,lam=0,gam=0)",
+        "objective": 0.9940337181406902,
+        "crps_rb_rec": 0.9255896545682102,
+        "crps_rb_rec_yds": 8.932133140016251
+      },
+      {
+        "config": "M2(h=8,as=10,ae=10,lam=0,gam=0)",
+        "objective": 0.9940356213600733,
+        "crps_rb_rec": 0.9250868823529411,
+        "crps_rb_rec_yds": 8.937031258185517
+      },
+      {
+        "config": "M2(h=8,as=10,ae=10,lam=0,gam=1)",
+        "objective": 0.9944382739514157,
+        "crps_rb_rec": 0.923955519399249,
+        "crps_rb_rec_yds": 8.955221411164452
+      }
+    ]
+  },
+  "ablation": {
+    "att": {
+      "best": {
+        "config": "M2(h=4,as=40,ae=30,lam=0,gam=0)",
+        "objective": 0.9843660856137315
+      },
+      "without_redistribution": 0.9843660856137315,
+      "without_opponent": 0.9843660856137315,
+      "kept": {
+        "redistribution": false,
+        "opponent": false
+      },
+      "chosen": "B2(h=4,as=40,ae=30)"
+    },
+    "car": {
+      "best": {
+        "config": "M2(h=4,as=10,ae=10,lam=1,gam=0.5)",
+        "objective": 0.9549012699629108
+      },
+      "without_redistribution": 0.9662532271964124,
+      "without_opponent": 0.9557760003662058,
+      "kept": {
+        "redistribution": true,
+        "opponent": true
+      },
+      "chosen": "M2(h=4,as=10,ae=10,lam=1,gam=0.5)"
+    },
+    "tgt": {
+      "best": {
+        "config": "M2(h=4,as=40,ae=30,lam=0,gam=1)",
+        "objective": 0.9927432460875505
+      },
+      "without_redistribution": 0.9927432460875505,
+      "without_opponent": 0.9940107430673878,
+      "kept": {
+        "redistribution": false,
+        "opponent": true
+      },
+      "chosen": "M2(h=4,as=40,ae=30,lam=0,gam=1)"
+    }
+  }
+}

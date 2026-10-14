@@ -52,13 +52,22 @@ MARKETS = {
     "rb_rec_yds":   (("RB",), "tgt", "yds", [9.5, 19.5, 29.5]),
     "anytime_td":   (("RB", "WR", "TE"), "both", "atd", [0.5]),
 }
+# Phase 1 markets, rebuilt inside this engine as the base for 3c (not part of the 3a gate)
+WRTE_MARKETS = {
+    "wrte_rec":     (("WR", "TE"), "tgt", "succ", [2.5, 3.5, 4.5, 5.5, 6.5]),
+    "wrte_rec_yds": (("WR", "TE"), "tgt", "yds", [24.5, 39.5, 54.5, 69.5, 84.5]),
+}
+ALL_MARKETS = {**WRTE_MARKETS, **MARKETS}
+TEAM_RT_COLS = ("off_pass", "off_run", "opp_def_pass", "opp_def_run")
 MARKET_LABELS = {
     "qb_pass_yds": "QB passing yards", "qb_pass_att": "QB pass attempts", "qb_pass_tds": "QB passing TDs",
     "qb_ints": "QB interceptions", "qb_rush_yds": "QB rushing yards", "rb_rush_yds": "RB rushing yards",
     "rb_rush_att": "RB rushing attempts", "rb_rec": "RB receptions", "rb_rec_yds": "RB receiving yards",
     "anytime_td": "Anytime TD (RB/WR/TE)",
+    "wrte_rec": "WR/TE receptions", "wrte_rec_yds": "WR/TE receiving yards",
 }
 OUTCOME = {  # market -> outcome column(s)
+    "wrte_rec": "receptions", "wrte_rec_yds": "rec_yds",
     "qb_pass_yds": "pass_yds", "qb_pass_att": "attempts", "qb_pass_tds": "pass_tds", "qb_ints": "ints",
     "qb_rush_yds": "rush_yds", "rb_rush_yds": "rush_yds", "rb_rush_att": "carries",
     "rb_rec": "receptions", "rb_rec_yds": "rec_yds",
@@ -74,6 +83,12 @@ class Config:
     a_tpg: float = 4.0
     redistribute: float = 1.0  # used by M1, M2
     opponent: float = 0.5      # used by M2
+    # 3c matchup feature groups (all off by default, so Phase 3a configs reproduce exactly)
+    g_depth: float = 0.0       # depth-of-target multipliers on catch rate and yards per catch
+    g_gap: float = 0.0         # run-gap multiplier on RB yards per carry
+    g_press: float = 0.0       # pressure multipliers on QB completion, yards/compl., TD and INT rates
+    arch: bool = False         # receiver archetype as shrinkage target (WR/TE)
+    team_ratings: bool = False # team ratings in the team-volume regressions
 
     def label(self) -> str:
         s = f"{self.model}(h={self.half_life:g},as={self.a_share:g},ae={self.a_eff:g}"
@@ -81,6 +96,13 @@ class Config:
             s += f",lam={self.redistribute:g}"
         if self.model == "M2":
             s += f",gam={self.opponent:g}"
+        for name, v in (("depth", self.g_depth), ("gap", self.g_gap), ("press", self.g_press)):
+            if v:
+                s += f",{name}={v:g}"
+        if self.arch:
+            s += ",arch"
+        if self.team_ratings:
+            s += ",teamrt"
         return s + ")"
 
     @property
@@ -176,8 +198,9 @@ def features(u: pl.DataFrame, tg: pl.DataFrame, half_life: float) -> pl.DataFram
     out = out.with_columns(
         ((pl.col("pos") == "QB") & (pl.col("att_elig") == pl.col("att_elig").filter(pl.col("pos") == "QB")
                                     .max().over("game_id", "team"))).alias("qb_top"))
+    rt = [c for c in TEAM_RT_COLS if c in tg.columns]
     out = out.join(team_features(tg).select("game_id", "team", *[f"{vt}_T_n" for vt in VT],
-                                            *[f"{vt}_T_v" for vt in VT], "team_spread", "total_line"),
+                                            *[f"{vt}_T_v" for vt in VT], "team_spread", "total_line", *rt),
                    on=["game_id", "team"], how="left")
     return out.join(defense_features(u, tg), left_on=["game_id", "opp", "pos"],
                     right_on=["game_id", "defense", "pos"], how="left")
@@ -237,8 +260,11 @@ def market_eligible(market: str) -> pl.Expr:
     if market == "anytime_td":
         return pl.col("pos").is_in(["RB", "WR", "TE"]) & (pl.col("n_prev") >= ELIG_MIN_GAMES) & (
             (pl.col("car_elig") >= 0.15) | (pl.col("tgt_elig") >= 0.05))
-    pos, vt, _, _ = MARKETS[market]
-    return eligible_expr(pos[0], vt)
+    pos, vt, _, _ = ALL_MARKETS[market]
+    e = eligible_expr(pos[0], vt)
+    for p in pos[1:]:
+        e = e | eligible_expr(p, vt)
+    return e
 
 
 @dataclass
@@ -253,7 +279,16 @@ class Constants:
     pools: dict = field(default_factory=dict)        # (pool, pos) -> draws normalized to mean 1
 
 
-def fit_constants(feat: pl.DataFrame, tf: pl.DataFrame, pools: pl.DataFrame, season: int) -> Constants:
+def volume_design(df: pl.DataFrame, vt: str, k: "Constants", team_ratings: bool) -> np.ndarray:
+    ew = ((df[f"{vt}_T_v"] + TEAM_PSEUDO_GAMES * k.league_team[vt]) / (df[f"{vt}_T_n"] + TEAM_PSEUDO_GAMES)).to_numpy()
+    cols = [np.ones(df.height), ew, df["team_spread"].to_numpy(), df["total_line"].to_numpy()]
+    if team_ratings:
+        cols += [df[c].fill_null(0.0).to_numpy() for c in TEAM_RT_COLS]
+    return np.column_stack(cols)
+
+
+def fit_constants(feat: pl.DataFrame, tf: pl.DataFrame, pools: pl.DataFrame, season: int,
+                  team_ratings: bool = False) -> Constants:
     k = Constants()
     hist = feat.filter(pl.col("played") & pl.col("season").is_between(season - 3, season - 1))
     for vt, spec in VT.items():
@@ -276,8 +311,7 @@ def fit_constants(feat: pl.DataFrame, tf: pl.DataFrame, pools: pl.DataFrame, sea
                                                     pl.col(spec["team"]).first().alias("t"))
         k.covered[vt] = float(sums["v"].sum() / sums["t"].sum())
         tv = tf.filter(pl.col("played") & pl.col("season").is_between(season - 4, season - 1))
-        ew = ((tv[f"{vt}_T_v"] + TEAM_PSEUDO_GAMES * k.league_team[vt]) / (tv[f"{vt}_T_n"] + TEAM_PSEUDO_GAMES)).to_numpy()
-        X = np.column_stack([np.ones(len(tv)), ew, tv["team_spread"].to_numpy(), tv["total_line"].to_numpy()])
+        X = volume_design(tv, vt, k, team_ratings)
         k.volume_coef[vt], *_ = np.linalg.lstsq(X, tv[spec["team"]].to_numpy().astype(float), rcond=None)
     pp = pools.filter(pl.col("season").is_between(season - 3, season - 1))
     for (pool, pos), grp in pp.group_by(["pool", "pos"]):
@@ -298,13 +332,22 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
     for vt, spec in VT.items():
         c = k.volume_coef[vt]
         units = pl.col(f"{vt}_S_s") if spec["td_units"] == "succ" else pl.col(f"{vt}_S_v")
+        team_hat = (c[0] + c[1] * (pl.col(f"{vt}_T_v") + TEAM_PSEUDO_GAMES * k.league_team[vt]) / (pl.col(f"{vt}_T_n") + TEAM_PSEUDO_GAMES)
+                    + c[2] * pl.col("team_spread") + c[3] * pl.col("total_line"))
+        if cfg.team_ratings:
+            for i, col in enumerate(TEAM_RT_COLS):
+                team_hat = team_hat + c[4 + i] * pl.col(col).fill_null(0.0)
+        rate_prior, ypu_prior = prior(k, vt, "rate"), prior(k, vt, "ypu")
+        if cfg.arch and vt == "tgt" and "arch_rate" in df.columns:
+            # receiver archetype replaces position as the shrinkage target (WR/TE with an archetype)
+            rate_prior = pl.coalesce(pl.col("arch_rate"), rate_prior)
+            ypu_prior = pl.coalesce(pl.col("arch_ypc"), ypu_prior)
         df = df.with_columns(
             ((pl.col(f"{vt}_S_v") + cfg.a_share * prior(k, vt, "share")) / (pl.col(f"{vt}_S_tv") + cfg.a_share)).alias(f"{vt}_share"),
             ((pl.col(f"{vt}_S_v") + cfg.a_tpg * prior(k, vt, "tpg")) / (pl.col("S_n") + cfg.a_tpg)).alias(f"{vt}_tpg"),
-            (c[0] + c[1] * (pl.col(f"{vt}_T_v") + TEAM_PSEUDO_GAMES * k.league_team[vt]) / (pl.col(f"{vt}_T_n") + TEAM_PSEUDO_GAMES)
-             + c[2] * pl.col("team_spread") + c[3] * pl.col("total_line")).clip(5, 90).alias(f"{vt}_team_hat"),
-            ((pl.col(f"{vt}_S_s") + cfg.a_eff * prior(k, vt, "rate")) / (pl.col(f"{vt}_S_v") + cfg.a_eff)).alias(f"{vt}_rate"),
-            ((pl.col(f"{vt}_S_y") + cfg.a_eff * prior(k, vt, "ypu")) / (pl.col(f"{vt}_S_s") + cfg.a_eff)).alias(f"{vt}_ypu"),
+            team_hat.clip(5, 90).alias(f"{vt}_team_hat"),
+            ((pl.col(f"{vt}_S_s") + cfg.a_eff * rate_prior) / (pl.col(f"{vt}_S_v") + cfg.a_eff)).alias(f"{vt}_rate"),
+            ((pl.col(f"{vt}_S_y") + cfg.a_eff * ypu_prior) / (pl.col(f"{vt}_S_s") + cfg.a_eff)).alias(f"{vt}_ypu"),
             ((pl.col(f"{vt}_S_td") + a_td * prior(k, vt, "tdr")) / (units + a_td)).alias(f"{vt}_tdr"),
             (((pl.col(f"{vt}_S_int") if spec["int"] else pl.lit(0.0)) + a_td * prior(k, vt, "intr"))
              / (pl.col(f"{vt}_S_v") + a_td)).alias(f"{vt}_intr"),
@@ -328,12 +371,29 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
                 (pl.col(f"{vt}_ypu") * safe(d_ypu, prior(k, vt, "ypu"))).alias(f"{vt}_ypu"),
                 (pl.col(f"{vt}_tdr") * safe(d_tdr, prior(k, vt, "tdr"))).alias(f"{vt}_tdr"),
             )
+    # ---- 3c matchup multipliers (columns from proplab.p3.matchup, prior-only)
+    if cfg.g_depth and "depth_catch" in df.columns:
+        rec = pl.col("pos").is_in(["WR", "TE", "RB"])
+        df = df.with_columns(
+            pl.when(rec).then(pl.col("tgt_rate") * pl.col("depth_catch") ** cfg.g_depth).otherwise(pl.col("tgt_rate"))
+              .clip(0.02, 0.98).alias("tgt_rate"),
+            pl.when(rec).then(pl.col("tgt_ypu") * pl.col("depth_ypc") ** cfg.g_depth).otherwise(pl.col("tgt_ypu")).alias("tgt_ypu"))
+    if cfg.g_gap and "gap_ypc" in df.columns:
+        df = df.with_columns(pl.when(pl.col("pos") == "RB").then(pl.col("car_ypu") * pl.col("gap_ypc") ** cfg.g_gap)
+                               .otherwise(pl.col("car_ypu")).alias("car_ypu"))
+    if cfg.g_press and "press_comp" in df.columns:
+        qb, g = pl.col("pos") == "QB", cfg.g_press
+        df = df.with_columns(
+            pl.when(qb).then(pl.col("att_rate") * pl.col("press_comp") ** g).otherwise(pl.col("att_rate")).clip(0.02, 0.98).alias("att_rate"),
+            pl.when(qb).then(pl.col("att_ypu") * pl.col("press_ypc") ** g).otherwise(pl.col("att_ypu")).alias("att_ypu"),
+            pl.when(qb).then(pl.col("att_tdr") * pl.col("press_td") ** g).otherwise(pl.col("att_tdr")).alias("att_tdr"),
+            pl.when(qb).then(pl.col("att_intr") * pl.col("press_int") ** g).otherwise(pl.col("att_intr")).alias("att_intr"))
     return df
 
 
 def prepare(feat: pl.DataFrame, tf: pl.DataFrame, pools: pl.DataFrame, season: int, cfg: Config):
     """Parameters for every row plus calibration/dispersion fit on earlier seasons."""
-    k = fit_constants(feat, tf, pools, season)
+    k = fit_constants(feat, tf, pools, season, team_ratings=cfg.team_ratings)
     params = parameters(feat, k, cfg)
     train = params.filter(pl.col("played") & pl.col("season").is_between(season - 3, season - 1))
     from proplab.p1.model import fit_dispersion
@@ -398,7 +458,7 @@ def simulate_vt(rows: pl.DataFrame, vt: str, k: Constants, n: int, rng) -> dict:
 
 
 def market_draws(market: str, rows: pl.DataFrame, k: Constants, n: int, rng) -> np.ndarray:
-    pos, vt, qty, _ = MARKETS[market]
+    pos, vt, qty, _ = ALL_MARKETS[market]
     if market == "anytime_td":
         car = simulate_vt(rows, "car", k, n, rng)
         tgt = simulate_vt(rows, "tgt", k, n, rng)
@@ -424,7 +484,7 @@ def coverage_tolerance(n_rows: int) -> float:
 
 
 def score(market: str, draws: np.ndarray, y: np.ndarray, rng) -> dict:
-    lines = MARKETS[market][3]
+    lines = ALL_MARKETS[market][3]
     probs = np.concatenate([(draws > L).mean(axis=1) for L in lines])
     outs = np.concatenate([(y > L).astype(float) for L in lines])
     brier_rows = ((draws > lines[0]).mean(axis=1) - (y > lines[0])) ** 2
@@ -447,12 +507,13 @@ def score(market: str, draws: np.ndarray, y: np.ndarray, rng) -> dict:
 
 def run_market(feat, tf, pools, season: int, market: str, cfg_by_vt: dict, n_sims: int, seed: int,
                weeks=None, cache: dict | None = None, keep: bool = False) -> dict:
-    """Score one market for one season. cfg_by_vt maps 'tgt'/'car'/'att' -> Config."""
-    vt = MARKETS[market][1]
+    """Score one market for one season. cfg_by_vt maps 'tgt'/'car'/'att' -> Config; a key equal to
+    the market name overrides its volume type's config (used for the WR/TE markets)."""
+    vt = ALL_MARKETS[market][1]
     cfg_key = ("car", "tgt") if vt == "both" else (vt,)
     preps = {}
     for v in cfg_key:
-        c = cfg_by_vt[v]
+        c = cfg_by_vt.get(market, cfg_by_vt[v]) if vt != "both" else cfg_by_vt[v]
         ck = (season, c)
         if cache is not None and ck in cache:
             preps[v] = cache[ck]

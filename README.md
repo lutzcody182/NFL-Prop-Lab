@@ -3,7 +3,21 @@
 A point-in-time NFL player prop modeling platform. Architecture and roadmap:
 see the "NFL Prop Lab — Architecture & Phased Plan" doc.
 
-**Status: Phase 0 (Foundations) complete — gate passed.**
+**Status:**
+- Phase 0 (Foundations): gate passed.
+- Phase 1 (WR/TE receptions and receiving yards): **gate not passed.** M1 beat both baselines in every season, and the yards market passed. But the 2025 receptions gain over B2 (−0.63% CRPS, 95% interval −1.52% to +0.29%) is not distinguishable from zero. Details: `phase1/PREREGISTRATION.md`, `phase1/results.json`, and the dashboard (`index.html`).
+
+## Phase 1
+
+```bash
+python -m proplab.p1.tune       # tunes on 2024 only -> phase1/tuning.json
+python -m proplab.p1.backtest   # scores 2024, 2025 (locked test), 2026 wks 1-5 -> phase1/results.json
+python -m proplab.p1.project    # next week's projections -> phase1/projections.json
+python -m proplab.p1.publish    # writes results + projections into index.html
+```
+
+Re-running `backtest` reproduces the committed 2025 numbers exactly (a test checks this).
+Do not re-tune against 2025: it has been used. New ideas get judged on 2026 live weeks.
 
 ## Phase 0 gate
 
@@ -64,6 +78,7 @@ Known approximations:
 
 ## Data notes
 
+- nflverse player stats and play-by-play use current team codes (LV, LAC) for every season; schedules, rosters and snaps use the code of the time (OAK, SD). Ingest rewrites them to the schedule's code (found and fixed in Phase 1).
 - The 2022 season has 271 regular-season games: Week 17 BUF @ CIN was cancelled.
 - 78 of 68,528 skill-player snap rows (0.11%) have PFR IDs with no gsis match; they are kept with `gsis_id = NULL`.
 - The dynastyprocess fantasy ID crosswalk is not used; the nflverse players file already carries PFR, ESPN and PFF IDs.

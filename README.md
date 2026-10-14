@@ -5,7 +5,19 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
 
 **Status:**
 - Phase 0 (Foundations): gate passed.
-- Phase 2 (market comparison): built and tested; waiting for historical odds (see below).
+- Phase 2 (market comparison): built and tested; on hold until historical odds are downloaded (see below).
+- Phase 3a (10 more markets: QB passing/rushing, RB rushing/receiving, anytime TD): **0 of 10 passed** on 2025.
+  RB rushing yards (−3.5% CRPS vs baseline) and attempts (−5.1%) and anytime TD (−0.5% Brier) beat the baseline
+  with intervals clear of zero but are slightly miscalibrated; QB passing kept no improvement over the baseline;
+  the shared carries setup made QB rushing 2.6% worse. Details: `phase3/PREREGISTRATION.md`, `phase3/results.json`.
+  Next: 3b (team and player ratings), 3c (matchup engine).
+
+```bash
+python -m proplab.p3.run tune       # 2024 only -> phase3/tuning.json
+python -m proplab.p3.run backtest   # -> phase3/results.json (2025 already used; do not re-tune on it)
+python -m proplab.p3.project        # next week -> phase3/projections.json
+python -m proplab.p1.publish        # rebuild index.html data
+```
 - Phase 1 (WR/TE receptions and receiving yards): **gate not passed.** M1 beat both baselines in every season, and the yards market passed. But the 2025 receptions gain over B2 (−0.63% CRPS, 95% interval −1.52% to +0.29%) is not distinguishable from zero. Details: `phase1/PREREGISTRATION.md`, `phase1/results.json`, and the dashboard (`index.html`).
 
 ## Phase 2: model vs sportsbook prices

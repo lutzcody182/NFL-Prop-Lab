@@ -204,3 +204,33 @@ CREATE TABLE IF NOT EXISTS data_quality_runs (
     detail         TEXT,
     checked_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- ---------------------------------------------------------------- Phase 2: odds
+-- Raw API responses stay as files in data/odds/raw/; these tables are rebuilt from them.
+
+CREATE TABLE IF NOT EXISTS odds_events (
+    event_id       TEXT PRIMARY KEY,
+    game_id        TEXT NOT NULL UNIQUE REFERENCES games(game_id),
+    loaded_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- One row per bookmaker x player x market x line at one snapshot.
+-- known_at = the API's snapshot timestamp (when these prices were on the board).
+CREATE TABLE IF NOT EXISTS prop_lines (
+    game_id        TEXT NOT NULL REFERENCES games(game_id),
+    snapshot_tag   TEXT NOT NULL,          -- bet | close
+    snapshot_ts    TIMESTAMPTZ NOT NULL,
+    book           TEXT NOT NULL,
+    market         TEXT NOT NULL,          -- player_receptions | player_reception_yds
+    player_name    TEXT NOT NULL,          -- as the book wrote it
+    gsis_id        TEXT,                   -- NULL = unmatched / ambiguous
+    match_status   TEXT NOT NULL,          -- matched | unmatched | ambiguous
+    line           NUMERIC NOT NULL,
+    over_price     NUMERIC,                -- decimal odds
+    under_price    NUMERIC,
+    book_update_ts TIMESTAMPTZ,
+    known_at       TIMESTAMPTZ NOT NULL,
+    loaded_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (game_id, snapshot_tag, book, market, player_name, line)
+);
+CREATE INDEX IF NOT EXISTS prop_lines_player ON prop_lines(gsis_id, game_id);

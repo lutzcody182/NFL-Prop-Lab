@@ -5,7 +5,36 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
 
 **Status:**
 - Phase 0 (Foundations): gate passed.
+- Phase 2 (market comparison): built and tested; waiting for historical odds (see below).
 - Phase 1 (WR/TE receptions and receiving yards): **gate not passed.** M1 beat both baselines in every season, and the yards market passed. But the 2025 receptions gain over B2 (−0.63% CRPS, 95% interval −1.52% to +0.29%) is not distinguishable from zero. Details: `phase1/PREREGISTRATION.md`, `phase1/results.json`, and the dashboard (`index.html`).
+
+## Phase 2: model vs sportsbook prices
+
+Status: **code built and tested on synthetic data; waiting for real odds.** Plan and
+pass rules: `phase2/PREREGISTRATION.md` (written before any odds were downloaded).
+
+**Step 1: download odds (on your Mac, in Terminal).** Needs a paid The Odds API key.
+Uses only built-in Python; nothing to install.
+
+```bash
+cd ~/Desktop/NFL-Prop-Lab
+python3 tools/odds_backfill.py --estimate                  # cost check, uses no credits
+python3 tools/odds_backfill.py --run --max-credits 60000   # asks for your key (hidden)
+```
+
+It saves raw responses to `data/odds/raw/`, skips anything already downloaded, and stops
+before going over `--max-credits`. Re-run it weekly to add new games. `data/odds/` is in
+`.gitignore`: sportsbook prices may not be redistributable, so they stay out of the public repo.
+
+**Step 2: load and evaluate** (where the database runs):
+
+```bash
+python -m proplab.odds.load        # -> prop_lines, odds_events, bet-time game_lines; data/odds/unmatched.csv
+python -m proplab.odds.evaluate    # -> phase2/results.json
+```
+
+`tests/fixtures/mock_odds_api.py` is a fake Odds API that serves **synthetic** prices so the
+whole chain can be tested without spending credits. Its numbers mean nothing about real markets.
 
 ## Phase 1
 

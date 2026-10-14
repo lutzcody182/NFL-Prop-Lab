@@ -23,7 +23,7 @@ import sys
 import nflreadpy as nfl
 import polars as pl
 
-from proplab import db, quality
+from proplab import db, names, quality
 
 DEFAULT_FIRST_SEASON = 2016  # Next Gen Stats era; enough history for priors
 CURRENT_SEASON = 2026
@@ -153,6 +153,15 @@ def run(seasons: list[int]) -> dict:
         players.select("gsis_id", pl.lit(src).alias("source"), pl.col(col).cast(pl.Utf8).alias("source_id"))
         for src, col in [("pfr", "pfr_id"), ("espn", "espn_id"), ("pff", "pff_id")]
     ]).filter(pl.col("source_id").is_not_null() & (pl.col("source_id") != ""))
+    # Normalized name variants (source='name'), used to match sportsbook player names.
+    name_rows = [
+        (r["gsis_id"], "name", v)
+        for r in players.select("gsis_id", "display_name", "first_name", "last_name",
+                                "football_name", "common_first_name").iter_rows(named=True)
+        for v in names.variants(r["display_name"], r["first_name"], r["last_name"],
+                                r["football_name"], r["common_first_name"])
+    ]
+    id_map = pl.concat([id_map, pl.DataFrame(name_rows, schema=["gsis_id", "source", "source_id"], orient="row")])
     id_map = dedupe(id_map, ["source", "source_id", "gsis_id"], "player_id_map", report)
 
     with conn.transaction():

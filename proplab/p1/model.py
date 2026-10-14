@@ -308,9 +308,10 @@ def eligible(df: pl.DataFrame) -> pl.DataFrame:
                      & (pl.col("elig_share") >= ELIG_MIN_SHARE))
 
 
-def run_season(feat: pl.DataFrame, team_feat: pl.DataFrame, catch_yards: pl.DataFrame, season: int,
-               cfg: Config, n_sims: int = 2000, seed: int = 7, weeks: tuple[int, int] | None = None,
-               keep_draws: bool = False) -> dict:
+def prepare_season(feat: pl.DataFrame, team_feat: pl.DataFrame, catch_yards: pl.DataFrame, season: int,
+                   cfg: Config) -> tuple[pl.DataFrame, Constants]:
+    """Parameters for every row, with constants, calibration and dispersion fit on
+    seasons before `season` only."""
     k = fit_constants(feat, team_feat, catch_yards, season)
     params = parameters(feat, k, cfg)
 
@@ -328,7 +329,13 @@ def run_season(feat: pl.DataFrame, team_feat: pl.DataFrame, catch_yards: pl.Data
     for ps in EVAL_POS:
         t = train.filter(pl.col("pos") == ps)
         k.dispersion[(cfg.model, ps)] = fit_dispersion(t["mu_t"].to_numpy(), t["targets"].to_numpy().astype(float))
+    return params, k
 
+
+def run_season(feat: pl.DataFrame, team_feat: pl.DataFrame, catch_yards: pl.DataFrame, season: int,
+               cfg: Config, n_sims: int = 2000, seed: int = 7, weeks: tuple[int, int] | None = None,
+               keep_draws: bool = False) -> dict:
+    params, k = prepare_season(feat, team_feat, catch_yards, season, cfg)
     test = eligible(params.filter((pl.col("season") == season) & pl.col("played")))
     if weeks:
         test = test.filter(pl.col("week").is_between(*weeks))

@@ -59,4 +59,13 @@ If M1 fails, Phase 1 does not pass and the report says so. B2 is not swapped in 
 
 ## Deviations
 
-(none yet)
+Clarifications made before any 2025 score was computed:
+
+1. **Live holdout is 2026 weeks 1–5**, not 1–6: week 6 kicks off 2026-10-15 and has no results yet. Week 6 gets projections only.
+2. **Interval coverage uses the randomized PIT** (u = F(y−) + V·[F(y) − F(y−)], V ~ Uniform(0,1); covered if 0.1 ≤ u ≤ 0.9). Plain 10th–90th percentile intervals over-cover for counts like receptions purely from discreteness, which would make the 77–83% band meaningless.
+3. **"Walk-forward" means:** every feature updates week by week from prior weeks only; fitted constants (position priors, team-volume regression, dispersion, per-catch yard shapes) are refit once per season from earlier seasons only. Hyperparameters are chosen on 2024 alone.
+4. **Mean calibration added to all three models** after 2024 tuning showed teammate redistribution under-predicting established players' targets by about 2.6% (ECE 0.028). Each model's expected targets are multiplied by a per-position factor (actual ÷ predicted targets) fit on the three seasons before the one being predicted. Hyperparameters were then re-tuned on 2024. Still no 2025 score had been computed.
+5. **Opponent adjustment removed from M1**, as the pre-registered ablation rule requires: on 2024 the tuned weight was 0 (no improvement in CRPS).
+6. **Tried and reverted:** an in-season league catch-rate prior (blending earlier seasons with the current season's prior weeks). On 2024 it moved receptions ECE only from 0.025 to 0.024 and made the tuning objective slightly worse (0.9476 to 0.9481), so it was removed.
+7. **Data fix during Phase 1 (Phase 0 bug):** 2016 SD and 2016–2019 OAK player stats and plays used relocated team codes and did not join to their games. Fixed at ingest, with two new quality checks; all tuning above was re-run on the corrected data.
+8. **Tuning stopped here.** On 2024, M1 receptions ECE is 0.025, above the 0.02 gate. No further changes were made to chase that number; 2025 is scored once with this configuration.

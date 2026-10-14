@@ -1,0 +1,41 @@
+name: nflverse ingest + quality checks
+
+# Nightly during the season, plus a Thursday run that picks up the NFL's
+# Monday–Wednesday stat corrections. Uses a throwaway Postgres service, so this
+# job verifies the pipeline end to end; switch DATABASE_URL to a hosted
+# database once that decision is made.
+on:
+  schedule:
+    - cron: "17 10 * * *"     # 10:17 UTC daily
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: nflprop
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/nflprop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Ingest (run 1)
+        run: python -m proplab.ingest
+      - name: Ingest (run 2, reproducibility)
+        run: python -m proplab.ingest
+      - name: Tests
+        run: pytest -q

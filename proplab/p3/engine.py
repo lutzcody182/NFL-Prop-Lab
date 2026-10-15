@@ -89,6 +89,10 @@ class Config:
     g_press: float = 0.0       # pressure multipliers on QB completion, yards/compl., TD and INT rates
     arch: bool = False         # receiver archetype as shrinkage target (WR/TE)
     team_ratings: bool = False # team ratings in the team-volume regressions
+    # Phase 6 scheme feature groups (off by default)
+    g_blitz: float = 0.0       # blitz multipliers on QB completion, yards/compl., TD and INT rates
+    g_box: float = 0.0         # stacked-box multiplier on RB yards per carry
+    g_pa: float = 0.0          # play-action multiplier on QB yards per completion
 
     def label(self) -> str:
         s = f"{self.model}(h={self.half_life:g},as={self.a_share:g},ae={self.a_eff:g}"
@@ -96,7 +100,8 @@ class Config:
             s += f",lam={self.redistribute:g}"
         if self.model == "M2":
             s += f",gam={self.opponent:g}"
-        for name, v in (("depth", self.g_depth), ("gap", self.g_gap), ("press", self.g_press)):
+        for name, v in (("depth", self.g_depth), ("gap", self.g_gap), ("press", self.g_press),
+                        ("blitz", self.g_blitz), ("box", self.g_box), ("pa", self.g_pa)):
             if v:
                 s += f",{name}={v:g}"
         if self.arch:
@@ -388,6 +393,20 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
             pl.when(qb).then(pl.col("att_ypu") * pl.col("press_ypc") ** g).otherwise(pl.col("att_ypu")).alias("att_ypu"),
             pl.when(qb).then(pl.col("att_tdr") * pl.col("press_td") ** g).otherwise(pl.col("att_tdr")).alias("att_tdr"),
             pl.when(qb).then(pl.col("att_intr") * pl.col("press_int") ** g).otherwise(pl.col("att_intr")).alias("att_intr"))
+    # ---- Phase 6 scheme multipliers (columns from proplab.p6.scheme, prior-only)
+    if cfg.g_blitz and "blitz_comp" in df.columns:
+        qb, g = pl.col("pos") == "QB", cfg.g_blitz
+        df = df.with_columns(
+            pl.when(qb).then(pl.col("att_rate") * pl.col("blitz_comp") ** g).otherwise(pl.col("att_rate")).clip(0.02, 0.98).alias("att_rate"),
+            pl.when(qb).then(pl.col("att_ypu") * pl.col("blitz_ypc") ** g).otherwise(pl.col("att_ypu")).alias("att_ypu"),
+            pl.when(qb).then(pl.col("att_tdr") * pl.col("blitz_td") ** g).otherwise(pl.col("att_tdr")).alias("att_tdr"),
+            pl.when(qb).then(pl.col("att_intr") * pl.col("blitz_int") ** g).otherwise(pl.col("att_intr")).alias("att_intr"))
+    if cfg.g_box and "box_ypc" in df.columns:
+        df = df.with_columns(pl.when(pl.col("pos") == "RB").then(pl.col("car_ypu") * pl.col("box_ypc") ** cfg.g_box)
+                               .otherwise(pl.col("car_ypu")).alias("car_ypu"))
+    if cfg.g_pa and "pa_ypc" in df.columns:
+        df = df.with_columns(pl.when(pl.col("pos") == "QB").then(pl.col("att_ypu") * pl.col("pa_ypc") ** cfg.g_pa)
+                               .otherwise(pl.col("att_ypu")).alias("att_ypu"))
     return df
 
 

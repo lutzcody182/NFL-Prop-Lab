@@ -17,6 +17,23 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
   2025, so **projections stay on the locked Phase 1/3a models**. A leak (league constants using future seasons)
   was found by a perturbation test, fixed, and 3c re-run. Details: `phase3/PREREGISTRATION_3bc.md`.
 
+- Phase 5 (live tracking + full dashboard): **running.** Every week's projections are frozen in `ledger/` before
+  the first kickoff (SHA-256 fingerprints; the freeze refuses after kickoff and never overwrites) and scored once
+  games are final plus 72 hours for stat corrections: 80% range coverage, over/under Brier and calibration,
+  quantile score, simulator CRPS and two-leg events, with drift flags. Week 6 of 2026 was the first frozen week
+  (113 minutes before kickoff). No betting-value claims until sportsbook prices are available (Phase 2).
+  Rules: `phase5/PREREGISTRATION.md`. Dashboard pages: Week overview, Projections, Game simulator, Ratings,
+  Matchups, Player profiles, Model performance, Model health, Method and notes.
+
+```bash
+python -m proplab.live.weekly           # whole weekly run: ingest -> ratings -> projections -> sims -> freeze -> score -> dashboard
+python -m proplab.live.freeze           # freeze the next week (before its first kickoff)
+python -m proplab.live.score            # score frozen weeks that are final -> phase5/live_record.json
+```
+
+The `weekly` GitHub Actions workflow runs this every Tuesday and Wednesday and commits the ledger and
+dashboard back to the repo (needs the repo on GitHub with Actions enabled).
+
 - Phase 4 (correlated game simulation, passing game): **gate not passed.** Linking players beat treating them as
   independent by 12% (variogram score, interval clear of zero), but two-outcome probabilities were not clearly
   better than multiplying on 2025 (they were on 2026 weeks 1–5), and the QB passing-yards non-inferiority check
@@ -118,7 +135,9 @@ proplab/quality.py       data quality checks (results in data_quality_runs)
 proplab/pit.py           point-in-time readers; all model inputs go through these
 proplab/db.py            connection, bulk load, content hashing
 tests/test_phase0.py     time conversion, leakage, quality, reproducibility tests
-.github/workflows/       nightly ingest + checks + tests
+proplab/live/            Phase 5: freeze, score, weekly pipeline, dashboard export
+ledger/                  frozen weekly projections (never edited)
+.github/workflows/       nightly ingest + checks + tests; weekly pipeline
 ```
 
 The dashboard (Phase 1 onward) will be `index.html` at the repo root for GitHub Pages.

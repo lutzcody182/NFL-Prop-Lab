@@ -59,7 +59,7 @@ def main(season: int = 2026) -> None:
         "team_results": json.loads((ROOT / "phase3" / "ratings_team_results.json").read_text()),
         "team_tuning": {u: v["chosen"] for u, v in json.loads((ROOT / "phase3" / "ratings_team_tuning.json").read_text()).items()},
         "player_results": json.loads((ROOT / "phase3" / "ratings_player_results.json").read_text()),
-        "player_ratings": [{k: r[k] for k in ("name", "pos", "team", "post_mean", "lo80", "hi80", "N8", "rating",
+        "player_ratings": [{k: r[k] for k in ("gsis_id", "name", "pos", "team", "post_mean", "lo80", "hi80", "N8", "rating",
                                              "rating_lo", "rating_hi")} for r in players],
         "ablation": json.loads((ROOT / "phase3" / "ablation.json").read_text()),
         "matchups": matchups,

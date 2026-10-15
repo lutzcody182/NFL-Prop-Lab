@@ -37,5 +37,7 @@ jobs:
         run: python -m proplab.ingest
       - name: Ingest (run 2, reproducibility)
         run: python -m proplab.ingest
+      - name: Team ratings (tests read the team_ratings table)
+        run: python -m proplab.ratings.team publish
       - name: Tests
         run: pytest -q

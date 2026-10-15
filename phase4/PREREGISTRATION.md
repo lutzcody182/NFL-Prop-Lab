@@ -58,3 +58,22 @@ The gate passes on 2025 when all of:
    efficiency shock widens the spread and lowers the score mechanically, so the σ grid simply picked its largest value.
    Each component is now divided by its standard deviation in the three seasons before the one scored (the same scales
    for every setting). The joint-vs-shuffled comparison at a given σ was unaffected; σ was re-tuned with the fixed scales.
+
+## Results (added after scoring 2025 once)
+
+Gate **not passed** (2 of 4 criteria).
+
+| Criterion (2025, 544 team-games) | Result |
+| --- | --- |
+| Variogram score vs shuffled | ✓ 12.1% lower, interval clear of zero |
+| Two-leg Brier vs independent product | ✕ 0.2104 vs 0.2116, interval crosses zero |
+| Two-leg calibration | ✓ ECE 0.030, noise limit 0.042 |
+| Marginal non-inferiority | ✕ QB passing yards +1.6% (interval −2.3% to +6.2%); WR/TE and RB markets passed |
+
+- Two-leg event happened 29.8% of the time; the simulator said 32.7%, independence said 24.8%.
+- 2026 weeks 1–5 (158 team-games): variogram ✓ (−8.9%), two-leg Brier ✓ (interval below zero), calibrated ✓,
+  marginals ✕ (QB interval too wide; WR/TE receptions upper end +1.01%).
+- Lesson for future rules: a "+1% upper bound" is not reachable with ~500 QB games (the interval alone is about ±4%),
+  the same sample-size mistake as Phase 3a's original ECE rule. The verdict stands as pre-registered.
+- Decision: player projections stay on the locked marginal models. The simulator is shown on the dashboard for
+  same-game combinations, labelled with this result.

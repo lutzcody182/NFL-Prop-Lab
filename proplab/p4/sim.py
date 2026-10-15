@@ -64,6 +64,13 @@ class Fit:
     rho: float
     tau: float
     kappa: float
+    scales: list  # fixed per-component scales for the variogram score (from earlier seasons)
+
+
+def component_outcomes(recv: pl.DataFrame, qb: dict) -> list[float]:
+    top = np.argsort(-recv["tgt_mu"].to_numpy())[:TOP_RECEIVERS]
+    return ([qb["pass_yds"], qb["completions"]] + [recv["rec_yds"][int(i)] for i in top]
+            + [recv["receptions"][int(i)] for i in top])
 
 
 def alloc_probs(recv_tg: pl.DataFrame, att_mean: float, tau: float) -> np.ndarray:
@@ -106,7 +113,16 @@ def fit_params(inputs: list[dict]) -> Fit:
                 a = k * p
                 ll[k] += gammaln(k) - gammaln(T + k) + float(np.sum(gammaln(counts + a) - gammaln(a)))
     kappa = max(ll, key=ll.get)
-    return Fit(calib, r, rho, tau, kappa)
+    # fixed scales: standard deviation of each scored component in the earlier seasons
+    vecs = []
+    for inp in inputs:
+        recv, qbs = inp["recv"].filter(pl.col("played")), inp["qb"].filter(pl.col("played"))
+        for q in qbs.iter_rows(named=True):
+            grp = recv.filter((pl.col("game_id") == q["game_id"]) & (pl.col("team") == q["team"]))
+            if grp.height >= TOP_RECEIVERS:
+                vecs.append(component_outcomes(grp, q))
+    scales = np.array(vecs, dtype=float).std(axis=0).tolist()
+    return Fit(calib, r, rho, tau, kappa, scales)
 
 
 # ---------------------------------------------------------------- simulation
@@ -205,20 +221,20 @@ def vs05(draws: np.ndarray, y: np.ndarray) -> float:
     return float(s)
 
 
-def joint_rows(sims: dict, rng) -> list[dict]:
-    """Per team-game: variogram score (joint vs shuffled) and the two-leg event."""
+def joint_rows(sims: dict, rng, scales: list) -> list[dict]:
+    """Per team-game: variogram score (joint vs shuffled) and the two-leg event.
+    Components are divided by FIXED scales from earlier seasons, so scores are
+    comparable across simulator settings."""
     rows = []
+    sd = np.array(scales, dtype=float)
     for (gid, team), v in sims.items():
         qb, recv, sim = v["qb"], v["recv"], v["sim"]
-        if qb is None or recv.height == 0:
+        if qb is None or recv.height < TOP_RECEIVERS:
             continue
         top = np.argsort(-recv["tgt_mu"].to_numpy())[:TOP_RECEIVERS]
         X = [sim["qb"]["yds"], sim["qb"]["comp"]] + [sim["recv"]["yds"][:, i] for i in top] + [sim["recv"]["rec"][:, i] for i in top]
-        y = [qb["pass_yds"], qb["completions"]] + [recv["rec_yds"][int(i)] for i in top] + [recv["receptions"][int(i)] for i in top]
         X = np.column_stack(X).astype(float)
-        y = np.array(y, dtype=float)
-        sd = X.std(axis=0)
-        sd[sd == 0] = 1.0
+        y = np.array(component_outcomes(recv, qb), dtype=float)
         Xs, ys = X / sd, y / sd
         Xsh = np.column_stack([rng.permutation(Xs[:, j]) for j in range(Xs.shape[1])])
         # two-leg event: QB yards and top receiver yards both above their own simulated medians
@@ -280,7 +296,7 @@ def tune() -> None:
     for sigma in SIGMAS:
         rows = []
         for s in (2022, 2023, 2024):
-            rows += joint_rows(simulate_season(inps[s], fits[s], sigma, n=1000), rng)
+            rows += joint_rows(simulate_season(inps[s], fits[s], sigma, n=1000), rng, fits[s].scales)
         r = summarize(rows, rng)
         grid.append({"sigma": sigma, **{k: r[k] for k in ("vs_joint", "vs_shuffled", "vs_pct", "brier_joint", "brier_ind", "ece_joint")}})
         print(grid[-1], flush=True)
@@ -344,7 +360,7 @@ def test() -> None:
     for name, season, weeks in (("test_2025", 2025, None), ("live_2026", 2026, (1, 5))):
         fit = fit_params([inps[season - 3], inps[season - 2], inps[season - 1]])
         sims = simulate_season(inps[season], fit, sg, weeks=weeks)
-        joint = summarize(joint_rows(sims, rng), rng)
+        joint = summarize(joint_rows(sims, rng, fit.scales), rng)
         marg = marginal_check(D, feat, tf, inps[season], sims, season, rng, weeks=weeks)
         crit = {"joint_beats_shuffled": joint["vs_ci95"][1] < 0,
                 "two_leg_beats_independent": joint["brier_ci95"][1] < 0,

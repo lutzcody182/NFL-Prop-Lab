@@ -53,4 +53,8 @@ The gate passes on 2025 when all of:
 
 ## Deviations
 
-(none yet)
+1. **Fixed scales for the variogram score** (decided on 2022–2024 tuning output, before any 2025 score). Dividing each
+   component by its *simulated* standard deviation makes the score depend on the model's own spread: a larger
+   efficiency shock widens the spread and lowers the score mechanically, so the σ grid simply picked its largest value.
+   Each component is now divided by its standard deviation in the three seasons before the one scored (the same scales
+   for every setting). The joint-vs-shuffled comparison at a given σ was unaffected; σ was re-tuned with the fixed scales.

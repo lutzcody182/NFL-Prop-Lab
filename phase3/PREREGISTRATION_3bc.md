@@ -63,4 +63,20 @@ Age curves (plan item 8) are deferred: they need multi-season targets this phase
 
 ## Deviations
 
-(none yet)
+(none)
+
+## Results and decision (added after scoring)
+
+- **Team ratings:** run ratings pass on 2025 (−4.5% squared error vs raw, interval below zero); pass ratings do not
+  (−0.4%, interval crosses zero), although they were clearly better on 2018–2024 (−2.4%). The best half-life
+  (32 weeks) is at the edge of the pre-registered grid.
+- **Player ratings:** all four positions pass on 2025 (QB −18%, RB −34%, WR −21%, TE −11%).
+- **Matchup groups:** on 2019–2024, gap (γ = 0.5), archetypes and team ratings in volume survived; depth and pressure did
+  not. All effects are under 0.2% of CRPS. γ for gap was chosen from two values on the same seasons used to test it, so
+  its barely-below-zero interval is slightly optimistic.
+- **Confirmation failed:** with all three survivors combined, 2026 weeks 1–5 and the 2025 second look were slightly
+  *worse* than the base (+0.1% to +0.3%, every interval crossing zero).
+- **Decision:** published projections stay on the locked Phase 1 / 3a models. The surviving groups are recorded in
+  `phase3/ablation.json` and will be re-checked as 2026 weeks accumulate; they are adopted only if the confirmation
+  turns clearly favorable. The matchup explorer shows defensive tendencies descriptively and says they are not used
+  in projections.

@@ -48,6 +48,7 @@ def main() -> None:
         "p3proj": p3proj,
         "r3": json.loads((ROOT / "phase3" / "dashboard_3bc.json").read_text()),
         "p4": json.loads((ROOT / "phase4" / "week_sims.json").read_text()),
+        "p6": json.loads(sc.read_text()) if (sc := ROOT / "phase6" / "dashboard_scheme.json").exists() else None,
         "live": json.loads(live.read_text()) if (live := ROOT / "phase5" / "dashboard_live.json").exists() else None,
     }
     blob = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")

@@ -206,7 +206,7 @@ def run(seasons: list[int]) -> dict:
 
     season_filter = "game_id IN (SELECT game_id FROM games WHERE season = ANY(%s))"
     with conn.transaction():
-        for child in ["game_lines", "game_results", "snaps", "player_game", "plays"]:
+        for child in ["game_lines", "game_results", "snaps", "player_game", "plays", "ftn_charting"]:
             conn.execute(f"DELETE FROM {child} WHERE {season_filter}", (season_list,))
         db.replace_rows(conn, "games", games, "season = ANY(%s)", (season_list,))
         db.replace_rows(conn, "game_results", results, season_filter, (season_list,))

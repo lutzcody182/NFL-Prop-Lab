@@ -1,0 +1,281 @@
+{
+  "groups": {
+    "blitz": {
+      "markets": [
+        "qb_pass_yds",
+        "qb_pass_tds",
+        "qb_ints"
+      ],
+      "trials": [
+        {
+          "value": 0.5,
+          "change": 0.00027716243933628704,
+          "ci95": [
+            -0.0009565152103627192,
+            0.0016547497280264092
+          ],
+          "by_market": {
+            "qb_pass_yds": 0.00040284869082429786,
+            "qb_pass_tds": 0.0009898203319700372,
+            "qb_ints": -0.0005611817047854739
+          },
+          "rows": {
+            "qb_pass_yds": 932,
+            "qb_pass_tds": 932,
+            "qb_ints": 932
+          }
+        },
+        {
+          "value": 1.0,
+          "change": 7.855965376975711e-05,
+          "ci95": [
+            -0.0014080376033130614,
+            0.0015983284705026065
+          ],
+          "by_market": {
+            "qb_pass_yds": 4.418811476281093e-06,
+            "qb_pass_tds": -6.875983184884138e-05,
+            "qb_ints": 0.00030001998168183164
+          },
+          "rows": {
+            "qb_pass_yds": 932,
+            "qb_pass_tds": 932,
+            "qb_ints": 932
+          }
+        }
+      ],
+      "best": 1.0,
+      "survived": false
+    },
+    "box": {
+      "markets": [
+        "rb_rush_yds"
+      ],
+      "trials": [
+        {
+          "value": 0.5,
+          "change": -0.0005531118404741298,
+          "ci95": [
+            -0.000876881011177108,
+            -0.00021733296124209226
+          ],
+          "by_market": {
+            "rb_rush_yds": -0.0005531118404741298
+          },
+          "rows": {
+            "rb_rush_yds": 1930
+          }
+        },
+        {
+          "value": 1.0,
+          "change": -0.0010499515607872434,
+          "ci95": [
+            -0.001704189131356021,
+            -0.0003813935629731953
+          ],
+          "by_market": {
+            "rb_rush_yds": -0.0010499515607872434
+          },
+          "rows": {
+            "rb_rush_yds": 1930
+          }
+        }
+      ],
+      "best": 1.0,
+      "survived": true
+    },
+    "play_action": {
+      "markets": [
+        "qb_pass_yds"
+      ],
+      "trials": [
+        {
+          "value": 0.5,
+          "change": -8.31433982142471e-05,
+          "ci95": [
+            -0.00026835101009640706,
+            0.00010394463515871473
+          ],
+          "by_market": {
+            "qb_pass_yds": -8.31433982142471e-05
+          },
+          "rows": {
+            "qb_pass_yds": 932
+          }
+        },
+        {
+          "value": 1.0,
+          "change": -0.0001570506240978764,
+          "ci95": [
+            -0.0005407817932972681,
+            0.00018527452852601918
+          ],
+          "by_market": {
+            "qb_pass_yds": -0.0001570506240978764
+          },
+          "rows": {
+            "qb_pass_yds": 932
+          }
+        }
+      ],
+      "best": 1.0,
+      "survived": false
+    }
+  },
+  "seasons": [
+    2023,
+    2024
+  ],
+  "bootstrap": 1000,
+  "combined_check": {
+    "box": {
+      "removal_hurts": true,
+      "change": -0.0010499515607872434,
+      "ci95": [
+        -0.001746404905800944,
+        -0.0003690777727348827
+      ],
+      "by_market": {
+        "rb_rush_yds": -0.0010499515607872434
+      },
+      "rows": {
+        "rb_rush_yds": 1930
+      }
+    }
+  },
+  "kept": {
+    "box": 1.0
+  },
+  "final_configs": {
+    "att": {
+      "model": "B2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0
+    },
+    "car": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.5,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 1.0,
+      "g_pa": 0.0
+    },
+    "tgt": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 1.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0
+    },
+    "wrte_rec": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0
+    },
+    "wrte_rec_yds": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0
+    }
+  },
+  "confirmation": {
+    "live_2026_wk1_5": {
+      "change": 0.00029899291108836934,
+      "ci95": [
+        -0.0013126790454319331,
+        0.0018257850036587418
+      ],
+      "by_market": {
+        "rb_rush_yds": 0.00029899291108836934
+      },
+      "rows": {
+        "rb_rush_yds": 278
+      }
+    },
+    "second_look_2025": {
+      "change": -0.0004301284186394305,
+      "ci95": [
+        -0.0014861199468628739,
+        0.0006353642525589669
+      ],
+      "by_market": {
+        "rb_rush_yds": -0.0004301284186394305
+      },
+      "rows": {
+        "rb_rush_yds": 980
+      }
+    },
+    "pooled": {
+      "change": -0.00027386326837275377,
+      "ci95": [
+        -0.0011929958877870239,
+        0.0006044608163360326
+      ],
+      "by_market": {
+        "rb_rush_yds": -0.00027386326837275377
+      },
+      "rows": {
+        "rb_rush_yds": 1258
+      }
+    },
+    "markets": [
+      "rb_rush_yds"
+    ]
+  },
+  "adopted": false
+}

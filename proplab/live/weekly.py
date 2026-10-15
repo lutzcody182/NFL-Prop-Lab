@@ -15,12 +15,13 @@ import sys
 import time
 
 STEPS = [
-    ("ingest nflverse data + 12 quality checks", ["proplab.ingest"], True),
+    ("ingest nflverse + FTN data + 13 quality checks", ["proplab.ingest"], True),
     ("team ratings (Phase 3b)", ["proplab.ratings.team", "publish"], True),
     ("player ratings (Phase 3b)", ["proplab.ratings.player", "publish"], True),
     ("WR/TE projections (Phase 1)", ["proplab.p1.project"], True),
     ("QB/RB/TD projections (Phase 3a)", ["proplab.p3.project"], True),
     ("ratings + matchups export (Phase 3b/3c)", ["proplab.p3.export_3bc"], True),
+    ("defensive scheme profiles (Phase 6)", ["proplab.p6.export"], True),
     ("game simulations (Phase 4)", ["proplab.p4.export"], True),
     ("freeze the week in the ledger", ["proplab.live.freeze"], False),   # exits non-zero after kickoff: OK
     ("score finished ledger weeks", ["proplab.live.score"], True),

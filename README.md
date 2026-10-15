@@ -17,6 +17,16 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
   2025, so **projections stay on the locked Phase 1/3a models**. A leak (league constants using future seasons)
   was found by a perturbation test, fixed, and 3c re-run. Details: `phase3/PREREGISTRATION_3bc.md`.
 
+- Phase 6 (defensive scheme engine): built from FTN play charting (2022+): blitz rate, stacked boxes, play-action
+  yards allowed, each matched to the player's own split. Only stacked box helped on 2023–2024 (−0.1% CRPS, RB rushing
+  yards) and it **did not confirm** on 2026 weeks 1–5 or 2025, so projections don't use it; profiles are shown as
+  descriptive. Coverage (man/zone) is out of scope: that data stops after 2025. Details: `phase6/PREREGISTRATION.md`.
+
+```bash
+python -m proplab.p6.ablation decide | confirm   # walk-forward 2023-2024; confirmation -> phase6/ablation.json
+python -m proplab.p6.export                      # scheme profiles for the dashboard
+```
+
 - Phase 5 (live tracking + full dashboard): **running.** Every week's projections are frozen in `ledger/` before
   the first kickoff (SHA-256 fingerprints; the freeze refuses after kickoff and never overwrites) and scored once
   games are final plus 72 hours for stat corrections: 80% range coverage, over/under Brier and calibration,

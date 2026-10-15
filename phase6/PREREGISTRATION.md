@@ -48,3 +48,15 @@ Each γ is tried at 0.5 and 1.0. The base is the locked Phase 3a models (Phase 1
 ## Deviations
 
 (none yet)
+
+## Results and decision (added after scoring)
+
+- **Leakage test passed** before scoring (`tests/test_phase6.py`): changing week 9 of 2025 leaves every feature for
+  that week and earlier unchanged, and does change week 10.
+- **Development (2023–2024):** blitz did not help (best γ = 1.0: +0.01%, interval −0.14% to +0.16%); play action did
+  not help (−0.02%, interval −0.05% to +0.02%); **stacked box survived** (γ = 1.0: −0.105% CRPS on RB rushing yards,
+  interval −0.17% to −0.04%). γ was picked from two values on the same seasons, so that interval is slightly optimistic.
+- **Confirmation failed:** 2026 weeks 1–5 +0.03% (interval −0.13% to +0.18%); 2025 −0.04% (−0.15% to +0.06%);
+  pooled −0.03% (−0.12% to +0.06%). The adoption rule needed both below zero and the pooled interval below zero.
+- **Decision:** published projections stay on the locked Phase 1 / 3a models. Scheme profiles are shown on the
+  Matchups tab as descriptive only. Details: `phase6/ablation.json`.

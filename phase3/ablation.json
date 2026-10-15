@@ -1,0 +1,393 @@
+{
+  "groups": {
+    "depth": {
+      "markets": [
+        "wrte_rec",
+        "wrte_rec_yds",
+        "rb_rec",
+        "rb_rec_yds"
+      ],
+      "trials": [
+        {
+          "value": 0.5,
+          "change": -0.00023928452678600998,
+          "ci95": [
+            -0.0005497396322958106,
+            6.116128605549625e-05
+          ],
+          "by_market": {
+            "wrte_rec": -0.00046455563248215537,
+            "wrte_rec_yds": -0.0005890228142937382,
+            "rb_rec": -1.6660926545397636e-05,
+            "rb_rec_yds": 0.00011310126617725125
+          },
+          "rows": {
+            "wrte_rec": 16251,
+            "wrte_rec_yds": 16251,
+            "rb_rec": 4978,
+            "rb_rec_yds": 4978
+          }
+        },
+        {
+          "value": 1.0,
+          "change": -0.00017407623930490446,
+          "ci95": [
+            -0.0007307635580950127,
+            0.0003967102499426854
+          ],
+          "by_market": {
+            "wrte_rec": -0.0006063515821237431,
+            "wrte_rec_yds": -0.0007888267802073079,
+            "rb_rec": 6.675392414834391e-05,
+            "rb_rec_yds": 0.0006321194809630892
+          },
+          "rows": {
+            "wrte_rec": 16251,
+            "wrte_rec_yds": 16251,
+            "rb_rec": 4978,
+            "rb_rec_yds": 4978
+          }
+        }
+      ],
+      "best": 0.5,
+      "survived": false
+    },
+    "gap": {
+      "markets": [
+        "rb_rush_yds"
+      ],
+      "trials": [
+        {
+          "value": 0.5,
+          "change": -0.0009434277694534421,
+          "ci95": [
+            -0.0018643198163482532,
+            -8.721190824542432e-05
+          ],
+          "by_market": {
+            "rb_rush_yds": -0.0009434277694534421
+          },
+          "rows": {
+            "rb_rush_yds": 5817
+          }
+        },
+        {
+          "value": 1.0,
+          "change": -0.0006228820002710522,
+          "ci95": [
+            -0.002368683120833462,
+            0.0011938315400522143
+          ],
+          "by_market": {
+            "rb_rush_yds": -0.0006228820002710522
+          },
+          "rows": {
+            "rb_rush_yds": 5817
+          }
+        }
+      ],
+      "best": 0.5,
+      "survived": true
+    },
+    "pressure": {
+      "markets": [
+        "qb_pass_yds",
+        "qb_pass_tds",
+        "qb_ints"
+      ],
+      "trials": [
+        {
+          "value": 0.5,
+          "change": 0.0003472890747870198,
+          "ci95": [
+            -0.0003021549794589832,
+            0.0010274972420287424
+          ],
+          "by_market": {
+            "qb_pass_yds": 0.00033726507283082796,
+            "qb_pass_tds": 0.0005417845329029891,
+            "qb_ints": 0.0001628176186272423
+          },
+          "rows": {
+            "qb_pass_yds": 2765,
+            "qb_pass_tds": 2765,
+            "qb_ints": 2765
+          }
+        },
+        {
+          "value": 1.0,
+          "change": -0.0001426097980867421,
+          "ci95": [
+            -0.0008291535337408405,
+            0.0006141835441400965
+          ],
+          "by_market": {
+            "qb_pass_yds": 6.954937445557974e-05,
+            "qb_pass_tds": 0.00017377147776920232,
+            "qb_ints": -0.0006711502464850083
+          },
+          "rows": {
+            "qb_pass_yds": 2765,
+            "qb_pass_tds": 2765,
+            "qb_ints": 2765
+          }
+        }
+      ],
+      "best": 1.0,
+      "survived": false
+    },
+    "archetype": {
+      "markets": [
+        "wrte_rec",
+        "wrte_rec_yds"
+      ],
+      "trials": [
+        {
+          "value": true,
+          "change": -0.0002841909709834778,
+          "ci95": [
+            -0.000533457946523841,
+            -1.1659304046228454e-05
+          ],
+          "by_market": {
+            "wrte_rec": -0.00010421101163371471,
+            "wrte_rec_yds": -0.00046417093033324086
+          },
+          "rows": {
+            "wrte_rec": 16251,
+            "wrte_rec_yds": 16251
+          }
+        }
+      ],
+      "best": true,
+      "survived": true
+    },
+    "team_ratings": {
+      "markets": [
+        "wrte_rec",
+        "wrte_rec_yds",
+        "qb_pass_yds",
+        "qb_pass_att",
+        "qb_pass_tds",
+        "qb_ints",
+        "qb_rush_yds",
+        "rb_rush_yds",
+        "rb_rush_att",
+        "rb_rec",
+        "rb_rec_yds",
+        "anytime_td"
+      ],
+      "trials": [
+        {
+          "value": true,
+          "change": -0.0013724317638561523,
+          "ci95": [
+            -0.0020392543495546477,
+            -0.0007120315878025113
+          ],
+          "by_market": {
+            "wrte_rec": -0.0013447209437339458,
+            "wrte_rec_yds": -0.0005254268430133768,
+            "qb_pass_yds": -0.0012826721884622305,
+            "qb_pass_att": -0.005017667209568311,
+            "qb_pass_tds": -0.0005016223009736143,
+            "qb_ints": -0.0004968874996167383,
+            "qb_rush_yds": -0.0016183192773630006,
+            "rb_rush_yds": -0.0016039207359509478,
+            "rb_rush_att": -0.0017148448686938877,
+            "rb_rec": -0.001212306912943495,
+            "rb_rec_yds": -0.0013098056069690278,
+            "anytime_td": 0.00015901322101474769
+          },
+          "rows": {
+            "wrte_rec": 16251,
+            "wrte_rec_yds": 16251,
+            "qb_pass_yds": 2765,
+            "qb_pass_att": 2765,
+            "qb_pass_tds": 2765,
+            "qb_ints": 2765,
+            "qb_rush_yds": 2765,
+            "rb_rush_yds": 5817,
+            "rb_rush_att": 5817,
+            "rb_rec": 4978,
+            "rb_rec_yds": 4978,
+            "anytime_td": 22784
+          }
+        }
+      ],
+      "best": true,
+      "survived": true
+    }
+  },
+  "seasons": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "archetypes": [
+    {
+      "arch": "2026-0",
+      "arch_rate": 0.7129491225156397,
+      "arch_ypc": 11.238856965367294,
+      "arch_n": 203,
+      "arch_k": 2,
+      "arch_stability": 0.7707136198243342
+    },
+    {
+      "arch": "2026-1",
+      "arch_rate": 0.600449386414703,
+      "arch_ypc": 13.292170408750719,
+      "arch_n": 207,
+      "arch_k": 2,
+      "arch_stability": 0.7707136198243342
+    }
+  ],
+  "combined_check": {
+    "gap": {
+      "removal_hurts": true,
+      "change": -6.780956206409172e-05,
+      "ci95": [
+        -0.0009897698649948522,
+        0.0009069311929797313
+      ],
+      "by_market": {
+        "rb_rush_yds": -6.780956206409172e-05
+      },
+      "rows": {
+        "rb_rush_yds": 5817
+      }
+    },
+    "archetype": {
+      "removal_hurts": true,
+      "change": -0.00025868566397463377,
+      "ci95": [
+        -0.0005200842575878925,
+        7.966158092018158e-06
+      ],
+      "by_market": {
+        "wrte_rec": -7.015362377205125e-05,
+        "wrte_rec_yds": -0.0004472177041772163
+      },
+      "rows": {
+        "wrte_rec": 16251,
+        "wrte_rec_yds": 16251
+      }
+    },
+    "team_ratings": {
+      "removal_hurts": true,
+      "change": -0.001295264543547466,
+      "ci95": [
+        -0.0019547102324412326,
+        -0.0006389789755730738
+      ],
+      "by_market": {
+        "wrte_rec": -0.0013107058088034362,
+        "wrte_rec_yds": -0.0005084746558248199,
+        "qb_pass_yds": -0.0012826721884622305,
+        "qb_pass_att": -0.005017667209568311,
+        "qb_pass_tds": -0.0005016223009736143,
+        "qb_ints": -0.0004968874996167383,
+        "qb_rush_yds": -0.0016183192773630006,
+        "rb_rush_yds": -0.0007288814143657785,
+        "rb_rush_att": -0.0017148448686938877,
+        "rb_rec": -0.001212306912943495,
+        "rb_rec_yds": -0.0013098056069690278,
+        "anytime_td": 0.00015901322101474769
+      },
+      "rows": {
+        "wrte_rec": 16251,
+        "wrte_rec_yds": 16251,
+        "qb_pass_yds": 2765,
+        "qb_pass_att": 2765,
+        "qb_pass_tds": 2765,
+        "qb_ints": 2765,
+        "qb_rush_yds": 2765,
+        "rb_rush_yds": 5817,
+        "rb_rush_att": 5817,
+        "rb_rec": 4978,
+        "rb_rec_yds": 4978,
+        "anytime_td": 22784
+      }
+    }
+  },
+  "kept": {
+    "gap": 0.5,
+    "archetype": true,
+    "team_ratings": true
+  },
+  "final_configs": {
+    "att": {
+      "model": "B2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": true
+    },
+    "car": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.5,
+      "g_depth": 0.0,
+      "g_gap": 0.5,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": true
+    },
+    "tgt": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 1.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": true
+    },
+    "wrte_rec": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": true,
+      "team_ratings": true
+    },
+    "wrte_rec_yds": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": true,
+      "team_ratings": true
+    }
+  }
+}

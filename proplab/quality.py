@@ -19,6 +19,7 @@ TABLE_KEYS = {
     "snaps": "pfr_player_id, game_id",
     "roster_status": "gsis_id, season, week, team",
     "injury_reports": "gsis_id, season, week, game_type, team",
+    "ftn_charting": "game_id, play_id",
 }
 
 SKILL = ("QB", "RB", "WR", "TE", "FB")
@@ -153,6 +154,18 @@ def run_checks(conn: psycopg.Connection, run_id: int, seasons: list[int], report
     dropped = sum(r.get("no_week_kickoff", 0) for r in report.values())
     add("pregame_rows_without_kickoff", dropped == 0 or dropped < 50,
         f"{dropped} roster/injury rows had no matching week and were dropped")
+
+    # 12. FTN charting: every completed game from 2022 is charted, and charted plays join to play-by-play.
+    ftn_seasons = [s for s in seasons if s >= 2022]
+    if ftn_seasons:
+        (missing,) = _one(conn, """
+            SELECT count(*) FROM games g JOIN game_results r USING (game_id)
+            WHERE g.season = ANY(%s) AND g.game_type = 'REG'
+              AND NOT EXISTS (SELECT 1 FROM ftn_charting f WHERE f.game_id = g.game_id)""", (ftn_seasons,))
+        (n,) = _one(conn, "SELECT count(*) FROM ftn_charting WHERE season = ANY(%s)", (ftn_seasons,))
+        unmatched = report.get("ftn_charting", {}).get("unmatched_plays", 0)
+        add("ftn_charting_coverage", missing <= 3 and unmatched <= 0.005 * max(n, 1),
+            f"completed games with no charting: {missing}; charted plays not in play-by-play: {unmatched:,} of {n:,}")
 
     with conn.cursor() as cur:
         for c in checks:

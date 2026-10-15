@@ -12,6 +12,7 @@ known_at rules (see README "Point-in-time assumptions"):
     game_results              : kickoff + 4 hours
     roster_status             : kickoff - 90 minutes (game-day inactives)
     injury_reports            : kickoff - 40 hours  (final report, assumption A1)
+    ftn_charting              : kickoff + 2 days  (FTN charting lag, assumption A6)
 """
 from __future__ import annotations
 
@@ -49,6 +50,11 @@ STAT_COLUMNS = [
 ]
 
 ONE_DAY = dt.timedelta(days=1)
+FTN_FIRST_SEASON = 2022
+FTN_LAG = dt.timedelta(days=2)
+FTN_BOOL = ["is_play_action", "is_screen_pass", "is_rpo", "is_motion", "is_no_huddle", "is_qb_out_of_pocket",
+            "is_throw_away", "is_catchable_ball", "is_drop"]
+FTN_INT = ["n_defense_box", "n_blitzers", "n_pass_rushers", "n_offense_backfield"]
 
 
 # ---------- helpers ----------
@@ -240,6 +246,26 @@ def run(seasons: list[int]) -> dict:
         with conn.transaction():
             db.replace_rows(conn, "plays", pbp, "season = %s", (season,))
         print(f"  plays {season}: {pbp.height:,}", flush=True)
+
+    # --- FTN charting (blitzers, box count, play action...), 2022 onward ---
+    ftn_seasons = [s for s in season_list if s >= FTN_FIRST_SEASON]
+    report["ftn_charting"] = {"raw_rows": 0, "duplicates_dropped": 0, "unmatched_plays": 0}
+    if ftn_seasons:
+        ftn = nfl.load_ftn_charting(ftn_seasons).rename({"nflverse_game_id": "game_id", "nflverse_play_id": "play_id"})
+        ftn = ftn.with_columns(pl.col("play_id").cast(pl.Int32, strict=False)) \
+                 .filter(pl.col("play_id").is_not_null() & pl.col("game_id").is_in(list(game_ids)))
+        ftn = dedupe(ftn, ["game_id", "play_id"], "ftn_charting", report)
+        ftn = ftn.select("game_id", "play_id", pl.col("season").cast(pl.Int32), pl.col("week").cast(pl.Int32),
+                         *[pl.col(c).cast(pl.Int32, strict=False) for c in FTN_INT], "qb_location",
+                         *[pl.col(c).cast(pl.Boolean, strict=False) for c in FTN_BOOL])
+        ftn = ftn.join(kick, on="game_id").with_columns((pl.col("kickoff_utc") + FTN_LAG).alias("known_at")).drop("kickoff_utc")
+        with conn.transaction():
+            db.replace_rows(conn, "ftn_charting", ftn, "season = ANY(%s)", (ftn_seasons,))
+        (n_un,) = conn.execute("""SELECT count(*) FROM ftn_charting f WHERE f.season = ANY(%s)
+                                  AND NOT EXISTS (SELECT 1 FROM plays p WHERE p.game_id = f.game_id AND p.play_id = f.play_id)""",
+                               (ftn_seasons,)).fetchone()
+        report["ftn_charting"]["unmatched_plays"] = int(n_un)
+        print(f"  ftn_charting: {ftn.height:,}", flush=True)
 
     # --- snap counts (PFR ids -> gsis through the ID map) ---
     pfr_map = id_map.filter(pl.col("source") == "pfr").select(

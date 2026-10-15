@@ -188,6 +188,30 @@ CREATE TABLE IF NOT EXISTS injury_reports (
     PRIMARY KEY (gsis_id, season, week, game_type, team)
 );
 
+-- FTN Data charting (via nflverse, CC-BY-SA 4.0), 2022 onward. One row per charted play.
+CREATE TABLE IF NOT EXISTS ftn_charting (
+    game_id        TEXT NOT NULL REFERENCES games(game_id),
+    play_id        INT  NOT NULL,
+    season         INT  NOT NULL,
+    week           INT  NOT NULL,
+    n_defense_box  INT,
+    n_blitzers     INT,
+    n_pass_rushers INT,
+    n_offense_backfield INT,
+    qb_location    TEXT,
+    is_play_action BOOLEAN,
+    is_screen_pass BOOLEAN,
+    is_rpo         BOOLEAN,
+    is_motion      BOOLEAN,
+    is_no_huddle   BOOLEAN,
+    is_qb_out_of_pocket BOOLEAN,
+    is_throw_away  BOOLEAN,
+    is_catchable_ball BOOLEAN,
+    is_drop        BOOLEAN,
+    known_at       TIMESTAMPTZ NOT NULL,
+    PRIMARY KEY (game_id, play_id)
+);
+
 CREATE TABLE IF NOT EXISTS ingest_runs (
     run_id         BIGSERIAL PRIMARY KEY,
     started_at     TIMESTAMPTZ NOT NULL DEFAULT now(),

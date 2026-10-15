@@ -10,7 +10,19 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
   RB rushing yards (−3.5% CRPS vs baseline) and attempts (−5.1%) and anytime TD (−0.5% Brier) beat the baseline
   with intervals clear of zero but are slightly miscalibrated; QB passing kept no improvement over the baseline;
   the shared carries setup made QB rushing 2.6% worse. Details: `phase3/PREREGISTRATION.md`, `phase3/results.json`.
-  Next: 3b (team and player ratings), 3c (matchup engine).
+- Phase 3b (ratings): **player ratings pass** on 2025 at every position (11–34% less error than raw averages);
+  **team run ratings pass** (−4.5%), team pass ratings do not (−0.4%, interval crosses zero).
+- Phase 3c (matchup engine): run gap and team ratings in volume survived 2019–2024 ablation by under 0.2%;
+  depth of target, pressure and receiver archetypes did not. Neither survivor confirmed on 2026 weeks 1–5 or
+  2025, so **projections stay on the locked Phase 1/3a models**. A leak (league constants using future seasons)
+  was found by a perturbation test, fixed, and 3c re-run. Details: `phase3/PREREGISTRATION_3bc.md`.
+
+```bash
+python -m proplab.ratings.team tune | test | publish     # team ratings -> DB table team_ratings
+python -m proplab.ratings.player tune | test | publish   # player ratings -> phase3/player_ratings_current.json
+python -m proplab.p3.ablation decide | confirm           # matchup feature groups -> phase3/ablation.json
+python -m proplab.p3.export_3bc                          # ratings + matchup data for the dashboard
+```
 
 ```bash
 python -m proplab.p3.run tune       # 2024 only -> phase3/tuning.json

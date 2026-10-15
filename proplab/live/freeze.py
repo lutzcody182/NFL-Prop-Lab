@@ -37,6 +37,15 @@ def git_sha() -> str:
 
 
 def first_kickoff(season: int, week: int) -> dt.datetime:
+    """From the database when it is reachable (picks up flexed/moved games), else the exported schedule."""
+    try:
+        from proplab import db
+        (k,) = db.connect().execute("SELECT min(kickoff_utc) FROM games WHERE season = %s AND week = %s AND game_type = 'REG'",
+                                    (season, week)).fetchone()
+        if k is not None:
+            return k
+    except Exception:
+        pass
     games = json.loads((ROOT / "data" / "schedule.json").read_text())
     ks = [g["kickoff_utc"] for g in games if g["season"] == season and g["week"] == week and g["game_type"] == "REG"]
     return dt.datetime.fromisoformat(min(ks).replace("Z", "+00:00"))

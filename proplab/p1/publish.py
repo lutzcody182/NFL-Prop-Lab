@@ -46,6 +46,7 @@ def main() -> None:
         "p1proj": p1proj,
         "p3": {"configs": p3["configs"], "splits": {k: slim_p3(v) for k, v in p3["splits"].items()}},
         "p3proj": p3proj,
+        "r3": json.loads((ROOT / "phase3" / "dashboard_3bc.json").read_text()),
     }
     blob = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
     block = f'{START}\n<script id="data" type="application/json">{blob}</script>\n{END}'

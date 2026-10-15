@@ -56,8 +56,16 @@ def _league(df: pl.DataFrame, by: list[str], num: dict) -> pl.DataFrame:
         h = per.filter(pl.col("season").is_between(s - 3, s - 1))
         if h.is_empty():
             continue
-        rows.append(h.group_by(by).agg(*[pl.col(k).sum() for k in num]).with_columns(pl.lit(s).alias("season")))
+        agg = h.group_by(by).agg(*[pl.col(k).sum() for k in num]) if by else h.select(*[pl.col(k).sum() for k in num])
+        rows.append(agg.with_columns(pl.lit(int(s), dtype=pl.Int64).alias("season")))
     return pl.concat(rows)
+
+
+def _prior_share(df: pl.DataFrame, group: list[str], bucket: str) -> pl.DataFrame:
+    """Share of each bucket within `group`, per season, from the three PRIOR seasons."""
+    lg = _league(df, [*group, bucket], {"n": pl.len()})
+    return lg.with_columns((pl.col("n") / pl.col("n").sum().over(["season", *group])).alias("share")) \
+             .select("season", *group, bucket, "share")
 
 
 def _def_prior(games: pl.DataFrame, per_game: pl.DataFrame, keys: list[str], cols: list[str]) -> pl.DataFrame:
@@ -86,8 +94,9 @@ def _mix_prior(u: pl.DataFrame, per_game: pl.DataFrame, bucket_col: str, buckets
             .select("gsis_id", "game_id", *[f"M_{b}" for b in buckets])
 
 
-def build(conn, u: pl.DataFrame, tg: pl.DataFrame) -> pl.DataFrame:
-    """Matchup columns keyed by (gsis_id, game_id)."""
+def build(conn, u: pl.DataFrame, tg: pl.DataFrame, return_tendencies: bool = False):
+    """Matchup columns keyed by (gsis_id, game_id). With return_tendencies, also the
+    defense-side tables (per game_id and defense, prior-only) for the matchup explorer."""
     plays = load_plays(conn).with_columns(pl.col("defteam").alias("defense"))
     games = tg.select("game_id", pl.col("opp").alias("defense"), "kickoff_utc", "played", "season")
     base = u.select("gsis_id", "game_id", "season", "pos", "opp")
@@ -113,16 +122,16 @@ def build(conn, u: pl.DataFrame, tg: pl.DataFrame) -> pl.DataFrame:
           / (pl.col("P_c") + DEF_PSEUDO_T * pl.col("lg_cr"))) / pl.col("lg_ypc")).alias("r_ypc"))
     pmix = _mix_prior(u, tgt.rename({"receiver_player_id": "gsis_id"}).group_by("gsis_id", "game_id", "depth").agg(pl.len().alias("n")),
                       "depth", DEPTH, "n")
-    pos_mix = (tgt.join(u.select("gsis_id", "pos").unique(subset="gsis_id"), left_on="receiver_player_id", right_on="gsis_id")
-                  .group_by("pos", "depth").agg(pl.len().alias("n"))
-                  .with_columns((pl.col("n") / pl.col("n").sum().over("pos")).alias("share")))
-    pm = {(p, d): s for p, d, s in pos_mix.select("pos", "depth", "share").iter_rows()}
-    rows = base.join(pmix, on=["gsis_id", "game_id"], how="left").fill_null(0)
+    # position depth mix from the three prior seasons only (shrinkage target for each receiver's mix)
+    pos_mix = _prior_share(tgt.join(u.select("gsis_id", "pos").unique(subset="gsis_id"),
+                                    left_on="receiver_player_id", right_on="gsis_id"), ["pos"], "depth") \
+        .pivot(on="depth", index=["season", "pos"], values="share")
+    rows = base.join(pmix, on=["gsis_id", "game_id"], how="left").fill_null(0) \
+               .join(pos_mix.rename({b: f"pm_{b}" for b in DEPTH}), on=["season", "pos"], how="left")
     tot = sum(pl.col(f"M_{b}") for b in DEPTH)
     for b in DEPTH:
-        prior_b = pl.col("pos").replace_strict({p: pm.get((p, b), 0.25) for p in ("QB", "RB", "WR", "TE")}, default=0.25,
-                                               return_dtype=pl.Float64)
-        rows = rows.with_columns(((pl.col(f"M_{b}") + MIX_PSEUDO * prior_b) / (tot + MIX_PSEUDO)).alias(f"mix_{b}"))
+        rows = rows.with_columns(((pl.col(f"M_{b}") + MIX_PSEUDO * pl.col(f"pm_{b}").fill_null(0.25))
+                                  / (tot + MIX_PSEUDO)).alias(f"mix_{b}"))
     dw = dprior.pivot(on="depth", index=["game_id", "defense"], values=["r_cr", "r_ypc"])
     rows = rows.join(dw, left_on=["game_id", "opp"], right_on=["game_id", "defense"], how="left")
     rows = rows.with_columns(
@@ -144,11 +153,13 @@ def build(conn, u: pl.DataFrame, tg: pl.DataFrame) -> pl.DataFrame:
         .with_columns((((pl.col("P_y") + DEF_PSEUDO_T * pl.col("lg_ypc")) / (pl.col("P_n") + DEF_PSEUDO_T)) / pl.col("lg_ypc")).alias("r"))
     gmix = _mix_prior(u, runs.rename({"rusher_player_id": "gsis_id"}).group_by("gsis_id", "game_id", "gap").agg(pl.len().alias("n")),
                       "gap", GAPS, "n")
-    rows = base.join(gmix, on=["gsis_id", "game_id"], how="left").fill_null(0)
+    # league gap mix from the three prior seasons only
+    lg_mix = _prior_share(runs, [], "gap").pivot(on="gap", index="season", values="share")
+    rows = base.join(gmix, on=["gsis_id", "game_id"], how="left").fill_null(0) \
+               .join(lg_mix.rename({b: f"lm_{b}" for b in GAPS}), on="season", how="left")
     tot = sum(pl.col(f"M_{b}") for b in GAPS)
-    lg_mix = runs.group_by("gap").agg(pl.len().alias("n")).with_columns((pl.col("n") / pl.col("n").sum()).alias("s"))
-    gm = dict(lg_mix.select("gap", "s").iter_rows())
-    rows = rows.with_columns(*[((pl.col(f"M_{b}") + MIX_PSEUDO * gm[b]) / (tot + MIX_PSEUDO)).alias(f"gmix_{b}") for b in GAPS])
+    rows = rows.with_columns(*[((pl.col(f"M_{b}") + MIX_PSEUDO * pl.col(f"lm_{b}").fill_null(1 / 3)) / (tot + MIX_PSEUDO))
+                               .alias(f"gmix_{b}") for b in GAPS])
     gw = gprior.pivot(on="gap", index=["game_id", "defense"], values="r")
     rows = rows.join(gw, left_on=["game_id", "opp"], right_on=["game_id", "defense"], how="left")
     rows = rows.with_columns(sum(pl.col(f"gmix_{b}") * pl.col(b).fill_null(1.0) for b in GAPS).alias("gap_ypc"))
@@ -179,31 +190,37 @@ def build(conn, u: pl.DataFrame, tg: pl.DataFrame) -> pl.DataFrame:
                   (pl.col("cy") * hit).sum().alias("cy_p"), (pl.col("cy") * clean).sum().alias("cy_c"),
                   (pl.col("i") * hit).sum().alias("i_p"), (pl.col("i") * clean).sum().alias("i_c"),
                   (pl.col("td") * hit).sum().alias("td_p"), (pl.col("td") * clean).sum().alias("td_c")))
-    lr = att.select(
-        ((pl.col("c") * pl.col("hit")).sum() / pl.col("hit").sum()).alias("cr_p"), ((pl.col("c") * (1 - pl.col("hit"))).sum() / (1 - pl.col("hit")).sum()).alias("cr_c"),
-        ((pl.col("cy") * pl.col("hit")).sum() / (pl.col("c") * pl.col("hit")).sum()).alias("ypc_p"),
-        ((pl.col("cy") * (1 - pl.col("hit"))).sum() / (pl.col("c") * (1 - pl.col("hit"))).sum()).alias("ypc_c"),
-        ((pl.col("i") * pl.col("hit")).sum() / pl.col("hit").sum()).alias("ir_p"), ((pl.col("i") * (1 - pl.col("hit"))).sum() / (1 - pl.col("hit")).sum()).alias("ir_c"),
-        ((pl.col("td") * pl.col("hit")).sum() / pl.col("hit").sum()).alias("tr_p"), ((pl.col("td") * (1 - pl.col("hit"))).sum() / (1 - pl.col("hit")).sum()).alias("tr_c"),
-    ).row(0, named=True)
-    j = u.select("gsis_id", "game_id", "kickoff_utc", "team").join(qg, on=["gsis_id", "game_id"], how="left").fill_null(0) \
-         .sort("gsis_id", "kickoff_utc", "team")
+    # league pressured / clean rates per season, from the three prior seasons only
+    lr = _league(att, [], {
+        "a_p": pl.col("hit").sum(), "a_c": (1 - pl.col("hit")).sum(),
+        "c_p": (pl.col("c") * pl.col("hit")).sum(), "c_c": (pl.col("c") * (1 - pl.col("hit"))).sum(),
+        "cy_p": (pl.col("cy") * pl.col("hit")).sum(), "cy_c": (pl.col("cy") * (1 - pl.col("hit"))).sum(),
+        "i_p": (pl.col("i") * pl.col("hit")).sum(), "i_c": (pl.col("i") * (1 - pl.col("hit"))).sum(),
+        "td_p": (pl.col("td") * pl.col("hit")).sum(), "td_c": (pl.col("td") * (1 - pl.col("hit"))).sum()})
+    lr = lr.select("season",
+                   (pl.col("c_p") / pl.col("a_p")).alias("L_cr_p"), (pl.col("c_c") / pl.col("a_c")).alias("L_cr_c"),
+                   (pl.col("cy_p") / pl.col("c_p")).alias("L_ypc_p"), (pl.col("cy_c") / pl.col("c_c")).alias("L_ypc_c"),
+                   (pl.col("i_p") / pl.col("a_p")).alias("L_ir_p"), (pl.col("i_c") / pl.col("a_c")).alias("L_ir_c"),
+                   (pl.col("td_p") / pl.col("a_p")).alias("L_tr_p"), (pl.col("td_c") / pl.col("a_c")).alias("L_tr_c"))
+    j = u.select("gsis_id", "game_id", "kickoff_utc", "team", "season").join(qg, on=["gsis_id", "game_id"], how="left") \
+         .fill_null(0).sort("gsis_id", "kickoff_utc", "team")
     keys = j["gsis_id"].to_numpy()
     dd = decay_for(MIX_HL)
     qcols = ["a_p", "a_c", "c_p", "c_c", "cy_p", "cy_c", "i_p", "i_c", "td_p", "td_c"]
     j = j.with_columns(*[pl.Series(f"Q_{c}", ewm_prior_sums(keys, j[c].to_numpy().astype(float), dd)) for c in qcols])
+    j = j.join(lr, on="season", how="left")
 
     def ratio(num_p, den_p, num_c, den_c, lp, lc, k):
         # shrunk pressured rate / shrunk clean rate
-        rp = (pl.col(num_p) + k * lp) / (pl.col(den_p) + k)
-        rc = (pl.col(num_c) + k * lc) / (pl.col(den_c) + k)
+        rp = (pl.col(num_p) + k * pl.col(lp)) / (pl.col(den_p) + k)
+        rc = (pl.col(num_c) + k * pl.col(lc)) / (pl.col(den_c) + k)
         return rp / rc
 
     j = j.with_columns(
-        ratio("Q_c_p", "Q_a_p", "Q_c_c", "Q_a_c", lr["cr_p"], lr["cr_c"], QB_PSEUDO).alias("s_comp"),
-        ratio("Q_cy_p", "Q_c_p", "Q_cy_c", "Q_c_c", lr["ypc_p"], lr["ypc_c"], QB_PSEUDO).alias("s_ypc"),
-        ratio("Q_i_p", "Q_a_p", "Q_i_c", "Q_a_c", lr["ir_p"], lr["ir_c"], QB_PSEUDO_RARE).alias("s_int"),
-        ratio("Q_td_p", "Q_a_p", "Q_td_c", "Q_a_c", lr["tr_p"], lr["tr_c"], QB_PSEUDO_RARE).alias("s_td"),
+        ratio("Q_c_p", "Q_a_p", "Q_c_c", "Q_a_c", "L_cr_p", "L_cr_c", QB_PSEUDO).alias("s_comp"),
+        ratio("Q_cy_p", "Q_c_p", "Q_cy_c", "Q_c_c", "L_ypc_p", "L_ypc_c", QB_PSEUDO).alias("s_ypc"),
+        ratio("Q_i_p", "Q_a_p", "Q_i_c", "Q_a_c", "L_ir_p", "L_ir_c", QB_PSEUDO_RARE).alias("s_int"),
+        ratio("Q_td_p", "Q_a_p", "Q_td_c", "Q_a_c", "L_tr_p", "L_tr_c", QB_PSEUDO_RARE).alias("s_td"),
     ).select("gsis_id", "game_id", "s_comp", "s_ypc", "s_int", "s_td")
     rows = base.join(j, on=["gsis_id", "game_id"], how="left").join(
         pprior.select("game_id", "defense", "h_def", "lg_h"), left_on=["game_id", "opp"], right_on=["game_id", "defense"], how="left")
@@ -212,7 +229,15 @@ def build(conn, u: pl.DataFrame, tg: pl.DataFrame) -> pl.DataFrame:
     rows = rows.with_columns(*[mixf(s).fill_null(1.0).alias(f"press_{s[2:]}") for s in ("s_comp", "s_ypc", "s_int", "s_td")])
     out = out.join(rows.select("gsis_id", "game_id", "press_comp", "press_ypc", "press_int", "press_td"),
                    on=["gsis_id", "game_id"], how="left")
-    return out.with_columns(*[pl.col(c).fill_null(1.0) for c in out.columns if c not in ("gsis_id", "game_id")])
+    out = out.with_columns(*[pl.col(c).fill_null(1.0) for c in out.columns if c not in ("gsis_id", "game_id")])
+    if not return_tendencies:
+        return out
+    tend = {
+        "depth": dprior.select("game_id", "defense", "depth", "r_cr", "r_ypc", "P_t"),
+        "gap": gprior.select("game_id", "defense", "gap", "r", "P_n"),
+        "pressure": pprior.select("game_id", "defense", (pl.col("h_def") / pl.col("lg_h")).alias("r_press"), "P_d"),
+    }
+    return out, tend
 
 
 def team_rating_covariates(conn, tg: pl.DataFrame) -> pl.DataFrame:

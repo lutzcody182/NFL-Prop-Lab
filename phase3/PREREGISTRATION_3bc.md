@@ -63,7 +63,12 @@ Age curves (plan item 8) are deferred: they need multi-season targets this phase
 
 ## Deviations
 
-(none)
+1. **Leak found and fixed, then everything in 3c re-run.** The first ablation run used three league-level constants
+   computed over all seasons, including future ones: the pressured-vs-clean league rates, the position depth mix and
+   the league gap mix. A perturbation test (change one week's plays, check that week's features do not move) caught
+   it. All three now come from the three prior seasons only, the test is part of the suite, and the 3c ablation and
+   confirmation below were re-run from scratch on the corrected features. The first (leaky) run's numbers are in git
+   history (commit "3c: walk-forward ablation 2019-2024 …") and are not used.
 
 ## Results and decision (added after scoring)
 

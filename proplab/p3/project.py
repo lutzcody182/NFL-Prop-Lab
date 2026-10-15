@@ -21,6 +21,7 @@ from proplab.p3.run import load_chosen
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "phase3" / "projections.json"
 N_SIMS = 4000
+QUANTILES = [round(0.05 * i, 2) for i in range(1, 20)]   # 5th..95th percentiles, stored for live scoring
 SHOW_LINES = {
     "qb_pass_yds": [224.5, 249.5, 274.5], "qb_pass_att": [29.5, 32.5, 35.5], "qb_pass_tds": [0.5, 1.5, 2.5],
     "qb_ints": [0.5], "qb_rush_yds": [9.5, 19.5, 29.5], "rb_rush_yds": [39.5, 59.5, 79.5],
@@ -86,9 +87,10 @@ def main(season: int = 2026) -> None:
         for i, r in enumerate(rows.iter_rows(named=True)):
             d = draws[i]
             players.append({
-                "player": r["name"], "pos": r["pos"], "team": r["team"], "opp": r["opp"], "home": r["is_home"],
-                "kickoff": r["kickoff_utc"].isoformat(), "game_id": r["game_id"],
+                "player": r["name"], "gsis_id": r["gsis_id"], "pos": r["pos"], "team": r["team"], "opp": r["opp"],
+                "home": r["is_home"], "kickoff": r["kickoff_utc"].isoformat(), "game_id": r["game_id"],
                 "mean": float(d.mean()), "p10": float(np.quantile(d, 0.1)), "p90": float(np.quantile(d, 0.9)),
+                "q": [float(x) for x in np.quantile(d, QUANTILES)],
                 "over": {str(L): float((d > L).mean()) for L in SHOW_LINES[m]},
                 "volume": float(r[f"{base_vt}_mu"]),
             })

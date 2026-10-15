@@ -68,11 +68,11 @@ def main(season: int = 2026) -> None:
         players = []
         if v["qb"] is not None:
             q = sim["qb"]
-            players.append({"name": v["qb"]["name"], "pos": "QB",
+            players.append({"name": v["qb"]["name"], "gsis_id": v["qb"]["gsis_id"], "pos": "QB",
                             "stats": {"Pass yds": b64(q["yds"]), "Completions": b64(q["comp"]), "Pass TDs": b64(q["td"]),
                                       "Pass attempts": b64(q["att"])}})
         for i in order:
-            players.append({"name": recv["name"][int(i)], "pos": recv["pos"][int(i)],
+            players.append({"name": recv["name"][int(i)], "gsis_id": recv["gsis_id"][int(i)], "pos": recv["pos"][int(i)],
                             "stats": {"Rec yds": b64(sim["recv"]["yds"][:, i]), "Receptions": b64(sim["recv"]["rec"][:, i])}})
         g["teams"][team] = {"players": players, "team_attempts": b64(v["A"])}
     meta = {"season": season, "week": week, "draws": N, "sigma": S.sigma(), "fit": {k: v for k, v in vars(fit).items() if k != "scales"},

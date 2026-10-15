@@ -176,12 +176,21 @@ def simulate_team(rng, A: np.ndarray, fit: Fit, sigma: float, recv: pl.DataFrame
         tds[:, i] = rng.binomial(catches[:, i], np.clip(tdrs[i], 0, 1))
     out = {"recv": {"targets": targets[:, :-1], "rec": catches[:, :-1], "yds": yards[:, :-1], "td": tds[:, :-1]}}
     if qb is not None:
-        thrown = rng.binomial(catches, f[:, None])
-        frac = np.divide(thrown, catches, out=np.zeros(catches.shape), where=catches > 0)
+        # The starter throws a random subset of the team's attempts (all of them unless he exits).
+        # Which catches and TDs came from his throws follows a multivariate hypergeometric draw,
+        # so his completions can never exceed his attempts.
         qatt = rng.binomial(A, f)
+        thrown = np.zeros_like(catches)
+        a_rem, s_rem = A.astype(np.int64).copy(), qatt.astype(np.int64).copy()
+        for i in range(catches.shape[1]):
+            good = catches[:, i]
+            thrown[:, i] = rng.hypergeometric(good, np.maximum(a_rem - good, 0), np.minimum(s_rem, a_rem))
+            a_rem -= good
+            s_rem -= thrown[:, i]
+        td_thrown = rng.hypergeometric(tds, np.maximum(catches - tds, 0), thrown)
+        frac = np.divide(thrown, catches, out=np.zeros(catches.shape), where=catches > 0)
         out["qb"] = {"att": qatt, "comp": thrown.sum(axis=1), "yds": (yards * frac).sum(axis=1),
-                     "td": rng.binomial(tds, f[:, None]).sum(axis=1),
-                     "int": rng.binomial(qatt, np.clip(qb["att_intr"], 0, 1))}
+                     "td": td_thrown.sum(axis=1), "int": rng.binomial(qatt, np.clip(qb["att_intr"], 0, 1))}
     return out
 
 

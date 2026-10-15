@@ -17,6 +17,18 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
   2025, so **projections stay on the locked Phase 1/3a models**. A leak (league constants using future seasons)
   was found by a perturbation test, fixed, and 3c re-run. Details: `phase3/PREREGISTRATION_3bc.md`.
 
+- Phase 4 (correlated game simulation, passing game): **gate not passed.** Linking players beat treating them as
+  independent by 12% (variogram score, interval clear of zero), but two-outcome probabilities were not clearly
+  better than multiplying on 2025 (they were on 2026 weeks 1–5), and the QB passing-yards non-inferiority check
+  was too uncertain at ~500 games. Single-player projections stay on the earlier models; the simulator powers the
+  dashboard's same-game calculator. A coherence bug was found after scoring, fixed, and re-scored (same verdict).
+  Details: `phase4/PREREGISTRATION.md`.
+
+```bash
+python -m proplab.p4.sim tune | test    # sigma on 2022-2024; 2025 + 2026 scoring
+python -m proplab.p4.export             # next week's simulated draws for the dashboard
+```
+
 ```bash
 python -m proplab.ratings.team tune | test | publish     # team ratings -> DB table team_ratings
 python -m proplab.ratings.player tune | test | publish   # player ratings -> phase3/player_ratings_current.json

@@ -77,3 +77,15 @@ Gate **not passed** (2 of 4 criteria).
   the same sample-size mistake as Phase 3a's original ECE rule. The verdict stands as pre-registered.
 - Decision: player projections stay on the locked marginal models. The simulator is shown on the dashboard for
   same-game combinations, labelled with this result.
+
+## Bug found after scoring, and corrected re-run
+
+A coherence test written after the 2025 score found that when the starting QB exits early, his attempts and his
+completions were thinned independently, so a few simulated games (only exit draws, ~5%) had more completions than
+attempts. Fixed: the starter's throws are a random subset of the team's attempts (multivariate hypergeometric).
+
+- The **official verdict is the first run** (saved as `phase4/results_official_first_run.json`): not passed.
+- The corrected simulator was re-tuned on 2022–2024 (σ = 0.05 instead of 0) and re-scored, as a second look at 2025:
+  variogram −12.3% ✓, two-leg Brier 0.2090 vs 0.2096 (interval crosses zero) ✕, calibrated ✓, QB marginal +1.8%
+  (−2.2% to +6.4%) ✕. Same criteria pass and fail. 2026 weeks 1–5: variogram ✓, two-leg ✓, calibrated ✓, QB ✕.
+- The dashboard and `phase4/results.json` use the corrected simulator.

@@ -1,0 +1,28 @@
+{
+  "season": 2026,
+  "week": 6,
+  "frozen_utc": "2026-10-15T22:22:12+00:00",
+  "first_kickoff_utc": "2026-10-16T00:15:00+00:00",
+  "minutes_before_kickoff": 113,
+  "code_git_sha": "ca425daca684555fd929eca6b167697e767264fe",
+  "files": {
+    "wrte.json": {
+      "sha256": "fb36d2d1bd833e7aa2f7cda7c4f22b551b17d50d062bba8e029f861075b0c956",
+      "generated": "2026-10-14T22:40+00:00"
+    },
+    "markets.json": {
+      "sha256": "7007870516e2d32bd0b285b9a9682916e13cbce45958ae1d218d8235eab13bda",
+      "generated": "2026-10-14T23:31+00:00"
+    },
+    "sims.json": {
+      "sha256": "6d3330863693e062b8460522d7d22130dff0c946f426922379db4c3c93bd0368",
+      "generated": "2026-10-15T00:44+00:00"
+    }
+  },
+  "models": {
+    "wrte": "Phase 1 M1 (phase1/tuning.json)",
+    "markets": "Phase 3a locked (phase3/tuning.json)",
+    "sims": "Phase 4 simulator (phase4/tuning.json)"
+  },
+  "assumption": "Actives = each team's actives in its last completed game; injuries for this week not used."
+}

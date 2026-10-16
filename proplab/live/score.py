@@ -194,6 +194,10 @@ def main(now: dt.datetime | None = None, ledger: Path = LEDGER, out_path: Path =
             for r in rows:
                 by_m.setdefault(r["market"], []).append(r)
             entry["markets"] = {m: market_metrics(v, rng) for m, v in by_m.items()}
+            # per-player recap: projection vs what happened (players who did not play are listed as void)
+            entry["players"] = [{"market": r["market"], "player": r["player"], "team": r["team"], "game_id": r["game_id"],
+                                 "mean": round(r["mean"], 3), "p10": round(r["p10"], 2), "p90": round(r["p90"], 2),
+                                 "actual": r["outcome"]} for r in rows]
             entry["sims"] = sim_metrics(wd, out)
             for m, v in by_m.items():
                 all_rows.setdefault(m, []).extend(v)

@@ -93,6 +93,8 @@ class Config:
     g_blitz: float = 0.0       # blitz multipliers on QB completion, yards/compl., TD and INT rates
     g_box: float = 0.0         # stacked-box multiplier on RB yards per carry
     g_pa: float = 0.0          # play-action multiplier on QB yards per completion
+    # Phase 7 weather (off by default)
+    g_wx: float = 0.0          # weather multiplier on completion rate and yards per completion (QB attempts, targets)
 
     def label(self) -> str:
         s = f"{self.model}(h={self.half_life:g},as={self.a_share:g},ae={self.a_eff:g}"
@@ -101,7 +103,7 @@ class Config:
         if self.model == "M2":
             s += f",gam={self.opponent:g}"
         for name, v in (("depth", self.g_depth), ("gap", self.g_gap), ("press", self.g_press),
-                        ("blitz", self.g_blitz), ("box", self.g_box), ("pa", self.g_pa)):
+                        ("blitz", self.g_blitz), ("box", self.g_box), ("pa", self.g_pa), ("wx", self.g_wx)):
             if v:
                 s += f",{name}={v:g}"
         if self.arch:
@@ -404,6 +406,10 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
     if cfg.g_box and "box_ypc" in df.columns:
         df = df.with_columns(pl.when(pl.col("pos") == "RB").then(pl.col("car_ypu") * pl.col("box_ypc") ** cfg.g_box)
                                .otherwise(pl.col("car_ypu")).alias("car_ypu"))
+    if cfg.g_wx and "wx_m" in df.columns:
+        f = pl.col("wx_m") ** (0.5 * cfg.g_wx)
+        df = df.with_columns((pl.col("att_rate") * f).clip(0.02, 0.98).alias("att_rate"), (pl.col("att_ypu") * f).alias("att_ypu"),
+                             (pl.col("tgt_rate") * f).clip(0.02, 0.98).alias("tgt_rate"), (pl.col("tgt_ypu") * f).alias("tgt_ypu"))
     if cfg.g_pa and "pa_ypc" in df.columns:
         df = df.with_columns(pl.when(pl.col("pos") == "QB").then(pl.col("att_ypu") * pl.col("pa_ypc") ** cfg.g_pa)
                                .otherwise(pl.col("att_ypu")).alias("att_ypu"))

@@ -52,6 +52,11 @@ def main() -> None:
         "p7": {name: json.loads(f.read_text()) for name, f in (
             ("markets_raw", ROOT / "phase7" / "markets_results.json"), ("kicker", ROOT / "phase7" / "kicker_results.json"),
             ("weather", ROOT / "phase7" / "weather_ablation.json"), ("actives", ROOT / "phase7" / "actives_backtest.json")) if f.exists()},
+        "p8": {m: {"adopted": v["adopted"], **{ver: {"passed": v["test_2025"][ver]["passed"], "criteria": v["test_2025"][ver]["criteria"],
+                                                       "vs_baseline": v["test_2025"][ver]["vs_baseline"],
+                                                       "ece": v["test_2025"][ver]["model"]["ece"], "ece_null95": v["test_2025"][ver]["model"]["ece_null95"],
+                                                       "coverage80": v["test_2025"][ver]["model"].get("coverage80")} for ver in ("raw", "recal")}}
+               for m, v in json.loads(p8.read_text()).items()} if (p8 := ROOT / "phase8" / "results.json").exists() else None,
         "live": json.loads(live.read_text()) if (live := ROOT / "phase5" / "dashboard_live.json").exists() else None,
     }
     if "markets_raw" in payload["p7"]:

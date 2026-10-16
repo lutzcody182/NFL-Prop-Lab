@@ -59,3 +59,24 @@ def test_kicker_points_simulation_matches_means():
     rows = pl.DataFrame({"mu_fg": [1.6, 2.0], "mu_pat": [2.5, 3.0]})
     d = K.simulate(rows, 20000, np.random.default_rng(0))
     assert d.mean(axis=1) == pytest.approx([3 * 1.6 + 2.5, 3 * 2.0 + 3.0], rel=0.02)
+
+
+def test_recalibration_maps_are_neutral_when_calibrated_and_fix_a_biased_forecast():
+    from proplab.p8 import recal as R
+    rng = np.random.default_rng(0)
+    # identity map leaves draws unchanged (up to sorting)
+    d = rng.normal(size=(50, 400))
+    out = R.apply_quantile_map(d, list(R.GRID))
+    assert np.allclose(np.sort(d, axis=1), out)
+    # a forecast twice too wide gets narrowed toward the right 80% coverage
+    y = rng.normal(size=4000)
+    wide = rng.normal(scale=2.0, size=(4000, 400))
+    from proplab.p1.model import randomized_pit
+    m = R.fit_quantile_map(randomized_pit(wide, y, rng))
+    fixed = R.apply_quantile_map(wide, m)
+    lo, hi = np.quantile(fixed, 0.1, axis=1), np.quantile(fixed, 0.9, axis=1)
+    assert abs(((y >= lo) & (y <= hi)).mean() - 0.8) < 0.03
+    # logistic map: identity-ish on calibrated probabilities
+    p = rng.uniform(0.05, 0.6, 20000)
+    lm = R.fit_logistic_map(p, (rng.uniform(size=p.size) < p).astype(float))
+    assert abs(lm["a"]) < 0.1 and abs(lm["b"] - 1) < 0.1

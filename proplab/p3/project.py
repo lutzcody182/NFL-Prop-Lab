@@ -17,10 +17,12 @@ import polars as pl
 from proplab import db
 from proplab.p3 import engine as E
 from proplab.p3.run import load_chosen
+from proplab.p8.recal import MAPS, apply_map
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "phase3" / "projections.json"
 N_SIMS = 4000
+RECAL = json.loads(MAPS.read_text())["maps"] if MAPS.exists() else {}
 QUANTILES = [round(0.05 * i, 2) for i in range(1, 20)]   # 5th..95th percentiles, stored for live scoring
 GRID = [(i + 0.5) / 100 for i in range(100)]              # 100-point grid for "your own line" on the dashboard
 
@@ -89,6 +91,8 @@ def main(season: int = 2026) -> None:
             k = E.Constants(prior=k.prior, pools={**k.pools, **tk.pools}, dispersion={**k.dispersion, **pick(tk.dispersion)},
                             exit_rate={**k.exit_rate, **pick(tk.exit_rate)})
         draws = E.market_draws(m, rows, k, N_SIMS, rng)
+        if RECAL.get(m, {}).get("adopted") and draws.shape[0]:
+            draws = apply_map(m, draws, RECAL[m])   # Phase 8 recalibration (adopted markets only)
         players = []
         for i, r in enumerate(rows.iter_rows(named=True)):
             d = draws[i]

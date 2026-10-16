@@ -34,3 +34,31 @@ pattern from past seasons and corrects it.
 ## Deviations
 
 (none yet)
+
+## Results and decision (added after scoring)
+
+2025, recalibrated model vs recalibrated baseline (`phase8/results.json`). Adopted = 2025 calibration error went down
+and CRPS (Brier for yes/no) did not go up.
+
+| Market | Calibration error raw → recal (noise limit) | 80% ranges raw → recal | Passes after? | Adopted |
+| --- | --- | --- | --- | --- |
+| QB passing yards | 0.028 → 0.025 (0.033) | 82% → 80% | no (baseline kept, so cannot beat it) | yes |
+| QB pass attempts | 0.050 → 0.058 (0.038) | 79% → 79% | no | no |
+| QB passing TDs | 0.036 → 0.033 (0.039) | 82% → 79% | no (baseline kept) | yes |
+| QB interceptions | 0.023 → 0.025 (0.059) | 82% → 82% | no (baseline kept) | no |
+| QB rushing yards | 0.030 → 0.024 (0.037) | 79% → 83% | no (worse than baseline) | no (CRPS up) |
+| RB rushing yards | 0.025 → 0.036 (0.025) | 77% → 79% | no | no |
+| RB rushing attempts | 0.038 → 0.039 (0.022) | 80% → 79% | no | no |
+| RB receptions | 0.027 → 0.024 (0.029) | 82% → 82% | no (gain could be chance) | no (CRPS up) |
+| RB receiving yards | 0.022 → 0.019 (0.031) | 81% → 81% | no (gain could be chance) | no (CRPS up) |
+| **Anytime TD** | 0.023 → 0.016 (0.020) | — | **yes** (−0.46% vs baseline) | **yes** |
+| RB rushing + receiving yards | 0.028 → 0.038 (0.025) | 75% → 78% | no | no |
+| QB completions | 0.031 → 0.038 (0.038) | 81% → 81% | no | no |
+| Receiving TD | 0.015 → 0.011 (0.017) | — | no (gain could be chance) | yes |
+| Kicker points | 0.042 → 0.041 (0.037) | 84% → 80% | no (chances still slightly off) | yes |
+
+- **Anytime TD now passes every rule.** Together with WR/TE receiving yards, 2 of 16 markets pass.
+- Quantile recalibration fixes range coverage almost everywhere, but for count markets with few distinct values (carries,
+  attempts, completions) it can make the over/under chances at the fixed lines worse, so it is not adopted there.
+- Live projections use the 2023–2025 maps for the five adopted markets from the next frozen week (week 7 of 2026);
+  2026 weeks 1–5 results with those maps are in `phase8/results.json` (`live_2026_wk1_5`).

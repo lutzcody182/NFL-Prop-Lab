@@ -24,6 +24,11 @@ OUT = ROOT / "phase1" / "projections.json"
 REC_SHOW = [3.5, 4.5, 5.5]
 YDS_SHOW = [39.5, 49.5, 59.5, 69.5]
 QUANTILES = [round(0.05 * i, 2) for i in range(1, 20)]   # 5th..95th percentiles, stored for live scoring
+GRID = [(i + 0.5) / 100 for i in range(100)]              # 100-point grid for "your own line" on the dashboard
+
+
+def grid(d: np.ndarray) -> list:
+    return [round(float(x), 1) for x in np.quantile(d, GRID)]
 
 
 def next_week(u: pl.DataFrame, season: int) -> int:
@@ -82,11 +87,11 @@ def main(season: int = 2026, n_sims: int = 4000) -> None:
             "home": r["is_home"], "kickoff": r["kickoff_utc"].isoformat(), "game_id": r["game_id"],
             "rec": {"mean": float(rd.mean()), "median": float(np.median(rd)),
                     "p10": float(np.quantile(rd, 0.1)), "p90": float(np.quantile(rd, 0.9)),
-                    "q": [float(x) for x in np.quantile(rd, QUANTILES)],
+                    "q": [float(x) for x in np.quantile(rd, QUANTILES)], "g": grid(rd),
                     "over": {str(L): float((rd > L).mean()) for L in REC_SHOW}},
             "yds": {"mean": float(yd.mean()), "median": float(np.median(yd)),
                     "p10": float(np.quantile(yd, 0.1)), "p90": float(np.quantile(yd, 0.9)),
-                    "q": [float(x) for x in np.quantile(yd, QUANTILES)],
+                    "q": [float(x) for x in np.quantile(yd, QUANTILES)], "g": grid(yd),
                     "over": {str(L): float((yd > L).mean()) for L in YDS_SHOW}},
             "drivers": {"exp_targets": float(r["mu_t"]), "team_targets": float(r["team_hat"]),
                         "share": float(r["mu_t"] / r["team_hat"]), "catch_rate": float(r["p_catch"]),

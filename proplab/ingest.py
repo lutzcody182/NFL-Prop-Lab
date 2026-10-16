@@ -47,6 +47,7 @@ STAT_COLUMNS = [
     "sacks_suffered", "passing_air_yards", "carries", "rushing_yards", "rushing_tds",
     "targets", "receptions", "receiving_yards", "receiving_tds", "receiving_air_yards",
     "receiving_yards_after_catch", "target_share", "air_yards_share",
+    "fg_made", "fg_att", "pat_made", "pat_att",
 ]
 
 ONE_DAY = dt.timedelta(days=1)
@@ -224,7 +225,8 @@ def run(seasons: list[int]) -> dict:
         (pl.col("kickoff_utc") + ONE_DAY).alias("known_at"),
     ).with_columns([pl.col(c).cast(pl.Int32, strict=False) for c in
                     ["completions", "attempts", "passing_tds", "passing_interceptions", "sacks_suffered",
-                     "carries", "rushing_tds", "targets", "receptions", "receiving_tds"]])
+                     "carries", "rushing_tds", "targets", "receptions", "receiving_tds",
+                     "fg_made", "fg_att", "pat_made", "pat_att"]])
     report["player_game"]["unknown_players"] = int((~player_game["gsis_id"].is_in(list(known_players))).sum())
     with conn.transaction():
         db.replace_rows(conn, "player_game", player_game, "season = ANY(%s)", (season_list,))

@@ -58,7 +58,12 @@ and 80% ranges within tolerance. Markets that fail are still shown, marked "did 
    run live from our data, and the Saturday/Sunday refresh would add nothing for actives. The weekly run gains a Saturday
    slot instead, which only refreshes data, lines and the dashboard (shows each player's final injury designation);
    the Tuesday freeze stays the official record and there is no `late` snapshot.
-2. **One exploratory variant after seeing the result:** R = L minus Out/Doubtful only (no add-backs). It is reported
+2. **Weather multiplier split:** "applied to completion rate and yards per completion" is implemented as √m on each,
+   so pass yards per attempt move by m (applying the full m to both would square the effect). Only γ = 1 was tried.
+3. **Kicker scoring re-run twice before any decision:** the first 2025 run had a bracket bug in the bootstrap interval
+   (printed NaN) and a non-deterministic choice between two listed kickers when neither kicked. Both were fixed, 2024
+   tuning was re-run (same choice: B1 h=4, a=10; K h=8, a=20) and 2025 re-scored. Point estimates moved by under 0.05%.
+4. **One exploratory variant after seeing the result:** R = L minus Out/Doubtful only (no add-backs). It is reported
    below as exploratory and is not adopted; it can only be adopted after it holds up on live weeks not yet played.
 
 ## Results and decision (added after scoring)
@@ -78,3 +83,18 @@ Backtest on 2025 weeks 1–18 and 2026 weeks 1–5 (`phase7/actives_backtest.jso
   information is mainly in *who* gets projected, not in the numbers.
 - **Decision:** projections keep method L. The dashboard shows each player's final injury designation (Out, Doubtful,
   Questionable) once it is published, so Out players can be skipped by eye; R will be checked on live weeks.
+
+**B. Weather** (`phase7/weather_ablation.json`): fitted effects are sensible (each mph of wind above 10 costs about
+0.6% of pass yards per attempt; each degree below 40 °F about 0.4%), but on 2019–2024 the multiplier improved CRPS by
+only 0.08% (95% −0.20% to +0.04%). **Did not survive; not used.** No live weather fetch was added.
+
+**C. New markets, 2025** (`phase7/markets_results.json`, `phase7/kicker_results.json`):
+
+| Market | vs baseline | 95% interval | Calibrated | 80% ranges | Result |
+| --- | --- | --- | --- | --- | --- |
+| RB rushing + receiving yards | −3.1% | −4.4% to −1.9% | no (ECE 0.028 vs 0.024) | 75% (too narrow) | fail |
+| QB completions | 0.0% (baseline kept) | — | no (0.039 vs 0.037) | 82% | fail |
+| Receiving TD | −0.0% | −0.3% to +0.3% | yes | — | fail |
+| Kicker points (K vs B1) | −1.7% | −2.9% to −0.4% | no (0.042 vs 0.036) | 85% (too wide) | fail |
+
+All four are shown on the dashboard marked "did not pass", like the Phase 3a markets.

@@ -17,6 +17,19 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
   2025, so **projections stay on the locked Phase 1/3a models**. A leak (league constants using future seasons)
   was found by a perturbation test, fixed, and 3c re-run. Details: `phase3/PREREGISTRATION_3bc.md`.
 
+- Phase 7 (injuries, weather, more markets): the pre-registered injury-report lineup made projections **worse**
+  (+1.8% CRPS; it added back players who then did not play), so projections keep last game's lineup and the dashboard
+  shows each player's injury designation instead. Weather helped 0.08% (within noise) and is not used. New markets
+  (RB rushing + receiving yards, QB completions, receiving TD, kicker points) are live on the dashboard; none passed
+  every rule. Also new: "Your line" calculator and the Weekly results tab. Details: `phase7/PREREGISTRATION.md`.
+
+```bash
+python -m proplab.p7.actives backtest              # who-plays methods -> phase7/actives_backtest.json
+python -m proplab.p7.weather decide | confirm      # weather -> phase7/weather_ablation.json
+python -m proplab.p7.markets                       # new engine markets -> phase7/markets_results.json
+python -m proplab.p7.kicker tune | backtest        # kicker points -> phase7/kicker_*.json
+```
+
 - Phase 6 (defensive scheme engine): built from FTN play charting (2022+): blitz rate, stacked boxes, play-action
   yards allowed, each matched to the player's own split. Only stacked box helped on 2023–2024 (−0.1% CRPS, RB rushing
   yards) and it **did not confirm** on 2026 weeks 1–5 or 2025, so projections don't use it; profiles are shown as

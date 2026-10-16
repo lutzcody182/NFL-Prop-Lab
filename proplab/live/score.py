@@ -31,6 +31,7 @@ STAT = {  # market -> (outcome column(s) in player_game)
     "qb_pass_yds": "passing_yards", "qb_pass_att": "attempts", "qb_pass_tds": "passing_tds",
     "qb_ints": "passing_interceptions", "qb_rush_yds": "rushing_yards", "rb_rush_yds": "rushing_yards",
     "rb_rush_att": "carries", "rb_rec": "receptions", "rb_rec_yds": "receiving_yards", "anytime_td": "anytime_td",
+    "rb_rush_rec_yds": "rush_rec_yds", "qb_completions": "completions", "rec_td": "rec_td", "k_points": "k_points",
 }
 SIM_STAT = {"Pass yds": "passing_yards", "Completions": "completions", "Pass TDs": "passing_tds",
             "Pass attempts": "attempts", "Rec yds": "receiving_yards", "Receptions": "receptions"}
@@ -59,7 +60,10 @@ def outcomes(conn, season: int, week: int) -> pl.DataFrame:
                coalesce(pg.completions, 0) AS completions, coalesce(pg.passing_tds, 0) AS passing_tds,
                coalesce(pg.passing_interceptions, 0) AS passing_interceptions,
                coalesce(pg.rushing_yards, 0)::float AS rushing_yards, coalesce(pg.carries, 0) AS carries,
-               (coalesce(pg.rushing_tds, 0) + coalesce(pg.receiving_tds, 0) > 0)::int AS anytime_td
+               (coalesce(pg.rushing_tds, 0) + coalesce(pg.receiving_tds, 0) > 0)::int AS anytime_td,
+               (coalesce(pg.rushing_yards, 0) + coalesce(pg.receiving_yards, 0))::float AS rush_rec_yds,
+               (coalesce(pg.receiving_tds, 0) > 0)::int AS rec_td,
+               (3 * coalesce(pg.fg_made, 0) + coalesce(pg.pat_made, 0))::float AS k_points
         FROM roster_status r
         JOIN games g ON g.season = r.season AND g.week = r.week AND r.team IN (g.home_team, g.away_team)
         JOIN players p ON p.gsis_id = r.gsis_id
@@ -119,7 +123,7 @@ def market_metrics(rows: list[dict], rng) -> dict:
     if not played:
         return res
     y = np.array([r["outcome"] for r in played])
-    if played[0]["market"] == "anytime_td":
+    if played[0]["market"] in ("anytime_td", "rec_td"):
         p = np.array([r["mean"] for r in played])
         res.update({"brier": float(((p - y) ** 2).mean()), "ece": ece(p, y), "ece_null95": ece_null95(p, rng),
                     "pred_rate": float(p.mean()), "actual_rate": float(y.mean())})

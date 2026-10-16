@@ -32,6 +32,7 @@ SHOW_LINES = {
     "qb_ints": [0.5], "qb_rush_yds": [9.5, 19.5, 29.5], "rb_rush_yds": [39.5, 59.5, 79.5],
     "rb_rush_att": [9.5, 14.5, 19.5], "rb_rec": [1.5, 2.5, 3.5], "rb_rec_yds": [9.5, 19.5, 29.5],
     "anytime_td": [0.5],
+    "rb_rush_rec_yds": [49.5, 69.5, 89.5], "qb_completions": [17.5, 20.5, 23.5], "rec_td": [0.5],
 }
 
 
@@ -75,7 +76,7 @@ def main(season: int = 2026) -> None:
                                         "this week's injury reports and inactives are not yet known."},
                  "markets": {}}
     rng = np.random.default_rng(606)
-    for m, (pos, vt, qty, _) in E.MARKETS.items():
+    for m, (pos, vt, qty, _) in {**E.MARKETS, **E.NEW_MARKETS}.items():
         base_vt = "car" if vt == "both" else vt
         params, k = preps[base_vt]
         rows = params.filter(target & E.market_eligible(m)).sort("kickoff_utc", "team", "gsis_id")
@@ -101,6 +102,12 @@ def main(season: int = 2026) -> None:
             })
         out["markets"][m] = {"label": E.MARKET_LABELS[m], "lines": SHOW_LINES[m], "players": players}
         print(f"{m:12s} {len(players):3d} players", flush=True)
+    # kicker points (Phase 7 model K), each team's kicker from its last game
+    from proplab.p7 import kicker as KK
+    klines = lines.rename({"ts": "team_spread", "tl": "total_line"})
+    kp = KK.project(conn, season, week, klines)
+    out["markets"]["k_points"] = {"label": "Kicker points", "lines": KK.LINES, "players": kp}
+    print(f"k_points     {len(kp):3d} players", flush=True)
     OUT.write_text(json.dumps(out, indent=1))
 
 

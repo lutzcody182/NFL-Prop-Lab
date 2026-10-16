@@ -63,13 +63,14 @@ def main(season: int = 2026) -> dict:
     for r in conn.execute("""
         SELECT gsis_id, season, week, team, opponent, targets, receptions, receiving_yards::float, carries,
                rushing_yards::float, attempts, completions, passing_yards::float, passing_tds, passing_interceptions,
-               coalesce(rushing_tds, 0) + coalesce(receiving_tds, 0)
+               coalesce(rushing_tds, 0) + coalesce(receiving_tds, 0), fg_made, pat_made,
+               3 * coalesce(fg_made, 0) + coalesce(pat_made, 0)
         FROM (SELECT pg.*, row_number() OVER (PARTITION BY gsis_id ORDER BY season DESC, week DESC) AS rn
               FROM player_game pg WHERE gsis_id = ANY(%s) AND known_at <= %s) x
         WHERE rn <= %s ORDER BY gsis_id, season, week""", (ids, now, LOG_GAMES)):
         logs.setdefault(r[0], []).append(list(r[1:]))
     log_cols = ["season", "week", "team", "opp", "tgt", "rec", "rec_yds", "car", "rush_yds", "att", "cmp", "pass_yds",
-                "pass_td", "int", "td"]
+                "pass_td", "int", "td", "fg", "pat", "k_pts"]
 
     # --- model health: latest ingest, its checks, data freshness, live record
     run = conn.execute("SELECT run_id, started_at, finished_at, row_counts FROM ingest_runs WHERE finished_at IS NOT NULL "

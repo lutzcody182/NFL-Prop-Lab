@@ -57,7 +57,14 @@ WRTE_MARKETS = {
     "wrte_rec":     (("WR", "TE"), "tgt", "succ", [2.5, 3.5, 4.5, 5.5, 6.5]),
     "wrte_rec_yds": (("WR", "TE"), "tgt", "yds", [24.5, 39.5, 54.5, 69.5, 84.5]),
 }
-ALL_MARKETS = {**WRTE_MARKETS, **MARKETS}
+# Phase 7 markets, derived from the locked engine's draws (no new tuning)
+NEW_MARKETS = {
+    "rb_rush_rec_yds": (("RB",), "both", "rryds", [49.5, 69.5, 89.5]),
+    "qb_completions":  (("QB",), "att", "succ", [17.5, 20.5, 23.5]),
+    "rec_td":          (("RB", "WR", "TE"), "tgt", "td", [0.5]),
+}
+BINARY = ("anytime_td", "rec_td")
+ALL_MARKETS = {**WRTE_MARKETS, **MARKETS, **NEW_MARKETS}
 TEAM_RT_COLS = ("off_pass", "off_run", "opp_def_pass", "opp_def_run")
 MARKET_LABELS = {
     "qb_pass_yds": "QB passing yards", "qb_pass_att": "QB pass attempts", "qb_pass_tds": "QB passing TDs",
@@ -65,12 +72,14 @@ MARKET_LABELS = {
     "rb_rush_att": "RB rushing attempts", "rb_rec": "RB receptions", "rb_rec_yds": "RB receiving yards",
     "anytime_td": "Anytime TD (RB/WR/TE)",
     "wrte_rec": "WR/TE receptions", "wrte_rec_yds": "WR/TE receiving yards",
+    "rb_rush_rec_yds": "RB rushing + receiving yards", "qb_completions": "QB completions",
+    "rec_td": "Receiving TD (RB/WR/TE)",
 }
 OUTCOME = {  # market -> outcome column(s)
     "wrte_rec": "receptions", "wrte_rec_yds": "rec_yds",
     "qb_pass_yds": "pass_yds", "qb_pass_att": "attempts", "qb_pass_tds": "pass_tds", "qb_ints": "ints",
     "qb_rush_yds": "rush_yds", "rb_rush_yds": "rush_yds", "rb_rush_att": "carries",
-    "rb_rec": "receptions", "rb_rec_yds": "rec_yds",
+    "rb_rec": "receptions", "rb_rec_yds": "rec_yds", "qb_completions": "completions",
 }
 
 
@@ -264,6 +273,8 @@ def eligible_expr(pos: str, vt: str) -> pl.Expr:
 
 
 def market_eligible(market: str) -> pl.Expr:
+    if market == "rb_rush_rec_yds":
+        return eligible_expr("RB", "car")
     if market == "anytime_td":
         return pl.col("pos").is_in(["RB", "WR", "TE"]) & (pl.col("n_prev") >= ELIG_MIN_GAMES) & (
             (pl.col("car_elig") >= 0.15) | (pl.col("tgt_elig") >= 0.05))
@@ -488,12 +499,22 @@ def market_draws(market: str, rows: pl.DataFrame, k: Constants, n: int, rng) -> 
         car = simulate_vt(rows, "car", k, n, rng)
         tgt = simulate_vt(rows, "tgt", k, n, rng)
         return ((car["td"] + tgt["td"]) >= 1).astype(np.float32)
+    if market == "rb_rush_rec_yds":
+        car = simulate_vt(rows, "car", k, n, rng)
+        tgt = simulate_vt(rows, "tgt", k, n, rng)
+        return (car["yds"] + tgt["yds"]).astype(np.float32)
+    if market == "rec_td":
+        return (simulate_vt(rows, "tgt", k, n, rng)["td"] >= 1).astype(np.float32)
     return simulate_vt(rows, vt, k, n, rng)[qty].astype(np.float32)
 
 
 def outcome(market: str, rows: pl.DataFrame) -> np.ndarray:
     if market == "anytime_td":
         return ((rows["rush_tds"] + rows["rec_tds"]) >= 1).cast(pl.Float64).to_numpy()
+    if market == "rec_td":
+        return (rows["rec_tds"] >= 1).cast(pl.Float64).to_numpy()
+    if market == "rb_rush_rec_yds":
+        return (rows["rush_yds"] + rows["rec_yds"]).cast(pl.Float64).to_numpy()
     return rows[OUTCOME[market]].cast(pl.Float64).to_numpy()
 
 
@@ -516,7 +537,7 @@ def score(market: str, draws: np.ndarray, y: np.ndarray, rng) -> dict:
     out = {"rows": int(len(y)), "brier": float(((probs - outs) ** 2).mean()), "ece": ece(probs, outs),
            "ece_null95": ece_null95(probs, rng), "coverage_tol": coverage_tolerance(len(y)),
            "mean_pred": float(draws.mean()), "mean_actual": float(y.mean())}
-    if market == "anytime_td":
+    if market in BINARY:
         p = np.clip(draws.mean(axis=1), 1e-6, 1 - 1e-6)
         out["crps_rows"] = brier_rows  # proper score used for the gate
         out["crps"] = float(brier_rows.mean())

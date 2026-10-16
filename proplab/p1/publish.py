@@ -49,8 +49,14 @@ def main() -> None:
         "r3": json.loads((ROOT / "phase3" / "dashboard_3bc.json").read_text()),
         "p4": json.loads((ROOT / "phase4" / "week_sims.json").read_text()),
         "p6": json.loads(sc.read_text()) if (sc := ROOT / "phase6" / "dashboard_scheme.json").exists() else None,
+        "p7": {name: json.loads(f.read_text()) for name, f in (
+            ("markets_raw", ROOT / "phase7" / "markets_results.json"), ("kicker", ROOT / "phase7" / "kicker_results.json"),
+            ("weather", ROOT / "phase7" / "weather_ablation.json"), ("actives", ROOT / "phase7" / "actives_backtest.json")) if f.exists()},
         "live": json.loads(live.read_text()) if (live := ROOT / "phase5" / "dashboard_live.json").exists() else None,
     }
+    if "markets_raw" in payload["p7"]:
+        mr = payload["p7"].pop("markets_raw")
+        payload["p7"]["markets"] = {"splits": {k: slim_p3(v) for k, v in mr["splits"].items()}}
     blob = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
     block = f'{START}\n<script id="data" type="application/json">{blob}</script>\n{END}'
     html = PAGE.read_text()

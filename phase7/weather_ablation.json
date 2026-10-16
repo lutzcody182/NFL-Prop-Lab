@@ -1,0 +1,163 @@
+{
+  "seasons": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "coefficients": {
+    "2017": {
+      "b_wind": -0.001435261283943194,
+      "b_cold": -0.0018616586731786647
+    },
+    "2018": {
+      "b_wind": -0.0024539776631105877,
+      "b_cold": -0.004505232834913415
+    },
+    "2019": {
+      "b_wind": -0.003729494422764713,
+      "b_cold": -0.005664473045175058
+    },
+    "2020": {
+      "b_wind": -0.004636190624303821,
+      "b_cold": -0.005309151099216242
+    },
+    "2021": {
+      "b_wind": -0.004955190391819942,
+      "b_cold": -0.004791505553140091
+    },
+    "2022": {
+      "b_wind": -0.005994481093704786,
+      "b_cold": -0.005922295180230361
+    },
+    "2023": {
+      "b_wind": -0.005498377291511798,
+      "b_cold": -0.004368662119691724
+    },
+    "2024": {
+      "b_wind": -0.005227882590200109,
+      "b_cold": -0.004395599005606983
+    },
+    "2025": {
+      "b_wind": -0.005809786420892614,
+      "b_cold": -0.004187451385231232
+    },
+    "2026": {
+      "b_wind": -0.005939537335566712,
+      "b_cold": -0.0035992616334104355
+    }
+  },
+  "development": {
+    "change": -0.000762756168145066,
+    "ci95": [
+      -0.001986277150976291,
+      0.00037650686670538826
+    ],
+    "by_market": {
+      "qb_pass_yds": -0.0018803457889298159,
+      "wrte_rec": -6.637483299964941e-05,
+      "wrte_rec_yds": -0.00034154788250573276
+    },
+    "rows": {
+      "qb_pass_yds": 2765,
+      "wrte_rec": 16251,
+      "wrte_rec_yds": 16251
+    }
+  },
+  "survived": false,
+  "final_configs": {
+    "att": {
+      "model": "B2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0
+    },
+    "car": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.5,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0
+    },
+    "tgt": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 1.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0
+    },
+    "wrte_rec": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0
+    },
+    "wrte_rec_yds": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0
+    }
+  },
+  "adopted": false
+}

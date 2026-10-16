@@ -140,6 +140,12 @@ CREATE TABLE IF NOT EXISTS player_game (
 );
 CREATE INDEX IF NOT EXISTS player_game_season_week ON player_game(season, week);
 
+-- Phase 7: kicking stats (added after the table existed, so also as ALTERs for older databases)
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS fg_made INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS fg_att INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS pat_made INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS pat_att INT;
+
 CREATE TABLE IF NOT EXISTS snaps (
     pfr_player_id  TEXT NOT NULL,
     gsis_id        TEXT,                   -- resolved through player_id_map; NULL = unmatched

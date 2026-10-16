@@ -42,7 +42,12 @@ jobs:
       - name: Weekly pipeline
         run: python -m proplab.live.weekly
       - name: Tests
-        run: pytest -q
+        run: |
+          set -o pipefail
+          pytest -q -rfE --tb=short 2>&1 | tee pytest.txt || {
+            grep -E "^(FAILED|ERROR) " pytest.txt | sed 's/^/::error title=Test failed::/'
+            grep -E "^E  " pytest.txt | head -20 | sed 's/^/::error title=Detail::/'
+            exit 1; }
       - name: Commit results
         run: |
           git config user.name "proplab-bot"

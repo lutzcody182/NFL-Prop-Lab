@@ -40,4 +40,9 @@ jobs:
       - name: Team ratings (tests read the team_ratings table)
         run: python -m proplab.ratings.team publish
       - name: Tests
-        run: pytest -q
+        run: |
+          set -o pipefail
+          pytest -q -rfE --tb=short 2>&1 | tee pytest.txt || {
+            grep -E "^(FAILED|ERROR) " pytest.txt | sed 's/^/::error title=Test failed::/'
+            grep -E "^E  " pytest.txt | head -20 | sed 's/^/::error title=Detail::/'
+            exit 1; }

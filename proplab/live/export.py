@@ -83,7 +83,13 @@ def main(season: int = 2026) -> dict:
                (SELECT max(known_at) FROM injury_reports WHERE known_at <= %s)
         FROM games g LEFT JOIN game_results r USING (game_id) WHERE g.game_type = 'REG'""", (now, now, now)).fetchone()
     live_path = ROOT / "phase5" / "live_record.json"
+    # final injury designations for this week, once published (Out / Doubtful / Questionable)
+    inj = {g: st for g, st in conn.execute("""
+        SELECT gsis_id, report_status FROM injury_reports
+        WHERE season = %s AND week = %s AND game_type = 'REG' AND report_status IS NOT NULL AND known_at <= %s""",
+        (season, week, now)).fetchall()}
     payload = {
+        "injuries": inj,
         "generated_utc": now.isoformat(timespec="minutes"), "season": season, "week": week, "games": games,
         "log_cols": log_cols, "logs": logs, "name_ids": name_ids,
         "health": {

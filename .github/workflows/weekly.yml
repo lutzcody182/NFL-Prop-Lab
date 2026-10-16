@@ -8,6 +8,7 @@ on:
   schedule:
     - cron: "41 13 * * 2"     # Tuesday 13:41 UTC
     - cron: "41 13 * * 3"     # Wednesday 13:41 UTC (the freeze is skipped if Tuesday already froze the week)
+    - cron: "41 13 * * 6"     # Saturday 13:41 UTC: final injury reports and latest lines on the dashboard (freeze skipped after kickoff)
   workflow_dispatch: {}
 
 permissions:

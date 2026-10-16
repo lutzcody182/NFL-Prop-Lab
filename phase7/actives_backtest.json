@@ -1,0 +1,128 @@
+{
+  "markets": {},
+  "counts": {
+    "L": {
+      "projected": 19639,
+      "void": 1934,
+      "missed": 1768,
+      "played_eligible": 19443
+    },
+    "I": {
+      "projected": 22877,
+      "void": 4298,
+      "missed": 884,
+      "played_eligible": 19443
+    },
+    "R": {
+      "projected": 19013,
+      "void": 1293,
+      "missed": 1753,
+      "played_eligible": 19443
+    }
+  },
+  "I_vs_L": {
+    "change": 0.017653619180004586,
+    "ci95": [
+      0.012553560910936444,
+      0.02282131833270952
+    ],
+    "by_market": {
+      "wrte_rec": 0.024650641975986876,
+      "wrte_rec_yds": 0.01911316862451562,
+      "qb_pass_yds": -1.5924247403820146e-05,
+      "qb_pass_att": 0.0021627345342731807,
+      "qb_pass_tds": 0.00628068223338718,
+      "qb_ints": 0.001441304638728047,
+      "qb_rush_yds": 0.044810421132154055,
+      "rb_rush_yds": 0.03581662489800075,
+      "rb_rush_att": 0.07548873657789157,
+      "rb_rec": -0.0006722253046677062,
+      "rb_rec_yds": 0.0002091023794987823,
+      "anytime_td": 0.002558162717690493
+    },
+    "rows": {
+      "wrte_rec": 3132,
+      "wrte_rec_yds": 3132,
+      "qb_pass_yds": 560,
+      "qb_pass_att": 560,
+      "qb_pass_tds": 560,
+      "qb_ints": 560,
+      "qb_rush_yds": 560,
+      "rb_rush_yds": 1148,
+      "rb_rush_att": 1148,
+      "rb_rec": 928,
+      "rb_rec_yds": 928,
+      "anytime_td": 4411
+    }
+  },
+  "O_vs_L": {
+    "change": -0.004314468399569782,
+    "ci95": [
+      -0.0075267367013458,
+      -0.001061050679657682
+    ],
+    "by_market": {
+      "wrte_rec": -0.010611238031929426,
+      "wrte_rec_yds": -0.00629543207666261,
+      "qb_pass_yds": 0.0018028115387587196,
+      "qb_pass_att": -0.0008506436852154797,
+      "qb_pass_tds": 0.007488813428824459,
+      "qb_ints": -0.0013746202260528362,
+      "qb_rush_yds": 0.013601333205308874,
+      "rb_rush_yds": -0.021831075101013786,
+      "rb_rush_att": -0.031215674440898122,
+      "rb_rec": -0.0003486427745413856,
+      "rb_rec_yds": 0.0010029050969266873,
+      "anytime_td": -0.003142157728342476
+    },
+    "rows": {
+      "wrte_rec": 3132,
+      "wrte_rec_yds": 3132,
+      "qb_pass_yds": 571,
+      "qb_pass_att": 571,
+      "qb_pass_tds": 571,
+      "qb_ints": 571,
+      "qb_rush_yds": 571,
+      "rb_rush_yds": 1148,
+      "rb_rush_att": 1148,
+      "rb_rec": 928,
+      "rb_rec_yds": 928,
+      "anytime_td": 4404
+    }
+  },
+  "R_vs_L": {
+    "change": 0.0005902848200357025,
+    "ci95": [
+      -0.002026725533569818,
+      0.0030283420334523887
+    ],
+    "by_market": {
+      "wrte_rec": 0.006720003459578239,
+      "wrte_rec_yds": 0.002302304690660506,
+      "qb_pass_yds": -0.0012211841680471736,
+      "qb_pass_att": 4.314025128238086e-05,
+      "qb_pass_tds": 0.004544489711959976,
+      "qb_ints": -0.004337399066898007,
+      "qb_rush_yds": 0.022059690581644142,
+      "rb_rush_yds": -0.007110740374764335,
+      "rb_rush_att": -0.01410796876725473,
+      "rb_rec": -0.002816150140049878,
+      "rb_rec_yds": 0.00025692447083169867,
+      "anytime_td": 0.0007503071914856108
+    },
+    "rows": {
+      "wrte_rec": 3132,
+      "wrte_rec_yds": 3132,
+      "qb_pass_yds": 577,
+      "qb_pass_att": 577,
+      "qb_pass_tds": 577,
+      "qb_ints": 577,
+      "qb_rush_yds": 577,
+      "rb_rush_yds": 1148,
+      "rb_rush_att": 1148,
+      "rb_rec": 928,
+      "rb_rec_yds": 928,
+      "anytime_td": 4404
+    }
+  }
+}

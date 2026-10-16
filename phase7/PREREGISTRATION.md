@@ -53,4 +53,28 @@ and 80% ranges within tolerance. Markets that fail are still shown, marked "did 
 
 ## Deviations
 
-(none yet)
+1. **No weekend refresh.** While building it we found that nflverse's weekly rosters do not show game-day inactives
+   before kickoff (week 6 of 2026 had no inactive rows the day before its games; they appear after). So method O cannot
+   run live from our data, and the Saturday/Sunday refresh would add nothing for actives. The weekly run gains a Saturday
+   slot instead, which only refreshes data, lines and the dashboard (shows each player's final injury designation);
+   the Tuesday freeze stays the official record and there is no `late` snapshot.
+2. **One exploratory variant after seeing the result:** R = L minus Out/Doubtful only (no add-backs). It is reported
+   below as exploratory and is not adopted; it can only be adopted after it holds up on live weeks not yet played.
+
+## Results and decision (added after scoring)
+
+Backtest on 2025 weeks 1–18 and 2026 weeks 1–5 (`phase7/actives_backtest.json`; 19,443 played, eligible player-markets):
+
+| Method | Projected | Void (did not play) | Missed (played, not projected) | CRPS vs L on common rows |
+| --- | --- | --- | --- | --- |
+| L, last game (current) | 19,639 | 1,934 | 1,768 | — |
+| I, injury report (pre-registered) | 22,877 | 4,298 | 884 | +1.77% (worse; 95% +1.26% to +2.28%) |
+| R, removals only (exploratory) | 19,013 | 1,293 | 1,753 | +0.06% (−0.20% to +0.30%) |
+| O, actual actives (ceiling) | — | 0 | 0 | −0.43% (−0.75% to −0.11%) |
+
+- **I fails both adoption conditions:** it is worse on accuracy, and its add-back rule more than doubles the voided
+  projections (players who were recently active but are cut, on injured reserve or benched).
+- Even perfect knowledge of who plays (O) improves accuracy for players who do play by only 0.4%: the value of injury
+  information is mainly in *who* gets projected, not in the numbers.
+- **Decision:** projections keep method L. The dashboard shows each player's final injury designation (Out, Doubtful,
+  Questionable) once it is published, so Out players can be skipped by eye; R will be checked on live weeks.

@@ -1,12 +1,12 @@
 {
-  "updated_utc": "2026-10-15T22:26+00:00",
+  "updated_utc": "2026-10-17T16:40+00:00",
   "weeks": [
     {
       "season": 2026,
       "week": 6,
       "frozen_utc": "2026-10-15T22:22:12+00:00",
       "minutes_before_kickoff": 113,
-      "status": "0 of 14 games final"
+      "status": "1 of 14 games final"
     }
   ],
   "cumulative": {},

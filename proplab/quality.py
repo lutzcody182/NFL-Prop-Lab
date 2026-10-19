@@ -155,17 +155,18 @@ def run_checks(conn: psycopg.Connection, run_id: int, seasons: list[int], report
     add("pregame_rows_without_kickoff", dropped == 0 or dropped < 50,
         f"{dropped} roster/injury rows had no matching week and were dropped")
 
-    # 12. FTN charting: every completed game from 2022 is charted, and charted plays join to play-by-play.
+    # 12. FTN charting: every game from 2022 completed 4+ days ago is charted (FTN publishes with a lag),
+    #     and charted plays join to play-by-play.
     ftn_seasons = [s for s in seasons if s >= 2022]
     if ftn_seasons:
         (missing,) = _one(conn, """
             SELECT count(*) FROM games g JOIN game_results r USING (game_id)
-            WHERE g.season = ANY(%s) AND g.game_type = 'REG'
+            WHERE g.season = ANY(%s) AND g.game_type = 'REG' AND g.kickoff_utc < now() - interval '4 days'
               AND NOT EXISTS (SELECT 1 FROM ftn_charting f WHERE f.game_id = g.game_id)""", (ftn_seasons,))
         (n,) = _one(conn, "SELECT count(*) FROM ftn_charting WHERE season = ANY(%s)", (ftn_seasons,))
         unmatched = report.get("ftn_charting", {}).get("unmatched_plays", 0)
         add("ftn_charting_coverage", missing <= 3 and unmatched <= 0.005 * max(n, 1),
-            f"completed games with no charting: {missing}; charted plays not in play-by-play: {unmatched:,} of {n:,}")
+            f"games completed 4+ days ago with no charting: {missing} (FTN publishes a few days after games); charted plays not in play-by-play: {unmatched:,} of {n:,}")
 
     with conn.cursor() as cur:
         for c in checks:

@@ -1,0 +1,30 @@
+{
+  "season": 2026,
+  "week": 7,
+  "frozen_utc": "2026-10-20T18:08:27+00:00",
+  "first_kickoff_utc": "2026-10-23T00:15:00+00:00",
+  "minutes_before_kickoff": 3247,
+  "code_git_sha": "0f25942dfc68233ad5e68cc792e89ca0ff64e3d0",
+  "files": {
+    "wrte.json": {
+      "sha256": "3b78e7e4757e95d85e66b96def8167633b3cc866fea8a4560b5a264f53a96ed2",
+      "generated": "2026-10-20T18:07+00:00"
+    },
+    "markets.json": {
+      "sha256": "b71f0fa0756061dd8ca7543fad2c7a546cddc8578482ef47ba3e6323a9c2c7ac",
+      "generated": "2026-10-20T18:08+00:00"
+    },
+    "sims.json": {
+      "sha256": "a9f0283d12e6e161989ab9cfdcc680741d58cf796d7d7f724e40810e9d555ae6",
+      "generated": "2026-10-20T18:08+00:00"
+    }
+  },
+  "models": {
+    "wrte": "Phase 1 M1 (phase1/tuning.json)",
+    "markets": "Phase 3a locked (phase3/tuning.json)",
+    "sims": "Phase 4 simulator (phase4/tuning.json)",
+    "recalibration": "Phase 8 maps for adopted markets (phase8/recalibration.json)",
+    "new_markets": "Phase 7 engine markets and kicker points (phase7/)"
+  },
+  "assumption": "Actives = each team's actives in its last completed game; injuries for this week not used."
+}

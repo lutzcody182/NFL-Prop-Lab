@@ -89,7 +89,9 @@ def main(season: int = 2026) -> dict:
         SELECT gsis_id, report_status FROM injury_reports
         WHERE season = %s AND week = %s AND game_type = 'REG' AND report_status IS NOT NULL AND known_at <= %s""",
         (season, week, now)).fetchall()}
+    from proplab.live.leaders import build as build_leaders
     payload = {
+        "leaders": build_leaders(conn, season, now),
         "injuries": inj,
         "generated_utc": now.isoformat(timespec="minutes"), "season": season, "week": week, "games": games,
         "log_cols": log_cols, "logs": logs, "name_ids": name_ids,

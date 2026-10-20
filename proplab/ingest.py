@@ -48,6 +48,9 @@ STAT_COLUMNS = [
     "targets", "receptions", "receiving_yards", "receiving_tds", "receiving_air_yards",
     "receiving_yards_after_catch", "target_share", "air_yards_share",
     "fg_made", "fg_att", "pat_made", "pat_att",
+    # defensive stats (weekly leaders)
+    "def_tackles_solo", "def_tackle_assists", "def_tackles_for_loss", "def_sacks", "def_qb_hits", "def_interceptions",
+    "def_pass_defended", "def_fumbles_forced", "def_tds", "fumble_recovery_opp",
 ]
 
 ONE_DAY = dt.timedelta(days=1)
@@ -226,7 +229,9 @@ def run(seasons: list[int]) -> dict:
     ).with_columns([pl.col(c).cast(pl.Int32, strict=False) for c in
                     ["completions", "attempts", "passing_tds", "passing_interceptions", "sacks_suffered",
                      "carries", "rushing_tds", "targets", "receptions", "receiving_tds",
-                     "fg_made", "fg_att", "pat_made", "pat_att"]])
+                     "fg_made", "fg_att", "pat_made", "pat_att", "def_tackles_solo", "def_tackle_assists",
+                     "def_qb_hits", "def_interceptions", "def_pass_defended", "def_fumbles_forced", "def_tds",
+                     "fumble_recovery_opp"]])
     report["player_game"]["unknown_players"] = int((~player_game["gsis_id"].is_in(list(known_players))).sum())
     with conn.transaction():
         db.replace_rows(conn, "player_game", player_game, "season = ANY(%s)", (season_list,))

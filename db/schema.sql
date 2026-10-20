@@ -145,6 +145,17 @@ ALTER TABLE player_game ADD COLUMN IF NOT EXISTS fg_made INT;
 ALTER TABLE player_game ADD COLUMN IF NOT EXISTS fg_att INT;
 ALTER TABLE player_game ADD COLUMN IF NOT EXISTS pat_made INT;
 ALTER TABLE player_game ADD COLUMN IF NOT EXISTS pat_att INT;
+-- defensive stats (weekly leaders)
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_tackles_solo INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_tackle_assists INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_tackles_for_loss NUMERIC;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_sacks NUMERIC;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_qb_hits INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_interceptions INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_pass_defended INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_fumbles_forced INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS def_tds INT;
+ALTER TABLE player_game ADD COLUMN IF NOT EXISTS fumble_recovery_opp INT;
 
 CREATE TABLE IF NOT EXISTS snaps (
     pfr_player_id  TEXT NOT NULL,

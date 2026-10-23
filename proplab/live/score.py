@@ -97,14 +97,33 @@ def ledger_rows(week_dir: Path) -> pl.DataFrame:
             d = p[key]
             rows.append({"market": mk, "player": p["player"], "gsis_id": p.get("gsis_id"), "team": p["team"],
                          "game_id": p["game_id"], "mean": d["mean"], "p10": d["p10"], "p90": d["p90"],
-                         "q": d.get("q"), "over": {str(L): d["over"][str(L)] for L in lines}})
+                         "q": d.get("q"), "g": d.get("g"), "over": {str(L): d["over"][str(L)] for L in lines}})
     m = json.loads((week_dir / "markets.json").read_text())
     for mk, v in m["markets"].items():
         for p in v["players"]:
             rows.append({"market": mk, "player": p["player"], "gsis_id": p.get("gsis_id"), "team": p["team"],
                          "game_id": p["game_id"], "mean": p["mean"], "p10": p["p10"], "p90": p["p90"],
-                         "q": p.get("q"), "over": p["over"]})
+                         "q": p.get("q"), "g": p.get("g"), "over": p["over"]})
     return rows
+
+
+def vs_market(rows: list[dict], season: int, week: int) -> dict:
+    """Model vs sportsbook consensus at the book's line, per market (Phase 9C). Pushes are left out."""
+    from proplab.p9.lines import latest_for_week
+    book = latest_for_week(season, week)
+    out: dict = {}
+    for r in rows:
+        b = book.get((r.get("gsis_id"), r["market"]))
+        if not b or r["outcome"] is None or not r.get("g") or r["outcome"] == b["line"]:
+            continue
+        g = np.asarray(r["g"])
+        p_model = float((g > b["line"]).mean())
+        y = float(r["outcome"] > b["line"])
+        o = out.setdefault(r["market"], {"n": 0, "se_model": 0.0, "se_market": 0.0})
+        o["n"] += 1
+        o["se_model"] += (p_model - y) ** 2
+        o["se_market"] += (b["p_over_market"] - y) ** 2
+    return {m: {"n": o["n"], "brier_model": o["se_model"] / o["n"], "brier_market": o["se_market"] / o["n"]} for m, o in out.items()}
 
 
 def match(rows: list[dict], out: pl.DataFrame) -> list[dict]:
@@ -198,6 +217,7 @@ def main(now: dt.datetime | None = None, ledger: Path = LEDGER, out_path: Path =
             for r in rows:
                 by_m.setdefault(r["market"], []).append(r)
             entry["markets"] = {m: market_metrics(v, rng) for m, v in by_m.items()}
+            entry["vs_market"] = vs_market(rows, man["season"], man["week"])
             # per-player recap: projection vs what happened (players who did not play are listed as void)
             entry["players"] = [{"market": r["market"], "player": r["player"], "team": r["team"], "game_id": r["game_id"],
                                  "mean": round(r["mean"], 3), "p10": round(r["p10"], 2), "p90": round(r["p90"], 2),
@@ -206,6 +226,14 @@ def main(now: dt.datetime | None = None, ledger: Path = LEDGER, out_path: Path =
             for m, v in by_m.items():
                 all_rows.setdefault(m, []).extend(v)
         record["weeks"].append(entry)
+    vm: dict = {}
+    for w in record["weeks"]:
+        for m, v in (w.get("vs_market") or {}).items():
+            o = vm.setdefault(m, {"n": 0, "se_model": 0.0, "se_market": 0.0, "weeks": 0})
+            o["n"] += v["n"]; o["weeks"] += 1
+            o["se_model"] += v["brier_model"] * v["n"]; o["se_market"] += v["brier_market"] * v["n"]
+    record["vs_market"] = {m: {"n": o["n"], "weeks": o["weeks"], "brier_model": o["se_model"] / o["n"],
+                               "brier_market": o["se_market"] / o["n"]} for m, o in vm.items() if o["n"]}
     for m, rows in all_rows.items():
         c = market_metrics(rows, rng)
         record["cumulative"][m] = c

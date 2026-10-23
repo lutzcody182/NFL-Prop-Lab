@@ -1,0 +1,241 @@
+{
+  "seasons": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "trials": [
+    {
+      "value": 0.5,
+      "change": -0.00494016262527324,
+      "ci95": [
+        -0.005885181858282236,
+        -0.003962187478896341
+      ],
+      "by_market": {
+        "wrte_rec": -0.005791908916021771,
+        "wrte_rec_yds": -0.004091739206051437,
+        "rb_rush_att": -0.009363171508787405,
+        "rb_rush_yds": -0.004848912309272202,
+        "rb_rec": -0.00671593283241767,
+        "rb_rec_yds": -0.00326435626075372,
+        "anytime_td": -0.0005051173436084744
+      },
+      "rows": {
+        "wrte_rec": 16251,
+        "wrte_rec_yds": 16251,
+        "rb_rush_att": 5817,
+        "rb_rush_yds": 5817,
+        "rb_rec": 4978,
+        "rb_rec_yds": 4978,
+        "anytime_td": 22784
+      }
+    },
+    {
+      "value": 1.0,
+      "change": -0.0060323017683551515,
+      "ci95": [
+        -0.007701026710259356,
+        -0.004388697000347174
+      ],
+      "by_market": {
+        "wrte_rec": -0.007327360316811249,
+        "wrte_rec_yds": -0.005038578974995822,
+        "rb_rush_att": -0.012399614331355058,
+        "rb_rush_yds": -0.005397441219324617,
+        "rb_rec": -0.007232004752287691,
+        "rb_rec_yds": -0.00401723612924354,
+        "anytime_td": -0.000813876654468082
+      },
+      "rows": {
+        "wrte_rec": 16251,
+        "wrte_rec_yds": 16251,
+        "rb_rush_att": 5817,
+        "rb_rush_yds": 5817,
+        "rb_rec": 4978,
+        "rb_rec_yds": 4978,
+        "anytime_td": 22784
+      }
+    }
+  ],
+  "best": 1.0,
+  "survived": true,
+  "final_configs": {
+    "att": {
+      "model": "B2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 0.0
+    },
+    "car": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.5,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 1.0
+    },
+    "tgt": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 1.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 1.0
+    },
+    "wrte_rec": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 1.0
+    },
+    "wrte_rec_yds": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 1.0
+    }
+  },
+  "confirmation": {
+    "live_2026_wk1_6": {
+      "change": -0.00044754013890400756,
+      "ci95": [
+        -0.007111145377478689,
+        0.005740565740645731
+      ],
+      "by_market": {
+        "wrte_rec": -0.001829863900440376,
+        "wrte_rec_yds": -0.003392168826873543,
+        "rb_rush_att": -0.002533263678103359,
+        "rb_rush_yds": 9.618369392505599e-06,
+        "rb_rec": 0.0028889448699087605,
+        "rb_rec_yds": 0.0020609408242089344,
+        "anytime_td": -0.0003369886304209757
+      },
+      "rows": {
+        "wrte_rec": 934,
+        "wrte_rec_yds": 934,
+        "rb_rush_att": 325,
+        "rb_rush_yds": 325,
+        "rb_rec": 251,
+        "rb_rec_yds": 251,
+        "anytime_td": 1289
+      }
+    },
+    "second_look_2025": {
+      "change": -0.005124482715718652,
+      "ci95": [
+        -0.008340172543975734,
+        -0.0016711273404157153
+      ],
+      "by_market": {
+        "wrte_rec": -0.004555155083627915,
+        "wrte_rec_yds": -0.0019569202424346566,
+        "rb_rush_att": -0.021979634697851247,
+        "rb_rush_yds": -0.003152123005875973,
+        "rb_rec": -0.0030107996864363606,
+        "rb_rec_yds": -0.00064398130222032,
+        "anytime_td": -0.000572764991584096
+      },
+      "rows": {
+        "wrte_rec": 2670,
+        "wrte_rec_yds": 2670,
+        "rb_rush_att": 980,
+        "rb_rush_yds": 980,
+        "rb_rec": 792,
+        "rb_rec_yds": 792,
+        "anytime_td": 3764
+      }
+    },
+    "pooled": {
+      "change": -0.003933762681898855,
+      "ci95": [
+        -0.006773936151770438,
+        -0.001209544428115522
+      ],
+      "by_market": {
+        "wrte_rec": -0.0038231797502101816,
+        "wrte_rec_yds": -0.002340430682671979,
+        "rb_rush_att": -0.016974672800091684,
+        "rb_rush_yds": -0.002399561371369874,
+        "rb_rec": -0.0015124371135948333,
+        "rb_rec_yds": 2.708484523061827e-05,
+        "anytime_td": -0.0005131419005840465
+      },
+      "rows": {
+        "wrte_rec": 3604,
+        "wrte_rec_yds": 3604,
+        "rb_rush_att": 1305,
+        "rb_rush_yds": 1305,
+        "rb_rec": 1043,
+        "rb_rec_yds": 1043,
+        "anytime_td": 5053
+      }
+    }
+  },
+  "adopted": true
+}

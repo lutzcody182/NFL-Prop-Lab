@@ -42,4 +42,28 @@ at the long-term share. The volume share becomes share × r^γ, before teammates
 
 ## Deviations
 
-(none yet)
+1. A numerical guard clips the role signal to 0.2–5 (observed range 0.38–2.2, so it never binds in practice).
+2. **Scope of adoption:** the test used the engine versions of all seven markets. Live projections for RB markets,
+   anytime TD and receiving TD come from that engine and use the role signal from week 8. Live WR/TE receptions and
+   yards come from the Phase 1 model (the one that passed its own test), which is a separate implementation; the role
+   signal is not added there until it is ported and checked, so WR/TE numbers are unchanged for now.
+3. The live-lines collector keeps no raw API responses in the repository, only the derived consensus.
+
+## Results and decision (added after scoring)
+
+**A. Role signal** (`phase9/roles_ablation.json`) — the first matchup-type addition to clear every step:
+
+| Check | CRPS change vs locked models | 95% interval |
+| --- | --- | --- |
+| Development 2019–2024, γ = 0.5 | −0.49% | −0.59% to −0.40% |
+| Development 2019–2024, γ = 1.0 (chosen) | −0.60% | −0.77% to −0.44% |
+| 2025 | −0.51% | −0.83% to −0.17% |
+| 2026 weeks 1–6 | −0.04% | −0.71% to +0.57% |
+| Pooled 2025 + 2026 weeks 1–6 | −0.39% | −0.68% to −0.12% |
+
+Both confirmation changes are below zero and the pooled interval is below zero: **adopted (γ = 1)**. Largest gain: RB rush
+attempts (−1.7% pooled).
+
+**B. Game scores** (`phase9/scores_results.json`): the nearest-games model S was *worse* than the normal baseline N on
+2025 (mean Brier +0.0035, interval −0.0007 to +0.0079), mostly on totals. **N is used** for the dashboard's score
+simulation, linked to the player draws (rank correlation between attempt gap and margin −0.38, fit on 2023–2025).

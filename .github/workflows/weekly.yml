@@ -33,6 +33,9 @@ jobs:
           --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/nflprop
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}   # optional; the lines step is skipped without it
+      ODDS_MAX_PER_RUN: "400"                      # credits per run (the key is shared with another dashboard)
+      ODDS_RESERVE: "2000"                         # never go below this many remaining credits
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -53,6 +56,6 @@ jobs:
         run: |
           git config user.name "proplab-bot"
           git config user.email "proplab-bot@users.noreply.github.com"
-          git add ledger phase1/projections.json phase3 phase4/week_sims.json phase5 phase6/dashboard_scheme.json index.html
+          git add ledger phase1/projections.json phase3 phase4/week_sims.json phase5 phase6/dashboard_scheme.json phase9/market_lines.json index.html
           git diff --cached --quiet || git commit -m "Weekly run $(date -u +%Y-%m-%dT%H:%MZ)"
           git push

@@ -75,7 +75,8 @@ def main(now: dt.datetime | None = None) -> Path:
         "models": {"wrte": "Phase 1 M1 (phase1/tuning.json)", "markets": "Phase 3a locked (phase3/tuning.json)",
                    "sims": "Phase 4 simulator (phase4/tuning.json)",
                    "recalibration": "Phase 8 maps for adopted markets (phase8/recalibration.json)",
-                   "new_markets": "Phase 7 engine markets and kicker points (phase7/)"},
+                   "new_markets": "Phase 7 engine markets and kicker points (phase7/)",
+                   "roles": "Phase 9 snap-share role signal on RB/TD markets (phase9/roles_ablation.json)"},
         "assumption": "Actives = each team's actives in its last completed game; injuries for this week not used.",
     }
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2))

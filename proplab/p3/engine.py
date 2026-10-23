@@ -104,6 +104,8 @@ class Config:
     g_pa: float = 0.0          # play-action multiplier on QB yards per completion
     # Phase 7 weather (off by default)
     g_wx: float = 0.0          # weather multiplier on completion rate and yards per completion (QB attempts, targets)
+    # Phase 9 role changes (off by default)
+    g_role: float = 0.0        # snap-share role signal on target and carry shares
 
     def label(self) -> str:
         s = f"{self.model}(h={self.half_life:g},as={self.a_share:g},ae={self.a_eff:g}"
@@ -112,7 +114,7 @@ class Config:
         if self.model == "M2":
             s += f",gam={self.opponent:g}"
         for name, v in (("depth", self.g_depth), ("gap", self.g_gap), ("press", self.g_press),
-                        ("blitz", self.g_blitz), ("box", self.g_box), ("pa", self.g_pa), ("wx", self.g_wx)):
+                        ("blitz", self.g_blitz), ("box", self.g_box), ("pa", self.g_pa), ("wx", self.g_wx), ("role", self.g_role)):
             if v:
                 s += f",{name}={v:g}"
         if self.arch:
@@ -370,6 +372,8 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
             (((pl.col(f"{vt}_S_int") if spec["int"] else pl.lit(0.0)) + a_td * prior(k, vt, "intr"))
              / (pl.col(f"{vt}_S_v") + a_td)).alias(f"{vt}_intr"),
         )
+        if cfg.g_role and vt in ("tgt", "car") and "role_r" in df.columns:
+            df = df.with_columns((pl.col(f"{vt}_share") * pl.col("role_r") ** cfg.g_role).alias(f"{vt}_share"))
         share = pl.col(f"{vt}_share")
         if cfg.lam > 0:
             df = df.with_columns(pl.col(f"{vt}_share").sum().over("game_id", "team").alias(f"{vt}_share_sum"))

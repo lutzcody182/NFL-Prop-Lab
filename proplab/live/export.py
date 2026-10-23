@@ -36,6 +36,15 @@ def projected_ids(conn) -> tuple[set[str], dict]:
     return ids, by_name
 
 
+def market_lines(season: int, week: int) -> dict:
+    """Latest sportsbook consensus per (player, market) for this week, if any were collected (Phase 9C)."""
+    from proplab.p9.lines import OUT as LINES, latest_for_week
+    book = latest_for_week(season, week)
+    meta = json.loads(LINES.read_text()).get("last_run") if LINES.exists() else None
+    return {"last_run": meta, "lines": {f"{g}|{m}": {k: v[k] for k in ("line", "p_over_market", "books", "snapshot_utc")}
+                                        for (g, m), v in book.items()}}
+
+
 def main(season: int = 2026) -> dict:
     conn = db.connect()
     now = dt.datetime.now(dt.timezone.utc)
@@ -93,6 +102,7 @@ def main(season: int = 2026) -> dict:
     payload = {
         "leaders": build_leaders(conn, season, now),
         "injuries": inj,
+        "market_lines": market_lines(season, week),
         "generated_utc": now.isoformat(timespec="minutes"), "season": season, "week": week, "games": games,
         "log_cols": log_cols, "logs": logs, "name_ids": name_ids,
         "health": {

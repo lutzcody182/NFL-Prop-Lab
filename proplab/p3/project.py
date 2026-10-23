@@ -67,6 +67,14 @@ def main(season: int = 2026) -> None:
                   .select(u.columns).cast(dict(u.schema)))
     target = (pl.col("season") == season) & (pl.col("week") == week)
     u2 = pl.concat([u.filter(~target), future]).sort("gsis_id", "kickoff_utc", "team")
+    # Phase 9A: snap-share role signal, adopted after its pre-registered confirmation
+    roles_path = ROOT / "phase9" / "roles_ablation.json"
+    if roles_path.exists() and json.loads(roles_path.read_text()).get("adopted"):
+        from dataclasses import replace as _replace
+        from proplab.p9.roles import role_signal
+        g_role = json.loads(roles_path.read_text())["best"]
+        u2 = u2.join(role_signal(conn, u2), on=["gsis_id", "game_id"], how="left").with_columns(pl.col("role_r").fill_null(1.0))
+        chosen = {vt: (_replace(c, g_role=g_role) if vt in ("tgt", "car") else c) for vt, c in chosen.items()}
 
     tf = E.team_features(tg)
     feats = {c.half_life: E.features(u2, tg, c.half_life) for c in chosen.values()}

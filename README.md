@@ -17,6 +17,14 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
   2025, so **projections stay on the locked Phase 1/3a models**. A leak (league constants using future seasons)
   was found by a perturbation test, fixed, and 3c re-run. Details: `phase3/PREREGISTRATION_3bc.md`.
 
+- Phase 8 (recalibration): ranges and over/under chances corrected from 2022–2024 and re-tested on 2025; used for
+  QB passing yards and TDs, anytime TD (now passes), receiving TD and kicker points. Details: `phase8/`.
+- Phase 9 (role changes, game scores, live lines): the **snap-share role signal passed every step** (−0.6% CRPS on
+  2019–2024, −0.5% on 2025, pooled interval below zero) and is live for RB and TD markets. A nearest-games score model
+  lost to a simple normal model, which now drives the Game simulator's score, win, cover and total chances (from the
+  betting line). The weekly run snapshots sportsbook prop lines (key from the `ODDS_API_KEY` secret, budget-capped) and
+  shows them next to the model; a model-vs-market record builds on the Weekly results tab. Details: `phase9/`.
+
 - Phase 7 (injuries, weather, more markets): the pre-registered injury-report lineup made projections **worse**
   (+1.8% CRPS; it added back players who then did not play), so projections keep last game's lineup and the dashboard
   shows each player's injury designation instead. Weather helped 0.08% (within noise) and is not used. New markets

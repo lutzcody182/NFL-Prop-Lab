@@ -72,6 +72,15 @@ def main(season: int = 2026, n_sims: int = 4000) -> None:
     u2 = pl.concat([u.filter(~((pl.col("season") == season) & (pl.col("week") == week))), future]) \
            .sort("gsis_id", "kickoff_utc", "team")
 
+    # Phase 10: role signal and air-yards catch-up, adopted after their pre-registered confirmation
+    p10 = ROOT / "phase10" / "ablation.json"
+    if p10.exists() and json.loads(p10.read_text()).get("adopted"):
+        from proplab.p10.features import air_yards
+        from proplab.p9.roles import role_signal
+        cfg = M.Config(**json.loads(p10.read_text())["final"])
+        u2 = (u2.join(role_signal(conn, u2), on=["gsis_id", "game_id"], how="left")
+                .join(air_yards(conn, u2), on=["gsis_id", "game_id"], how="left")
+                .with_columns(pl.col("role_r").fill_null(1.0)))
     feat = M.assemble(u2, tg, cfg.half_life)
     tf = M.team_features(tg)
     params, k = M.prepare_season(feat, tf, cy, season, cfg)

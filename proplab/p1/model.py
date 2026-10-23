@@ -40,10 +40,15 @@ class Config:
     redistribute: float = 1.0    # M1 lambda: 0 = off, 1 = full renormalization
     opponent: float = 1.0        # M1 gamma: 0 = off, 1 = full defensive factor
     calibrate: bool = True       # per-position mean calibration fit on earlier seasons (all models)
+    # Phase 10 additions (off by default, so the locked Phase 1 model reproduces exactly)
+    role: float = 0.0            # snap-share role signal on target share (Phase 9A port)
+    qb: float = 0.0              # quarterback-change multipliers on catch rate and yards per catch
+    ay: float = 0.0              # air-yards catch-up multiplier on yards per catch
 
     def label(self) -> str:
+        extra = "".join(f",{n}={v:g}" for n, v in (("role", self.role), ("qb", self.qb), ("airy", self.ay)) if v)
         if self.model == "M1":
-            return f"M1(h={self.half_life:g},as={self.a_share:g},ac={self.a_catch:g},ay={self.a_ypr:g},lam={self.redistribute:g},gam={self.opponent:g})"
+            return f"M1(h={self.half_life:g},as={self.a_share:g},ac={self.a_catch:g},ay={self.a_ypr:g},lam={self.redistribute:g},gam={self.opponent:g}{extra})"
         if self.model == "B2":
             return f"B2(h={self.half_life:g},as={self.a_share:g},ac={self.a_catch:g},ay={self.a_ypr:g})"
         return f"B1(h={self.half_life:g},ag={self.a_tpg:g},ac={self.a_catch:g},ay={self.a_ypr:g})"
@@ -195,12 +200,19 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
     if cfg.model == "B1":
         return df.with_columns(pl.col("tpg").alias("mu_t"))
 
+    if cfg.role and "role_r" in df.columns:
+        df = df.with_columns((pl.col("share") * pl.col("role_r").fill_null(1.0) ** cfg.role).alias("share"))
     share = pl.col("share")
     if cfg.model == "M1" and cfg.redistribute > 0:
         # Renormalize shares across the players actually active for this team-game.
         df = df.with_columns(pl.col("share").sum().over("game_id", "team").alias("share_sum"))
         share = share * (k.covered_share / pl.col("share_sum")) ** cfg.redistribute
     df = df.with_columns((share * pl.col("team_hat")).alias("mu_t"))
+    if cfg.qb and "qb_cr" in df.columns:
+        df = df.with_columns((pl.col("p_catch") * pl.col("qb_cr").fill_null(1.0) ** cfg.qb).clip(0.02, 0.95).alias("p_catch"),
+                             (pl.col("ypr") * pl.col("qb_ypc").fill_null(1.0) ** cfg.qb).alias("ypr"))
+    if cfg.ay and "ay_ypc" in df.columns:
+        df = df.with_columns((pl.col("ypr") * (pl.col("ay_ypc") / pl.col("ypr")).fill_null(1.0).clip(0.5, 2.0) ** cfg.ay).alias("ypr"))
 
     if cfg.model == "M1" and cfg.opponent > 0:
         def_catch = (pl.col("D_rec") + DEF_PSEUDO * prior(k.prior_catch)) / (pl.col("D_tgt") + DEF_PSEUDO)

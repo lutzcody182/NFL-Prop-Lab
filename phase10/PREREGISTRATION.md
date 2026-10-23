@@ -32,4 +32,28 @@ Written 2026-10-23, before any of these was built or scored. All three are teste
 
 ## Deviations
 
-(none yet)
+1. A numerical guard limits the air-yards ratio to 0.5–2.0 (not in the plan; it binds only for receivers with almost
+   no history).
+
+## Results and decision (added after scoring)
+
+Development, walk-forward 2019–2024 (`phase10/ablation.json`), mean CRPS change over WR/TE receptions and yards:
+
+| Group | Change | 95% interval | Result |
+| --- | --- | --- | --- |
+| Role (γ = 1) | −0.63% | −0.80% to −0.47% | survived |
+| QB change (γ = 0.5) | +0.02% | −0.01% to +0.05% | did not survive |
+| QB change (γ = 1.0) | +0.06% | −0.01% to +0.12% | did not survive |
+| Air yards (γ = 0.25) | −0.03% | −0.05% to −0.003% | survived (yards only) |
+| Air yards (γ = 0.5) | −0.01% | −0.06% to +0.04% | — |
+
+Both survivors still helped when combined (removing role +0.64%, removing air yards +0.03%).
+
+Confirmation, role + air yards vs the locked model: 2026 weeks 1–6 −0.42% (−1.16% to +0.31%); 2025 −0.36%
+(−0.77% to +0.05%); pooled −0.37% (−0.73% to −0.01%). **Adopted.**
+
+WR/TE gate re-checked on 2025 with the adopted model: yards still pass (−0.90% vs B2, interval −1.77% to −0.09%, ECE
+0.012, 80% ranges 80.1%); receptions still just miss on "beats baseline" (−0.84%, −1.80% to +0.17%), as before.
+
+QB change did not help: when a backup starts, the receivers' own recent numbers (and the team's lower pass volume)
+already carry most of the drop, and the extra adjustment added noise. Air yards helped only slightly.

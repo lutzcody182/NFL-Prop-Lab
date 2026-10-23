@@ -72,7 +72,7 @@ def main(now: dt.datetime | None = None) -> Path:
         "season": season, "week": week, "frozen_utc": now.isoformat(timespec="seconds"),
         "first_kickoff_utc": kick.isoformat(), "minutes_before_kickoff": round((kick - now).total_seconds() / 60),
         "code_git_sha": git_sha(), "files": files,
-        "models": {"wrte": "Phase 1 M1 (phase1/tuning.json)", "markets": "Phase 3a locked (phase3/tuning.json)",
+        "models": {"wrte": "Phase 1 M1 + Phase 10 role and air yards (phase10/ablation.json)", "markets": "Phase 3a locked (phase3/tuning.json)",
                    "sims": "Phase 4 simulator (phase4/tuning.json)",
                    "recalibration": "Phase 8 maps for adopted markets (phase8/recalibration.json)",
                    "new_markets": "Phase 7 engine markets and kicker points (phase7/)",

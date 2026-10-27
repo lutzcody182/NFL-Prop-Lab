@@ -1,0 +1,31 @@
+{
+  "season": 2026,
+  "week": 8,
+  "frozen_utc": "2026-10-27T18:58:16+00:00",
+  "first_kickoff_utc": "2026-10-30T00:15:00+00:00",
+  "minutes_before_kickoff": 3197,
+  "code_git_sha": "b64e422b59b9795f48ddbf5e2f79d484df148d8f",
+  "files": {
+    "wrte.json": {
+      "sha256": "55c826b629c6d0647e641177369c470e921c2f594b88afd8753eb1088d2d73df",
+      "generated": "2026-10-27T18:57+00:00"
+    },
+    "markets.json": {
+      "sha256": "32faac950758b3f5af397de6c0f0855a3dd0723a22699f07a7bf197f514aefd2",
+      "generated": "2026-10-27T18:57+00:00"
+    },
+    "sims.json": {
+      "sha256": "55b27e7a683889cc6aa2861fe579ac1cf8f48187928c2e590552bc09434a2245",
+      "generated": "2026-10-27T18:57+00:00"
+    }
+  },
+  "models": {
+    "wrte": "Phase 1 M1 + Phase 10 role and air yards (phase10/ablation.json)",
+    "markets": "Phase 3a locked (phase3/tuning.json)",
+    "sims": "Phase 4 simulator (phase4/tuning.json)",
+    "recalibration": "Phase 8 maps for adopted markets (phase8/recalibration.json)",
+    "new_markets": "Phase 7 engine markets and kicker points (phase7/)",
+    "roles": "Phase 9 snap-share role signal on RB/TD markets (phase9/roles_ablation.json)"
+  },
+  "assumption": "Actives = each team's actives in its last completed game; injuries for this week not used."
+}

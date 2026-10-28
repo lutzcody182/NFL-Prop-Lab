@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-27T18:58+00:00",
+  "updated_utc": "2026-10-28T19:10+00:00",
   "weeks": [
     {
       "season": 2026,
@@ -8147,12 +8147,12 @@
       "sims": {
         "players_scored": 414,
         "crps_by_stat": {
-          "Completions": 3.4218833076923074,
           "Rec yds": 13.418148154838711,
-          "Pass yds": 40.57126184615385,
-          "Pass attempts": 5.937111576923077,
+          "Completions": 3.4218833076923074,
           "Receptions": 1.0969160967741935,
-          "Pass TDs": 0.5783083076923077
+          "Pass attempts": 5.937111576923077,
+          "Pass TDs": 0.5783083076923077,
+          "Pass yds": 40.57126184615385
         },
         "two_leg_teams": 26,
         "two_leg_actual": 0.38461538461538464,

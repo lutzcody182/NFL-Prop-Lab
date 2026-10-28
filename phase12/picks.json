@@ -1,0 +1,59 @@
+{
+ "picks": [],
+ "games_logged": {},
+ "summary": {
+  "overall": {
+   "win": 0,
+   "loss": 0,
+   "push": 0,
+   "void": 0,
+   "pending": 0,
+   "units_staked": 0,
+   "net_units": 0,
+   "roi": null,
+   "weeks_graded": 0,
+   "graduated": false
+  },
+  "by_week": []
+ },
+ "rules": {
+  "markets": [
+   "wrte_rec",
+   "wrte_rec_yds"
+  ],
+  "min_ev": 0.05,
+  "max_gap": 0.2,
+  "unit_tiers": [
+   [
+    0.12,
+    2.0
+   ],
+   [
+    0.08,
+    1.5
+   ],
+   [
+    0.05,
+    1.0
+   ]
+  ],
+  "max_per_game": 3,
+  "books": [
+   "DraftKings",
+   "FanDuel",
+   "BetMGM",
+   "Caesars",
+   "BetRivers",
+   "theScore Bet",
+   "Fanatics",
+   "betPARX"
+  ],
+  "state": "PA",
+  "first_week": [
+   2026,
+   9
+  ],
+  "graduate_weeks": 8
+ },
+ "updated_utc": "2026-10-28T19:10:35+00:00"
+}

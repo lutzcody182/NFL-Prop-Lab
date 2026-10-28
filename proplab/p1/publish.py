@@ -62,6 +62,7 @@ def main() -> None:
         "p11wrte": {mk: {"adopted": v["adopted"], **{ver: {"passed": v["test_2025"][ver]["passed"], "criteria": v["test_2025"][ver]["criteria"],
                                                          "vs_baseline": v["test_2025"][ver]["vs_baseline"]} for ver in ("raw", "recal")}}
                     for mk, v in json.loads(p11.read_text())["markets"].items()} if (p11 := ROOT / "phase11" / "recal_wrte.json").exists() else None,
+        "p12": json.loads(pk.read_text()) if (pk := ROOT / "phase12" / "picks.json").exists() else None,
         "live": json.loads(live.read_text()) if (live := ROOT / "phase5" / "dashboard_live.json").exists() else None,
     }
     if "markets_raw" in payload["p7"]:

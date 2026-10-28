@@ -19,6 +19,7 @@ from pathlib import Path
 
 from proplab import db, names
 from proplab.odds.oddsmath import novig_multiplicative
+from proplab.p12.books import allowed as licensed_books
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "phase9" / "market_lines.json"
@@ -76,14 +77,22 @@ def consensus(event_odds: dict) -> list[dict]:
                     pairs.setdefault((o.get("description", ""), float(o["point"])), {})[side] = float(o["price"])
             for (player, line), pr in pairs.items():
                 if "over" in pr and "under" in pr and pr["over"] > 1 and pr["under"] > 1:
-                    by.setdefault((mk["key"], player), []).append((bk["key"], line, novig_multiplicative(pr["over"], pr["under"])))
+                    by.setdefault((mk["key"], player), []).append((bk["key"], line, novig_multiplicative(pr["over"], pr["under"]),
+                                                                    pr["over"], pr["under"]))
     out = []
     for (mk, player), rows in by.items():
         lines = [r[1] for r in rows]
         modal = max(set(lines), key=lambda L: (lines.count(L), -abs(L - statistics.median(lines))))
         ps = [r[2] for r in rows if r[1] == modal]
-        out.append({"api_market": mk, "player_name": player, "line": modal, "p_over_market": statistics.median(ps),
-                    "books": len(ps), "books_any_line": len(rows)})
+        row = {"api_market": mk, "player_name": player, "line": modal, "p_over_market": statistics.median(ps),
+               "books": len(ps), "books_any_line": len(rows)}
+        # Phase 12: best price on each side at the consensus line among state-licensed US books only
+        ok = licensed_books()
+        lic = [r for r in rows if r[1] == modal and r[0] in ok]
+        if lic:
+            bo, bu = max(lic, key=lambda r: r[3]), max(lic, key=lambda r: r[4])
+            row["licensed"] = {"books": sorted(r[0] for r in lic), "best_over": [bo[3], bo[0]], "best_under": [bu[4], bu[0]]}
+        out.append(row)
     return out
 
 

@@ -15,6 +15,10 @@ BetUS), sweepstakes apps and pick'em/DFS apps are excluded. The list can be narr
 state; that changes which prices count from the next logged pick onward. Prices come from the existing line snapshots,
 so this costs no extra API credits. Each pick stores the best licensed price and the book that offered it.
 
+**State: Pennsylvania** (set 2026-10-28, before any pick). Prices count only from DraftKings, FanDuel, BetMGM, Caesars,
+BetRivers, theScore Bet (formerly ESPN BET), Fanatics and betPARX. bet365, PlaySugarHouse and Mohegan are licensed in PA
+but not in our odds feed.
+
 ## Which props
 
 - Only markets that passed every pre-registered test: **WR/TE receptions and WR/TE receiving yards**. Others join only

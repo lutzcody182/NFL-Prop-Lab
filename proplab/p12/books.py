@@ -5,11 +5,13 @@ deliberately absent. To limit picks to one state's books, set STATE_BOOKS to a s
 """
 LICENSED = {
     "draftkings": "DraftKings", "fanduel": "FanDuel", "betmgm": "BetMGM", "williamhill_us": "Caesars",
-    "betrivers": "BetRivers", "espnbet": "ESPN BET", "fanatics": "Fanatics", "hardrockbet": "Hard Rock Bet",
+    "betrivers": "BetRivers", "espnbet": "theScore Bet", "fanatics": "Fanatics", "hardrockbet": "Hard Rock Bet",
     "ballybet": "Bally Bet", "betparx": "betPARX",
 }
-STATE = None          # e.g. "NJ" once chosen
-STATE_BOOKS = None    # e.g. {"draftkings", "fanduel", ...}; None = every licensed book above
+# Pennsylvania (PGCB-licensed online books available in our odds feed; checked 2026-10-28).
+# Hard Rock Bet and Bally Bet are not licensed in PA. bet365, PlaySugarHouse and Mohegan are licensed but not in the feed.
+STATE = "PA"
+STATE_BOOKS = {"draftkings", "fanduel", "betmgm", "williamhill_us", "betrivers", "espnbet", "fanatics", "betparx"}
 
 
 def allowed() -> set[str]:

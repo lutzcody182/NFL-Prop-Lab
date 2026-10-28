@@ -201,7 +201,9 @@ def project(conn, season: int, week: int, lines: pl.DataFrame) -> list[dict]:
                                                                  & (pl.col("n_prev") >= 3)).sort("kickoff_utc", "team")
     draws = simulate(p, N_SIMS, np.random.default_rng(606))
     from proplab.p8.recal import MAPS, apply_map   # Phase 8 recalibration, if adopted for this market
-    recal = json.loads(MAPS.read_text())["maps"].get("k_points", {}) if MAPS.exists() else {}
+    p11 = MAPS.parents[1] / "phase11" / "recalibration.json"
+    src = p11 if p11.exists() else MAPS
+    recal = json.loads(src.read_text())["maps"].get("k_points", {}) if src.exists() else {}
     if recal.get("adopted") and draws.shape[0]:
         draws = apply_map("k_points", draws, recal)
     grid_lv = [(i + 0.5) / 100 for i in range(100)]

@@ -78,6 +78,10 @@ def main(season: int = 2026, n_sims: int = 4000) -> None:
         from proplab.p10.features import air_yards
         from proplab.p9.roles import role_signal
         cfg = M.Config(**json.loads(p10.read_text())["final"])
+        # Phase 11: volume-dependent ranges and position-aware redistribution, adopted after confirmation
+        p11 = ROOT / "phase11" / "ablation.json"
+        if p11.exists() and json.loads(p11.read_text()).get("adopted"):
+            cfg = M.Config(**json.loads(p11.read_text())["final"])
         u2 = (u2.join(role_signal(conn, u2), on=["gsis_id", "game_id"], how="left")
                 .join(air_yards(conn, u2), on=["gsis_id", "game_id"], how="left")
                 .with_columns(pl.col("role_r").fill_null(1.0)))
@@ -87,6 +91,18 @@ def main(season: int = 2026, n_sims: int = 4000) -> None:
     rows = (M.eligible(params.filter((pl.col("season") == season) & (pl.col("week") == week)))
             .sort("kickoff_utc", "team", "gsis_id"))
     rec, yds = M.simulate(rows, k, cfg.model, n_sims, seed=606)
+    # Phase 11 R: WR/TE recalibration maps (fit 2023-2025), applied only where adopted
+    recal = ROOT / "phase11" / "recal_wrte.json"
+    recal_used = []
+    if recal.exists() and rows.height:
+        from proplab.p8.recal import apply_quantile_map
+        maps = json.loads(recal.read_text())["live_maps"]["maps"]
+        if maps.get("receptions", {}).get("adopted"):
+            rec = apply_quantile_map(rec, maps["receptions"]["q"])
+            recal_used.append("receptions")
+        if maps.get("yards", {}).get("adopted"):
+            yds = apply_quantile_map(yds, maps["yards"]["q"])
+            recal_used.append("yards")
 
     out = []
     for i, r in enumerate(rows.iter_rows(named=True)):
@@ -107,7 +123,7 @@ def main(season: int = 2026, n_sims: int = 4000) -> None:
                         "yds_per_catch": float(r["ypr"]), "team_spread": r["team_spread"],
                         "total": r["total_line"], "games_history": int(r["n_prev"])},
         })
-    meta = {"season": season, "week": week, "model": cfg.label(), "players": len(out),
+    meta = {"season": season, "week": week, "model": cfg.label(), "players": len(out), "recalibrated": recal_used,
             "lines_fetched_utc": fetched.isoformat(timespec="minutes"),
             "rec_lines": REC_SHOW, "yds_lines": YDS_SHOW,
             "assumption": "Actives = each team's actives in its last completed game; "

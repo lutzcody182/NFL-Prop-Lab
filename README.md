@@ -22,6 +22,10 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
 - Phase 10 (WR/TE upgrades): the role signal and an air-yards catch-up term passed every step in the Phase 1 WR/TE
   model (pooled −0.37% CRPS) and are live for WR/TE; a quarterback-change adjustment did not help and is not used.
   WR/TE yards still pass their gate on 2025. Details: `phase10/PREREGISTRATION.md`.
+- Phase 11 (sharper WR/TE ranges, free data only): volume-dependent target dispersion and position-aware
+  redistribution (w = 0.5) improved WR/TE CRPS by 0.75% pooled over 2025 and 2026 weeks 1–7, and were adopted. WR/TE receptions
+  now passes (3 of 16 markets pass). Recalibration was refit on the role-signal engine, and WR/TE yards is now recalibrated.
+  See `phase11/PREREGISTRATION.md`.
 - Phase 9 (role changes, game scores, live lines): the **snap-share role signal passed every step** (−0.6% CRPS on
   2019–2024, −0.5% on 2025, pooled interval below zero) and is live for RB and TD markets. A nearest-games score model
   lost to a simple normal model, which now drives the Game simulator's score, win, cover and total chances (from the

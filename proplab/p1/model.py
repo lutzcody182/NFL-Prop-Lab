@@ -44,9 +44,13 @@ class Config:
     role: float = 0.0            # snap-share role signal on target share (Phase 9A port)
     qb: float = 0.0              # quarterback-change multipliers on catch rate and yards per catch
     ay: float = 0.0              # air-yards catch-up multiplier on yards per catch
+    # Phase 11 additions (off by default)
+    disp_bins: bool = False      # target dispersion fit per position x 3 bins of expected targets
+    pos_redist: float = 0.0      # position-aware redistribution exponent w
 
     def label(self) -> str:
-        extra = "".join(f",{n}={v:g}" for n, v in (("role", self.role), ("qb", self.qb), ("airy", self.ay)) if v)
+        extra = "".join(f",{n}={v:g}" for n, v in (("role", self.role), ("qb", self.qb), ("airy", self.ay),
+                                                     ("disp3", float(self.disp_bins)), ("posw", self.pos_redist)) if v)
         if self.model == "M1":
             return f"M1(h={self.half_life:g},as={self.a_share:g},ac={self.a_catch:g},ay={self.a_ypr:g},lam={self.redistribute:g},gam={self.opponent:g}{extra})"
         if self.model == "B2":
@@ -115,12 +119,35 @@ def defense_features(universe: pl.DataFrame, team_games: pl.DataFrame) -> pl.Dat
     ).select("game_id", "defense", "pos", "D_tgt", "D_rec", "D_yds")
 
 
+GROUP_HALF_LIFE = 8
+GROUP_PSEUDO_GAMES = 4.0
+
+
+def group_features(universe: pl.DataFrame, team_games: pl.DataFrame) -> pl.DataFrame:
+    """Each team's share of its targets going to WR / TE / RB over its PREVIOUS games (Phase 11 P).
+    Returns (game_id, team, pos, G_tgt, G_tt, G_n): weighted sums, shrunk later with the league prior."""
+    got = (universe.filter(pl.col("played")).group_by("game_id", "team", "pos")
+           .agg(pl.col("targets").sum().alias("gt")))
+    grid = (team_games.select("game_id", "team", "kickoff_utc", "played", "team_targets")
+            .join(pl.DataFrame({"pos": ["WR", "TE", "RB"]}), how="cross")
+            .join(got, on=["game_id", "team", "pos"], how="left").fill_null(0)
+            .sort("team", "pos", "kickoff_utc"))
+    keys = (grid["team"] + "|" + grid["pos"]).to_numpy()
+    played = grid["played"].to_numpy().astype(float)
+    d = decay_for(GROUP_HALF_LIFE)
+    return grid.with_columns(
+        pl.Series("G_tgt", ewm_prior_sums(keys, grid["gt"].to_numpy().astype(float) * played, d)),
+        pl.Series("G_tt", ewm_prior_sums(keys, grid["team_targets"].to_numpy().astype(float) * played, d)),
+    ).select("game_id", "team", "pos", "G_tgt", "G_tt")
+
+
 def assemble(universe, team_games, half_life: float) -> pl.DataFrame:
     pf = player_features(universe, team_games, half_life)
     tf = team_features(team_games).select("game_id", "team", "T_n", "T_tt", "team_spread", "total_line")
     out =(pf.join(tf, on=["game_id", "team"], how="left")
              .join(defense_features(universe, team_games),
-                   left_on=["game_id", "opp", "pos"], right_on=["game_id", "defense", "pos"], how="left"))
+                   left_on=["game_id", "opp", "pos"], right_on=["game_id", "defense", "pos"], how="left")
+             .join(group_features(universe, team_games), on=["game_id", "team", "pos"], how="left"))
     return out
 
 
@@ -139,6 +166,8 @@ class Constants:
     calibration: dict = field(default_factory=dict)      # pos -> mean-calibration factor
     dispersion: dict = field(default_factory=dict)       # (model, pos) -> r
     catch_yards: dict = field(default_factory=dict)      # pos -> normalized draws (mean 1)
+    group_share: dict = field(default_factory=dict)      # pos -> league share of team targets (Phase 11 P)
+    disp_cuts: dict = field(default_factory=dict)        # pos -> (cut1, cut2) of expected targets (Phase 11 D)
 
 
 def fit_constants(feat: pl.DataFrame, team_feat: pl.DataFrame, catch_yards: pl.DataFrame, season: int) -> Constants:
@@ -170,8 +199,11 @@ def fit_constants(feat: pl.DataFrame, team_feat: pl.DataFrame, catch_yards: pl.D
                                & (pl.col("season") >= season - 3))["yds"].to_numpy()
         cy[pos] = (y / y.mean()).astype(np.float32)
 
+    gs = recent.group_by("pos").agg(pl.col("targets").sum().alias("t"))
+    tt_total = float(tg_sums["tt"].sum())
+    group_share = {r["pos"]: r["t"] / tt_total for r in gs.iter_rows(named=True)}
     return Constants(pick("share"), pick("catch"), pick("ypr"), pick("tpg"), league_tt, covered, coef,
-                     season_targets=pick("season_targets"), catch_yards=cy)
+                     season_targets=pick("season_targets"), catch_yards=cy, group_share=group_share)
 
 
 # ---------------------------------------------------------------- parameters
@@ -202,6 +234,12 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
 
     if cfg.role and "role_r" in df.columns:
         df = df.with_columns((pl.col("share") * pl.col("role_r").fill_null(1.0) ** cfg.role).alias("share"))
+    if cfg.model == "M1" and cfg.pos_redist and "G_tgt" in df.columns:
+        # team's recent group share (shrunk to the league share of that position) vs active players' summed shares
+        g_share = (pl.col("G_tgt") + GROUP_PSEUDO_GAMES * k.league_team_targets * prior(k.group_share)) / \
+                  (pl.col("G_tt") + GROUP_PSEUDO_GAMES * k.league_team_targets)
+        df = df.with_columns(pl.col("share").sum().over("game_id", "team", "pos").alias("grp_sum"))
+        df = df.with_columns((pl.col("share") * (g_share / pl.col("grp_sum")) ** cfg.pos_redist).alias("share"))
     share = pl.col("share")
     if cfg.model == "M1" and cfg.redistribute > 0:
         # Renormalize shares across the players actually active for this team-game.
@@ -245,7 +283,13 @@ def simulate(params: pl.DataFrame, k: Constants, model: str, n_sims: int, seed: 
     rng = np.random.default_rng(seed)
     n = params.height
     mu = np.clip(params["mu_t"].to_numpy(), 0.05, None)
-    r = params["pos"].replace_strict({p: k.dispersion[(model, p)] for p in EVAL_POS}, default=10.0).to_numpy()
+    r = params["pos"].replace_strict({p: k.dispersion[(model, p)] for p in EVAL_POS}, default=10.0).to_numpy().copy()
+    if k.disp_cuts:   # Phase 11 D: size parameter by position and expected-target bin
+        pos_ = params["pos"].to_numpy()
+        for ps, cuts in k.disp_cuts.items():
+            m = pos_ == ps
+            b = np.digitize(mu[m], cuts)
+            r[m] = np.array([k.dispersion[(model, ps, i)] for i in range(3)])[b]
     p = r / (r + mu)
     tgt = rng.negative_binomial(r[:, None], p[:, None], size=(n, n_sims))
     rec = rng.binomial(tgt, params["p_catch"].to_numpy()[:, None])
@@ -340,7 +384,14 @@ def prepare_season(feat: pl.DataFrame, team_feat: pl.DataFrame, catch_yards: pl.
         train = train.with_columns(pl.col("mu_t") * factor)
     for ps in EVAL_POS:
         t = train.filter(pl.col("pos") == ps)
-        k.dispersion[(cfg.model, ps)] = fit_dispersion(t["mu_t"].to_numpy(), t["targets"].to_numpy().astype(float))
+        mu, y = t["mu_t"].to_numpy(), t["targets"].to_numpy().astype(float)
+        k.dispersion[(cfg.model, ps)] = fit_dispersion(mu, y)
+        if cfg.disp_bins:
+            c1, c2 = (float(x) for x in np.quantile(mu, [1 / 3, 2 / 3]))
+            k.disp_cuts[ps] = (c1, c2)
+            b = np.digitize(mu, [c1, c2])
+            for i in range(3):
+                k.dispersion[(cfg.model, ps, i)] = fit_dispersion(mu[b == i], y[b == i])
     return params, k
 
 

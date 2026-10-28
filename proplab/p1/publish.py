@@ -56,7 +56,12 @@ def main() -> None:
                                                        "vs_baseline": v["test_2025"][ver]["vs_baseline"],
                                                        "ece": v["test_2025"][ver]["model"]["ece"], "ece_null95": v["test_2025"][ver]["model"]["ece_null95"],
                                                        "coverage80": v["test_2025"][ver]["model"].get("coverage80")} for ver in ("raw", "recal")}}
-               for m, v in json.loads(p8.read_text()).items()} if (p8 := ROOT / "phase8" / "results.json").exists() else None,
+               for m, v in json.loads(p8.read_text()).items()} if (p8 := (ROOT / "phase11" / "recal_engine.json" if (ROOT / "phase11" / "recal_engine.json").exists()
+                                                                          else ROOT / "phase8" / "results.json")).exists() else None,
+        # Phase 11: WR/TE verdicts for the current live model (2025 test), raw and recalibrated
+        "p11wrte": {mk: {"adopted": v["adopted"], **{ver: {"passed": v["test_2025"][ver]["passed"], "criteria": v["test_2025"][ver]["criteria"],
+                                                         "vs_baseline": v["test_2025"][ver]["vs_baseline"]} for ver in ("raw", "recal")}}
+                    for mk, v in json.loads(p11.read_text())["markets"].items()} if (p11 := ROOT / "phase11" / "recal_wrte.json").exists() else None,
         "live": json.loads(live.read_text()) if (live := ROOT / "phase5" / "dashboard_live.json").exists() else None,
     }
     if "markets_raw" in payload["p7"]:

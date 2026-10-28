@@ -119,8 +119,8 @@ def strip(r):
     return {k: v for k, v in r.items() if k not in ("crps_rows",)}
 
 
-def main() -> None:
-    eng, kick = Engine(), Kicker()
+def main(eng=None, results_path: Path = RESULTS, maps_path: Path = MAPS, live_weeks=(1, 5)) -> None:
+    eng, kick = eng or Engine(), Kicker()
     rng = np.random.default_rng(SEED)
     chosen = load_chosen()
     results, live_maps = {}, {}
@@ -156,9 +156,9 @@ def main() -> None:
         out.update({"test_2025": verdict, "adopted": adopted, "maps_2022_2024": maps})
         # live maps (2023-2025) and the 2026 weeks 1-5 check, model only
         lm = fit_map(market, [src.run(market, "chosen", s, N_FIT)[:2] for s in FIT_LIVE], np.random.default_rng(1))
-        d, y, _, _ = src.run(market, "chosen", 2026, N_EVAL, weeks=(1, 5))
+        d, y, _, _ = src.run(market, "chosen", 2026, N_EVAL, weeks=live_weeks)
         r_raw, r_rec = score(market, d, y, np.random.default_rng(3)), score(market, apply_map(market, d, lm), y, np.random.default_rng(3))
-        out["live_2026_wk1_5"] = {"raw": strip(r_raw), "recal": strip(r_rec)}
+        out[f"live_2026_wk{live_weeks[0]}_{live_weeks[1]}"] = {"raw": strip(r_raw), "recal": strip(r_rec)}
         live_maps[market] = {**lm, "adopted": adopted}
         results[market] = out
         v = verdict["recal"]
@@ -166,9 +166,9 @@ def main() -> None:
               f"| ece {raw_c['ece']:.3f}->{rec_c['ece']:.3f} (noise {rec_c['ece_null95']:.3f}) "
               f"cov {raw_c.get('coverage80', float('nan')):.3f}->{rec_c.get('coverage80', float('nan')):.3f} "
               f"crps {raw_c['crps']:.4f}->{rec_c['crps']:.4f} vs base {v['vs_baseline']['pct']:+.2%} {v['criteria']} adopt={adopted}", flush=True)
-    RESULTS.parent.mkdir(exist_ok=True)
-    RESULTS.write_text(json.dumps(results, indent=2, default=float))
-    MAPS.write_text(json.dumps({"fit_seasons": FIT_LIVE, "maps": live_maps}, indent=1))
+    results_path.parent.mkdir(exist_ok=True)
+    results_path.write_text(json.dumps(results, indent=2, default=float))
+    maps_path.write_text(json.dumps({"fit_seasons": FIT_LIVE, "maps": live_maps}, indent=1))
 
 
 if __name__ == "__main__":

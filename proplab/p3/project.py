@@ -22,7 +22,8 @@ from proplab.p8.recal import MAPS, apply_map
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "phase3" / "projections.json"
 N_SIMS = 4000
-RECAL = json.loads(MAPS.read_text())["maps"] if MAPS.exists() else {}
+_P11 = Path(__file__).resolve().parents[2] / "phase11" / "recalibration.json"   # Phase 11: maps refit on the role-signal engine
+RECAL = json.loads((_P11 if _P11.exists() else MAPS).read_text())["maps"] if (_P11.exists() or MAPS.exists()) else {}
 QUANTILES = [round(0.05 * i, 2) for i in range(1, 20)]   # 5th..95th percentiles, stored for live scoring
 GRID = [(i + 0.5) / 100 for i in range(100)]              # 100-point grid for "your own line" on the dashboard
 

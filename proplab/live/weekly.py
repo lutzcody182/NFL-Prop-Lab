@@ -29,6 +29,7 @@ STEPS = [
     ("tracked picks at US-licensed books: log + grade (Phase 12)", ["proplab.p12.picks"], False),
     ("score finished ledger weeks", ["proplab.live.score"], True),
     ("week / players / health export", ["proplab.live.export"], True),
+    ("quadrant charts export", ["proplab.live.quadrants"], False),
     ("rebuild index.html", ["proplab.p1.publish"], True),
 ]
 

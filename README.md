@@ -29,6 +29,8 @@ see the "NFL Prop Lab — Architecture & Phased Plan" doc.
 - Phase 12 (tracked picks): WR/TE props where the frozen model's EV is at least 5% at the best price among state-licensed US books
   are logged once per game before kickoff (1–2 units), graded 3 days later and shown on the Tracked picks tab. They are not
   advice until 8+ graded weeks show a return clearly above zero. Starts 2026 week 9. See `phase12/PREREGISTRATION.md`.
+- Quadrants tab: 12 team and 16 player/prop quadrant charts (season or last 4 games), built each run by
+  `python -m proplab.live.quadrants` (descriptive only; nothing feeds the models).
 - Phase 9 (role changes, game scores, live lines): the **snap-share role signal passed every step** (−0.6% CRPS on
   2019–2024, −0.5% on 2025, pooled interval below zero) and is live for RB and TD markets. A nearest-games score model
   lost to a simple normal model, which now drives the Game simulator's score, win, cover and total chances (from the

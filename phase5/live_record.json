@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-02T22:05+00:00",
+  "updated_utc": "2026-11-03T16:41+00:00",
   "weeks": [
     {
       "season": 2026,
@@ -8147,11 +8147,11 @@
       "sims": {
         "players_scored": 414,
         "crps_by_stat": {
-          "Rec yds": 13.418148154838711,
-          "Completions": 3.4218833076923074,
-          "Pass attempts": 5.937111576923077,
           "Pass TDs": 0.5783083076923077,
+          "Pass attempts": 5.937111576923077,
           "Receptions": 1.0969160967741935,
+          "Completions": 3.4218833076923074,
+          "Rec yds": 13.418148154838711,
           "Pass yds": 40.57126184615385
         },
         "two_leg_teams": 26,
@@ -19014,12 +19014,12 @@
       "sims": {
         "players_scored": 426,
         "crps_by_stat": {
-          "Pass yds": 43.96348989285714,
-          "Pass TDs": 0.5428578571428572,
           "Receptions": 0.9544340828025477,
-          "Completions": 3.76410275,
           "Rec yds": 14.64105011464968,
-          "Pass attempts": 5.232942392857143
+          "Completions": 3.76410275,
+          "Pass attempts": 5.232942392857143,
+          "Pass TDs": 0.5428578571428572,
+          "Pass yds": 43.96348989285714
         },
         "two_leg_teams": 28,
         "two_leg_actual": 0.39285714285714285,
@@ -19034,7 +19034,14 @@
       "week": 8,
       "frozen_utc": "2026-10-27T18:58:16+00:00",
       "minutes_before_kickoff": 3197,
-      "status": "13 of 14 games final"
+      "status": "waiting for stat corrections until 2026-11-06T01:15+00:00"
+    },
+    {
+      "season": 2026,
+      "week": 9,
+      "frozen_utc": "2026-11-03T16:41:18+00:00",
+      "minutes_before_kickoff": 3394,
+      "status": "0 of 15 games final"
     }
   ],
   "cumulative": {

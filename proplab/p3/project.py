@@ -14,7 +14,7 @@ import nflreadpy as nfl
 import numpy as np
 import polars as pl
 
-from proplab import db
+from proplab import db, upcoming
 from proplab.p3 import engine as E
 from proplab.p3.run import load_chosen
 from proplab.p8.recal import MAPS, apply_map
@@ -44,7 +44,7 @@ def main(season: int = 2026) -> None:
     D = E.load(conn)
     u, tg = D["u"], D["tg"]
     chosen = load_chosen()
-    week = int(u.filter((pl.col("season") == season) & ~pl.col("played"))["week"].min())
+    week = upcoming.next_week(conn, season)
 
     fetched = dt.datetime.now(dt.timezone.utc)
     sched = nfl.load_schedules([season]).filter(pl.col("week") == week)
@@ -59,8 +59,7 @@ def main(season: int = 2026) -> None:
     played = u.filter(pl.col("played"))
     last = played.group_by("team").agg(pl.col("kickoff_utc").max().alias("last_kick"))
     acts = played.join(last, on="team").filter(pl.col("kickoff_utc") == pl.col("last_kick")).select("gsis_id", "name", "pos", "team")
-    games = u.filter((pl.col("season") == season) & (pl.col("week") == week)).select(
-        "game_id", "kickoff_utc", "team", "opp", "is_home", "season", "week").unique()
+    games = upcoming.week_games(conn, season, week)
     zeros = [pl.lit(0).alias(c) for c in ("targets", "receptions", "rec_tds", "carries", "rush_tds", "attempts",
                                           "completions", "pass_tds", "ints")]
     fzeros = [pl.lit(0.0).alias(c) for c in ("rec_yds", "rush_yds", "pass_yds")]

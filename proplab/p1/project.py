@@ -16,7 +16,7 @@ import nflreadpy as nfl
 import numpy as np
 import polars as pl
 
-from proplab import db
+from proplab import db, upcoming
 from proplab.p1 import backtest, data, model as M
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,7 +40,7 @@ def main(season: int = 2026, n_sims: int = 4000) -> None:
     conn = db.connect()
     u, tg, cy = data.load_universe(conn), data.load_team_games(conn), data.load_catch_yards(conn)
     cfg = backtest.load_configs()["M1"]
-    week = next_week(u, season)
+    week = upcoming.next_week(conn, season)
 
     # current lines for the week, fetched now
     fetched = dt.datetime.now(dt.timezone.utc)
@@ -61,8 +61,7 @@ def main(season: int = 2026, n_sims: int = 4000) -> None:
     last_actives = (played.join(last_game, on="team")
                     .filter(pl.col("kickoff_utc") == pl.col("last_kick"))
                     .select("gsis_id", "name", "pos", "team"))
-    games = u.filter((pl.col("season") == season) & (pl.col("week") == week)) \
-             .select("game_id", "kickoff_utc", "team", "opp", "is_home").unique()
+    games = upcoming.week_games(conn, season, week).select("game_id", "kickoff_utc", "team", "opp", "is_home")
     future = (last_actives.join(games, on="team")
               .with_columns(pl.lit(season).alias("season"), pl.lit(week).alias("week"),
                             pl.lit(0).alias("targets"), pl.lit(0).alias("receptions"),

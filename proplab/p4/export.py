@@ -16,6 +16,7 @@ import nflreadpy as nfl
 import numpy as np
 import polars as pl
 
+from proplab import db, upcoming
 from proplab.p4 import sim as S
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,7 +31,8 @@ def b64(a: np.ndarray) -> str:
 def main(season: int = 2026) -> None:
     D, feat, tf = S.setup()
     u, tg = D["u"], D["tg"]
-    week = int(u.filter((pl.col("season") == season) & ~pl.col("played"))["week"].min())
+    conn = db.connect()
+    week = upcoming.next_week(conn, season)
     fetched = dt.datetime.now(dt.timezone.utc)
     sched = nfl.load_schedules([season]).filter(pl.col("week") == week)
     lines = pl.concat([
@@ -44,7 +46,7 @@ def main(season: int = 2026) -> None:
     last = played.group_by("team").agg(pl.col("kickoff_utc").max().alias("last_kick"))
     acts = played.join(last, on="team").filter(pl.col("kickoff_utc") == pl.col("last_kick")).select("gsis_id", "name", "pos", "team")
     target = (pl.col("season") == season) & (pl.col("week") == week)
-    games = u.filter(target).select("game_id", "kickoff_utc", "team", "opp", "is_home", "season", "week").unique()
+    games = upcoming.week_games(conn, season, week)
     zeros = [pl.lit(0).alias(c) for c in ("targets", "receptions", "rec_tds", "carries", "rush_tds", "attempts",
                                           "completions", "pass_tds", "ints")]
     fz = [pl.lit(0.0).alias(c) for c in ("rec_yds", "rush_yds", "pass_yds")]

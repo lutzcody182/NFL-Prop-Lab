@@ -1,20 +1,138 @@
 {
- "picks": [],
- "games_logged": {},
+ "picks": [
+  {
+   "id": "2026_09_JAX_BAL|00-0041100|wrte_rec",
+   "season": 2026,
+   "week": 9,
+   "game_id": "2026_09_JAX_BAL",
+   "kickoff": "2026-11-06T01:15:00+00:00",
+   "logged_utc": "2026-11-04T13:10:57+00:00",
+   "snapshot_utc": "2026-11-03T16:41:00+00:00",
+   "state": "PA",
+   "player": "Josh Cameron",
+   "gsis_id": "00-0041100",
+   "pos": "WR",
+   "team": "JAX",
+   "opp": "BAL",
+   "market": "wrte_rec",
+   "line": 1.5,
+   "side": "under",
+   "p_win": 0.66,
+   "price": 1.98,
+   "book": "draftkings",
+   "ev": 0.30679999999999996,
+   "book_name": "DraftKings",
+   "p_push": -1.1102230246251565e-16,
+   "p_model_over": 0.34,
+   "p_market_over": 0.5218517115068839,
+   "licensed_books": 3,
+   "units": 2.0,
+   "result": null,
+   "actual": null,
+   "net": null,
+   "graded_utc": null
+  },
+  {
+   "id": "2026_09_JAX_BAL|00-0039064|wrte_rec_yds",
+   "season": 2026,
+   "week": 9,
+   "game_id": "2026_09_JAX_BAL",
+   "kickoff": "2026-11-06T01:15:00+00:00",
+   "logged_utc": "2026-11-04T13:10:57+00:00",
+   "snapshot_utc": "2026-11-03T16:41:00+00:00",
+   "state": "PA",
+   "player": "Zay Flowers",
+   "gsis_id": "00-0039064",
+   "pos": "WR",
+   "team": "BAL",
+   "opp": "JAX",
+   "market": "wrte_rec_yds",
+   "line": 42.5,
+   "side": "over",
+   "p_win": 0.66,
+   "price": 1.88,
+   "book": "draftkings",
+   "ev": 0.2507999999999999,
+   "book_name": "DraftKings",
+   "p_push": 0.009999999999999953,
+   "p_model_over": 0.66,
+   "p_market_over": 0.5072980407567507,
+   "licensed_books": 1,
+   "units": 2.0,
+   "result": null,
+   "actual": null,
+   "net": null,
+   "graded_utc": null
+  },
+  {
+   "id": "2026_09_JAX_BAL|00-0038606|wrte_rec",
+   "season": 2026,
+   "week": 9,
+   "game_id": "2026_09_JAX_BAL",
+   "kickoff": "2026-11-06T01:15:00+00:00",
+   "logged_utc": "2026-11-04T13:10:57+00:00",
+   "snapshot_utc": "2026-11-03T16:41:00+00:00",
+   "state": "PA",
+   "player": "Parker Washington",
+   "gsis_id": "00-0038606",
+   "pos": "WR",
+   "team": "JAX",
+   "opp": "BAL",
+   "market": "wrte_rec",
+   "line": 4.5,
+   "side": "under",
+   "p_win": 0.67,
+   "price": 1.83,
+   "book": "betmgm",
+   "ev": 0.2261000000000002,
+   "book_name": "BetMGM",
+   "p_push": -1.1102230246251565e-16,
+   "p_model_over": 0.33,
+   "p_market_over": 0.4807445397595801,
+   "licensed_books": 3,
+   "units": 2.0,
+   "result": null,
+   "actual": null,
+   "net": null,
+   "graded_utc": null
+  }
+ ],
+ "games_logged": {
+  "2026_09_JAX_BAL": {
+   "logged_utc": "2026-11-04T13:10:57+00:00",
+   "picks": 3,
+   "snapshot_utc": "2026-11-03T16:41:00+00:00"
+  }
+ },
  "summary": {
   "overall": {
    "win": 0,
    "loss": 0,
    "push": 0,
    "void": 0,
-   "pending": 0,
+   "pending": 3,
    "units_staked": 0,
    "net_units": 0,
    "roi": null,
    "weeks_graded": 0,
    "graduated": false
   },
-  "by_week": []
+  "by_week": [
+   {
+    "season": 2026,
+    "week": 9,
+    "win": 0,
+    "loss": 0,
+    "push": 0,
+    "void": 0,
+    "pending": 3,
+    "units_staked": 0,
+    "net_units": 0,
+    "roi": null,
+    "weeks_graded": 0,
+    "graduated": false
+   }
+  ]
  },
  "rules": {
   "markets": [
@@ -55,5 +173,5 @@
   ],
   "graduate_weeks": 8
  },
- "updated_utc": "2026-11-04T04:01:56+00:00"
+ "updated_utc": "2026-11-04T13:10:57+00:00"
 }

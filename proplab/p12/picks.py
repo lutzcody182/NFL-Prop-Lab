@@ -25,8 +25,10 @@ MIN_EV, MAX_GAP = 0.05, 0.20
 UNIT_TIERS = [(0.12, 2.0), (0.08, 1.5), (0.05, 1.0)]
 MAX_PER_GAME = 3
 SNAPSHOT_MAX_AGE = dt.timedelta(hours=48)
-GRADE_AFTER = dt.timedelta(days=3)
-RUNS = [(1, 13, 41), (2, 13, 41), (5, 13, 41)]       # scheduled weekly runs (Mon=0): Tue, Wed, Sat 13:41 UTC
+STATUS_WAIT = dt.timedelta(days=3)       # only for players with no stat line (sat out, or no catches)
+RUNS = [(1, 13, 41), (2, 13, 41), (5, 13, 41)]       # pick-logging runs (Mon=0): Tue, Wed, Sat 13:41 UTC
+# (the Fri/Mon/Tue early-morning runs grade results; they are not counted here, so picks are still logged
+#  Wednesday for Thursday games and Saturday for Sunday/Monday games, as pre-registered)
 RUN_SLACK = dt.timedelta(hours=1)                    # a run within the next hour is this run, not a later one
 GRADUATE_WEEKS = 8
 
@@ -130,18 +132,36 @@ def settle(pick: dict, actual: float | None) -> tuple[str, float]:
 
 
 def grade(store: dict, now: dt.datetime, conn) -> int:
+    """Settle like a sportsbook: as soon as the game is final and the player's box-score line is loaded.
+
+    A player with no stat line either sat out (void) or played without recording a stat (e.g. 0 catches = a loss
+    for an over). Game-day inactives reach the roster data only after games, so those picks wait for
+    STATUS_WAIT and are then settled from the final active/inactive list.
+    """
     from proplab.live.score import outcomes
-    todo = [p for p in store["picks"] if p["result"] is None and now - dt.datetime.fromisoformat(p["kickoff"]) >= GRADE_AFTER]
+    todo = [p for p in store["picks"] if p["result"] is None]
     n = 0
     for sw in sorted({(p["season"], p["week"]) for p in todo}):
-        out = outcomes(conn, *sw)
         finals = {r[0] for r in conn.execute("SELECT game_id FROM game_results").fetchall()}
-        acts = {(r["gsis_id"], r["game_id"]): r for r in out.iter_rows(named=True)}
+        loaded = {r[0] for r in conn.execute("SELECT DISTINCT game_id FROM player_game WHERE game_id LIKE %s",
+                                             (f"{sw[0]}_{sw[1]:02d}_%",)).fetchall()}
+        cols = {mk: col for mk, (_, col) in MARKETS.items()}
+        stat = {(r[0], r[1]): {"receptions": float(r[2]), "receiving_yards": float(r[3])} for r in conn.execute(
+            """SELECT gsis_id, game_id, coalesce(receptions, 0), coalesce(receiving_yards, 0) FROM player_game
+               WHERE game_id LIKE %s""", (f"{sw[0]}_{sw[1]:02d}_%",)).fetchall()}
+        acts = None
         for p in todo:
-            if (p["season"], p["week"]) != sw or p["game_id"] not in finals:
+            if (p["season"], p["week"]) != sw or p["game_id"] not in finals or p["game_id"] not in loaded:
                 continue
-            row = acts.get((p["gsis_id"], p["game_id"]))
-            actual = float(row[MARKETS[p["market"]][1]]) if row else None
+            key = (p["gsis_id"], p["game_id"])
+            if key in stat:
+                actual = stat[key][cols[p["market"]]]
+            elif now - dt.datetime.fromisoformat(p["kickoff"]) >= STATUS_WAIT:
+                if acts is None:
+                    acts = {(r["gsis_id"], r["game_id"]) for r in outcomes(conn, *sw).iter_rows(named=True)}
+                actual = 0.0 if key in acts else None      # active with no stat line = 0; not active = void
+            else:
+                continue                                    # wait for the final active/inactive list
             p["result"], p["net"] = settle(p, actual)
             p["actual"], p["graded_utc"] = actual, now.isoformat(timespec="seconds")
             n += 1

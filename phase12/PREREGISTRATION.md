@@ -41,7 +41,7 @@ but not in our odds feed.
 
 ## Grading
 
-- Graded 3 days after kickoff, so stat corrections are in. A win pays units × (price − 1), a loss costs the units and a
+- Graded 3 days after kickoff, so stat corrections are in (changed on 2026-11-09: see Deviation 1). A win pays units × (price − 1), a loss costs the units and a
   push returns them.
 - **Void** (units returned) if the player was not active for the game, as sportsbooks do.
 - The record shows wins, losses, pushes and voids, units staked, net units, ROI and a 95% interval for ROI (bootstrap
@@ -55,4 +55,10 @@ never met, they stay tracked picks.
 
 ## Deviations
 
-(none yet)
+1. **Faster settling (2026-11-09, after the first 3 picks were graded).** Picks now settle the way sportsbooks pay
+   out: as soon as the game is final and the player's box-score line is loaded, without waiting for stat corrections.
+   Extra weekly runs were added at about 5:41 am ET on Friday, Monday and Tuesday to settle the Thursday, Sunday and
+   Monday games. A player with no stat line still waits 3 days: he either sat out (void) or played without a catch
+   (0), and game-day inactives reach the data only after games. Selection, prices and units are unchanged, and picks
+   are still logged at the Wednesday and Saturday runs. The 3 picks already graded keep their results (no stat
+   correction had changed them).

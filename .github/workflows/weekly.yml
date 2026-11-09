@@ -9,6 +9,9 @@ on:
     - cron: "41 13 * * 2"     # Tuesday 13:41 UTC
     - cron: "41 13 * * 3"     # Wednesday 13:41 UTC (the freeze is skipped if Tuesday already froze the week)
     - cron: "41 13 * * 6"     # Saturday 13:41 UTC: final injury reports and latest lines on the dashboard (freeze skipped after kickoff)
+    - cron: "41 10 * * 5"     # Friday 10:41 UTC (5:41 am ET): settle Thursday-night picks
+    - cron: "41 10 * * 1"     # Monday 10:41 UTC (5:41 am ET): settle Sunday picks
+    - cron: "41 10 * * 2"     # Tuesday 10:41 UTC (5:41 am ET): settle Monday-night picks
   workflow_dispatch: {}
 
 permissions:

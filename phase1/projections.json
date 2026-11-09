@@ -7,7 +7,7 @@
     "recalibrated": [
       "yards"
     ],
-    "lines_fetched_utc": "2026-11-09T13:17+00:00",
+    "lines_fetched_utc": "2026-11-09T15:42+00:00",
     "rec_lines": [
       3.5,
       4.5,
@@ -1750,7 +1750,7 @@
         "team_targets": 29.50519446474712,
         "share": 0.16807776449941955,
         "catch_rate": 0.661349854130243,
-        "yds_per_catch": 12.619051360248521,
+        "yds_per_catch": 12.61905136024852,
         "team_spread": 8.5,
         "total": 40.5,
         "games_history": 116
@@ -6952,7 +6952,7 @@
         "team_targets": 30.944326237986562,
         "share": 0.10301139260395194,
         "catch_rate": 0.6383300157857296,
-        "yds_per_catch": 10.578983256403138,
+        "yds_per_catch": 10.578983256403136,
         "team_spread": -3.0,
         "total": 44.5,
         "games_history": 52
@@ -8975,7 +8975,7 @@
         "team_targets": 30.778515962004782,
         "share": 0.032592541648271085,
         "catch_rate": 0.5692342693791991,
-        "yds_per_catch": 14.754107551548383,
+        "yds_per_catch": 14.754107551548381,
         "team_spread": -4.5,
         "total": 43.5,
         "games_history": 24
@@ -10420,7 +10420,7 @@
         "team_targets": 35.62030080379937,
         "share": 0.17471642281715216,
         "catch_rate": 0.7040910841031711,
-        "yds_per_catch": 12.056658936453577,
+        "yds_per_catch": 12.056658936453575,
         "team_spread": 4.5,
         "total": 51.5,
         "games_history": 35
@@ -15333,7 +15333,7 @@
         "team_targets": 31.866535590989585,
         "share": 0.18476018095855795,
         "catch_rate": 0.7173370732624452,
-        "yds_per_catch": 11.195243823594096,
+        "yds_per_catch": 11.195243823594094,
         "team_spread": 9.5,
         "total": 47.5,
         "games_history": 33
@@ -19379,7 +19379,7 @@
         "team_targets": 33.20494628261858,
         "share": 0.13266081686572667,
         "catch_rate": 0.7125278284178111,
-        "yds_per_catch": 10.437131142763539,
+        "yds_per_catch": 10.437131142763537,
         "team_spread": 4.5,
         "total": 43.5,
         "games_history": 92
@@ -24870,7 +24870,7 @@
         "team_targets": 29.569863715264773,
         "share": 0.22281116027943873,
         "catch_rate": 0.6779212054003741,
-        "yds_per_catch": 11.291115740877155,
+        "yds_per_catch": 11.291115740877151,
         "team_spread": -4.5,
         "total": 48.5,
         "games_history": 161
@@ -30361,7 +30361,7 @@
         "team_targets": 33.25981462860997,
         "share": 0.13973619127482026,
         "catch_rate": 0.7897212413081943,
-        "yds_per_catch": 10.24972041616912,
+        "yds_per_catch": 10.249720416169119,
         "team_spread": -8.5,
         "total": 51.5,
         "games_history": 46
@@ -31806,7 +31806,7 @@
         "team_targets": 31.841514365599867,
         "share": 0.25004241809221717,
         "catch_rate": 0.7587770605711329,
-        "yds_per_catch": 11.43779418006982,
+        "yds_per_catch": 11.437794180069819,
         "team_spread": 8.5,
         "total": 51.5,
         "games_history": 133
@@ -36430,7 +36430,7 @@
         "team_targets": 29.19009855405877,
         "share": 0.1642239275508555,
         "catch_rate": 0.6573077939379137,
-        "yds_per_catch": 9.71516246120338,
+        "yds_per_catch": 9.715162461203379,
         "team_spread": 8.5,
         "total": 39.5,
         "games_history": 42
@@ -37586,7 +37586,7 @@
         "team_targets": 31.96868794338844,
         "share": 0.23770911281463455,
         "catch_rate": 0.6861025299030258,
-        "yds_per_catch": 10.299569183070155,
+        "yds_per_catch": 10.299569183070153,
         "team_spread": 6.5,
         "total": 47.5,
         "games_history": 24
@@ -39031,7 +39031,7 @@
         "team_targets": 29.174137389937655,
         "share": 0.22824043573746722,
         "catch_rate": 0.5407460782471362,
-        "yds_per_catch": 10.799819943765561,
+        "yds_per_catch": 10.79981994376556,
         "team_spread": -6.5,
         "total": 47.5,
         "games_history": 23

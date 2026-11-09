@@ -27,10 +27,10 @@
    "p_market_over": 0.5218517115068839,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 1.0,
+   "net": 1.96,
+   "graded_utc": "2026-11-09T13:18:39+00:00"
   },
   {
    "id": "2026_09_JAX_BAL|00-0039064|wrte_rec_yds",
@@ -59,10 +59,10 @@
    "p_market_over": 0.5072980407567507,
    "licensed_books": 1,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 6.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T13:18:39+00:00"
   },
   {
    "id": "2026_09_JAX_BAL|00-0038606|wrte_rec",
@@ -91,10 +91,10 @@
    "p_market_over": 0.4807445397595801,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 2.0,
+   "net": 1.6600000000000001,
+   "graded_utc": "2026-11-09T13:18:39+00:00"
   },
   {
    "id": "2026_09_CIN_ATL|00-0036970|wrte_rec_yds",
@@ -1456,30 +1456,30 @@
  },
  "summary": {
   "overall": {
-   "win": 0,
-   "loss": 0,
+   "win": 2,
+   "loss": 1,
    "push": 0,
    "void": 0,
-   "pending": 43,
-   "units_staked": 0,
-   "net_units": 0,
-   "roi": null,
-   "weeks_graded": 0,
+   "pending": 40,
+   "units_staked": 6.0,
+   "net_units": 1.62,
+   "roi": 0.27,
+   "weeks_graded": 1,
    "graduated": false
   },
   "by_week": [
    {
     "season": 2026,
     "week": 9,
-    "win": 0,
-    "loss": 0,
+    "win": 2,
+    "loss": 1,
     "push": 0,
     "void": 0,
-    "pending": 43,
-    "units_staked": 0,
-    "net_units": 0,
-    "roi": null,
-    "weeks_graded": 0,
+    "pending": 40,
+    "units_staked": 6.0,
+    "net_units": 1.62,
+    "roi": 0.27,
+    "weeks_graded": 1,
     "graduated": false
    }
   ]
@@ -1523,5 +1523,5 @@
   ],
   "graduate_weeks": 8
  },
- "updated_utc": "2026-11-08T23:37:17+00:00"
+ "updated_utc": "2026-11-09T13:18:39+00:00"
 }

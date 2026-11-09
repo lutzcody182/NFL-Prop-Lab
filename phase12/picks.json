@@ -123,10 +123,10 @@
    "p_market_over": 0.5,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 23.0,
+   "net": 1.7599999999999998,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_CIN_ATL|00-0037238|wrte_rec",
@@ -155,10 +155,10 @@
    "p_market_over": 0.5343915343915343,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 5.0,
+   "net": 2.2,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_CIN_ATL|00-0035208|wrte_rec",
@@ -187,10 +187,10 @@
    "p_market_over": 0.4813829787234043,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 1.0,
+   "net": 1.7000000000000002,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DEN_CAR|00-0039491|wrte_rec_yds",
@@ -219,10 +219,10 @@
    "p_market_over": 0.4986772486772487,
    "licensed_books": 1,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 29.0,
+   "net": 1.7599999999999998,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DEN_CAR|00-0036613|wrte_rec",
@@ -251,10 +251,10 @@
    "p_market_over": 0.4680851063829787,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 1.0,
+   "net": 1.6,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DEN_CAR|00-0039868|wrte_rec_yds",
@@ -283,10 +283,10 @@
    "p_market_over": 0.5,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 31.0,
+   "net": 1.8199999999999998,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DAL_IND|00-0040128|wrte_rec",
@@ -315,10 +315,10 @@
    "p_market_over": 0.4412532637075718,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 4.0,
+   "net": 1.48,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DAL_IND|00-0032951|wrte_rec",
@@ -347,10 +347,10 @@
    "p_market_over": 0.44709307615321625,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 0.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DAL_IND|00-0038997|wrte_rec_yds",
@@ -379,10 +379,10 @@
    "p_market_over": 0.508617301970471,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 24.0,
+   "net": 1.8399999999999999,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_NYJ_KC|00-0039890|wrte_rec",
@@ -411,10 +411,10 @@
    "p_market_over": 0.5408970976253298,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 0.0,
+   "net": 2.12,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_NYJ_KC|00-0040736|wrte_rec",
@@ -443,10 +443,10 @@
    "p_market_over": 0.44154153255328843,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 1.0,
+   "net": 1.44,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_NYJ_KC|00-0039067|wrte_rec",
@@ -475,10 +475,10 @@
    "p_market_over": 0.43717277486910994,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 5.0,
+   "net": 1.3599999999999999,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DET_MIA|00-0037240|wrte_rec",
@@ -507,10 +507,10 @@
    "p_market_over": 0.5,
    "licensed_books": 3,
    "units": 1.5,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 1.0,
+   "net": -1.5,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DET_MIA|00-0036963|wrte_rec",
@@ -539,10 +539,10 @@
    "p_market_over": 0.47200000000000003,
    "licensed_books": 3,
    "units": 1.5,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 8.0,
+   "net": 1.5449999999999997,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_DET_MIA|00-0039065|wrte_rec_yds",
@@ -571,10 +571,10 @@
    "p_market_over": 0.5,
    "licensed_books": 1,
    "units": 1.5,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 32.0,
+   "net": 1.3199999999999998,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_CLE_NO|00-0041547|wrte_rec",
@@ -603,10 +603,10 @@
    "p_market_over": 0.48806366047745364,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 4.0,
+   "net": 1.7599999999999998,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_CLE_NO|00-0041037|wrte_rec_yds",
@@ -635,10 +635,10 @@
    "p_market_over": 0.5,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 98.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_CLE_NO|00-0040663|wrte_rec_yds",
@@ -667,10 +667,10 @@
    "p_market_over": 0.5,
    "licensed_books": 1,
    "units": 1.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 42.0,
+   "net": -1.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_NYG_PHI|00-0034351|wrte_rec_yds",
@@ -699,10 +699,10 @@
    "p_market_over": 0.5,
    "licensed_books": 2,
    "units": 1.5,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 50.0,
+   "net": -1.5,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_NYG_PHI|00-0036309|wrte_rec_yds",
@@ -731,10 +731,10 @@
    "p_market_over": 0.5,
    "licensed_books": 3,
    "units": 1.5,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 54.0,
+   "net": -1.5,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_NYG_PHI|00-0040867|wrte_rec",
@@ -763,10 +763,10 @@
    "p_market_over": 0.4694960212201591,
    "licensed_books": 3,
    "units": 1.5,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 6.0,
+   "net": 1.5749999999999997,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_LA_WAS|00-0039075|wrte_rec",
@@ -795,10 +795,10 @@
    "p_market_over": 0.45000000000000007,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 14.0,
+   "net": 2.2,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_LA_WAS|00-0037809|wrte_rec",
@@ -827,10 +827,10 @@
    "p_market_over": 0.5106951871657753,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 6.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_LA_WAS|00-0031588|wrte_rec",
@@ -859,10 +859,10 @@
    "p_market_over": 0.49071618037135284,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 3.0,
+   "net": 1.7599999999999998,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_HOU_LAC|00-0038977|wrte_rec",
@@ -891,10 +891,10 @@
    "p_market_over": 0.43307086614173224,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 4.0,
+   "net": 2.4400000000000004,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_HOU_LAC|00-0040189|wrte_rec",
@@ -923,10 +923,10 @@
    "p_market_over": 0.577156007751938,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 2.0,
+   "net": 1.38,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_HOU_LAC|00-0034981|wrte_rec_yds",
@@ -987,10 +987,10 @@
    "p_market_over": 0.5013227513227514,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 111.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_GB_NE|00-0038621|wrte_rec_yds",
@@ -1019,10 +1019,10 @@
    "p_market_over": 0.5,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 102.0,
+   "net": 1.8199999999999998,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_GB_NE|00-0038124|wrte_rec",
@@ -1051,10 +1051,10 @@
    "p_market_over": 0.5526315789473685,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 7.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_GB_NE|00-0040667|wrte_rec",
@@ -1083,10 +1083,10 @@
    "p_market_over": 0.4370074400661339,
    "licensed_books": 4,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 10.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_ARI_SEA|00-0040648|wrte_rec",
@@ -1115,10 +1115,10 @@
    "p_market_over": 0.5948625566243038,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 2.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_ARI_SEA|00-0033908|wrte_rec",
@@ -1147,10 +1147,10 @@
    "p_market_over": 0.5545317658760309,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 3.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_ARI_SEA|00-0038559|wrte_rec",
@@ -1179,10 +1179,10 @@
    "p_market_over": 0.4696569920844328,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 6.0,
+   "net": 2.0199999999999996,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_TB_CHI|00-0032464|wrte_rec_yds",
@@ -1211,10 +1211,10 @@
    "p_market_over": 0.5,
    "licensed_books": 1,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 32.0,
+   "net": 1.7999999999999998,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_TB_CHI|00-0040735|wrte_rec_yds",
@@ -1243,10 +1243,10 @@
    "p_market_over": 0.4960422163588391,
    "licensed_books": 3,
    "units": 1.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 97.0,
+   "net": -1.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_TB_CHI|00-0039919|wrte_rec_yds",
@@ -1275,10 +1275,10 @@
    "p_market_over": 0.5,
    "licensed_books": 3,
    "units": 1.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 60.0,
+   "net": -1.0,
+   "graded_utc": "2026-11-09T19:48:18+00:00"
   },
   {
    "id": "2026_09_BUF_MIN|00-0038994|wrte_rec",
@@ -1456,30 +1456,38 @@
  },
  "summary": {
   "overall": {
-   "win": 2,
-   "loss": 1,
+   "win": 24,
+   "loss": 15,
    "push": 0,
    "void": 0,
-   "pending": 40,
-   "units_staked": 6.0,
-   "net_units": 1.62,
-   "roi": 0.27,
+   "pending": 4,
+   "units_staked": 72.0,
+   "net_units": 16.819999999999997,
+   "roi": 0.23361111111111107,
    "weeks_graded": 1,
+   "roi_ci95": [
+    -0.06044011752635019,
+    0.49030689877498385
+   ],
    "graduated": false
   },
   "by_week": [
    {
     "season": 2026,
     "week": 9,
-    "win": 2,
-    "loss": 1,
+    "win": 24,
+    "loss": 15,
     "push": 0,
     "void": 0,
-    "pending": 40,
-    "units_staked": 6.0,
-    "net_units": 1.62,
-    "roi": 0.27,
+    "pending": 4,
+    "units_staked": 72.0,
+    "net_units": 16.819999999999997,
+    "roi": 0.23361111111111107,
     "weeks_graded": 1,
+    "roi_ci95": [
+     -0.06044011752635019,
+     0.49030689877498385
+    ],
     "graduated": false
    }
   ]
@@ -1523,5 +1531,5 @@
   ],
   "graduate_weeks": 8
  },
- "updated_utc": "2026-11-09T19:31:22+00:00"
+ "updated_utc": "2026-11-09T19:48:18+00:00"
 }

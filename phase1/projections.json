@@ -7,7 +7,7 @@
     "recalibrated": [
       "yards"
     ],
-    "lines_fetched_utc": "2026-11-09T19:30+00:00",
+    "lines_fetched_utc": "2026-11-09T19:47+00:00",
     "rec_lines": [
       3.5,
       4.5,
@@ -3484,7 +3484,7 @@
         "team_targets": 30.896531005830603,
         "share": 0.0416941193387136,
         "catch_rate": 0.781092415445926,
-        "yds_per_catch": 9.979008627378194,
+        "yds_per_catch": 9.979008627378196,
         "team_spread": -3.0,
         "total": 52.5,
         "games_history": 165
@@ -5796,7 +5796,7 @@
         "team_targets": 36.681880082511235,
         "share": 0.0909023669591769,
         "catch_rate": 0.6767293656102051,
-        "yds_per_catch": 11.605237702284148,
+        "yds_per_catch": 11.60523770228415,
         "team_spread": 3.0,
         "total": 52.5,
         "games_history": 7
@@ -14177,7 +14177,7 @@
         "team_targets": 32.54099763098054,
         "share": 0.19122292970965157,
         "catch_rate": 0.6080358826775297,
-        "yds_per_catch": 11.298184277128833,
+        "yds_per_catch": 11.298184277128836,
         "team_spread": -4.5,
         "total": 51.5,
         "games_history": 55
@@ -15333,7 +15333,7 @@
         "team_targets": 31.866535590989585,
         "share": 0.18476018095855795,
         "catch_rate": 0.7173370732624452,
-        "yds_per_catch": 11.195243823594096,
+        "yds_per_catch": 11.195243823594097,
         "team_spread": 9.5,
         "total": 47.5,
         "games_history": 33
@@ -26604,7 +26604,7 @@
         "team_targets": 30.885635739733075,
         "share": 0.19454911567084188,
         "catch_rate": 0.6317652894439026,
-        "yds_per_catch": 14.286318717514124,
+        "yds_per_catch": 14.286318717514126,
         "team_spread": 5.5,
         "total": 40.5,
         "games_history": 71
@@ -28627,7 +28627,7 @@
         "team_targets": 29.67055939851023,
         "share": 0.12593469938969987,
         "catch_rate": 0.6529974323555282,
-        "yds_per_catch": 14.2535691134353,
+        "yds_per_catch": 14.253569113435303,
         "team_spread": -5.5,
         "total": 40.5,
         "games_history": 40
@@ -30650,7 +30650,7 @@
         "team_targets": 33.25981462860997,
         "share": 0.22964033395128547,
         "catch_rate": 0.7001121181918211,
-        "yds_per_catch": 11.695460554374069,
+        "yds_per_catch": 11.69546055437407,
         "team_spread": -8.5,
         "total": 51.5,
         "games_history": 35
@@ -34696,7 +34696,7 @@
         "team_targets": 29.028005632150933,
         "share": 0.18088422458835635,
         "catch_rate": 0.7151619716020453,
-        "yds_per_catch": 13.321756064840292,
+        "yds_per_catch": 13.321756064840294,
         "team_spread": 3.0,
         "total": 44.5,
         "games_history": 56
@@ -38164,7 +38164,7 @@
         "team_targets": 29.174137389937655,
         "share": 0.16808275730701291,
         "catch_rate": 0.7015325388355543,
-        "yds_per_catch": 10.542077785078538,
+        "yds_per_catch": 10.54207778507854,
         "team_spread": -6.5,
         "total": 47.5,
         "games_history": 128

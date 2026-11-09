@@ -2,7 +2,7 @@
  "meta": {
   "season": 2026,
   "week": 9,
-  "lines_fetched_utc": "2026-11-09T19:30+00:00",
+  "lines_fetched_utc": "2026-11-09T19:47+00:00",
   "configs": {
    "att": "B2(h=4,as=40,ae=30)",
    "car": "M2(h=4,as=10,ae=10,lam=1,gam=0.5,role=1)",

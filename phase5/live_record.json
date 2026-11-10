@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-09T19:48+00:00",
+  "updated_utc": "2026-11-10T13:57+00:00",
   "weeks": [
     {
       "season": 2026,
@@ -8147,12 +8147,12 @@
       "sims": {
         "players_scored": 414,
         "crps_by_stat": {
-          "Pass yds": 40.57126184615385,
           "Pass TDs": 0.5783083076923077,
-          "Completions": 3.4218833076923074,
+          "Pass attempts": 5.937111576923077,
           "Rec yds": 13.418148154838711,
           "Receptions": 1.0969160967741935,
-          "Pass attempts": 5.937111576923077
+          "Pass yds": 40.57126184615385,
+          "Completions": 3.4218833076923074
         },
         "two_leg_teams": 26,
         "two_leg_actual": 0.38461538461538464,
@@ -19014,12 +19014,12 @@
       "sims": {
         "players_scored": 426,
         "crps_by_stat": {
-          "Rec yds": 14.64105011464968,
-          "Pass TDs": 0.5428578571428572,
-          "Completions": 3.76410275,
-          "Pass attempts": 5.232942392857143,
           "Pass yds": 43.96348989285714,
-          "Receptions": 0.9544340828025477
+          "Completions": 3.76410275,
+          "Rec yds": 14.64105011464968,
+          "Receptions": 0.9544340828025477,
+          "Pass TDs": 0.5428578571428572,
+          "Pass attempts": 5.232942392857143
         },
         "two_leg_teams": 28,
         "two_leg_actual": 0.39285714285714285,
@@ -30241,12 +30241,12 @@
       "sims": {
         "players_scored": 428,
         "crps_by_stat": {
-          "Pass TDs": 0.6538289285714286,
-          "Pass attempts": 5.757188821428572,
-          "Rec yds": 15.484208683544304,
           "Receptions": 1.1521108670886075,
+          "Completions": 4.625059642857143,
+          "Rec yds": 15.484208683544304,
           "Pass yds": 51.61118035714286,
-          "Completions": 4.625059642857143
+          "Pass TDs": 0.6538289285714286,
+          "Pass attempts": 5.757188821428572
         },
         "two_leg_teams": 28,
         "two_leg_actual": 0.4642857142857143,
@@ -30261,7 +30261,14 @@
       "week": 9,
       "frozen_utc": "2026-11-03T16:41:18+00:00",
       "minutes_before_kickoff": 3394,
-      "status": "14 of 15 games final"
+      "status": "waiting for stat corrections until 2026-11-13T01:15+00:00"
+    },
+    {
+      "season": 2026,
+      "week": 10,
+      "frozen_utc": "2026-11-10T13:57:04+00:00",
+      "minutes_before_kickoff": 3558,
+      "status": "0 of 14 games final"
     }
   ],
   "cumulative": {

@@ -1613,7 +1613,8 @@
  "rules": {
   "markets": [
    "wrte_rec",
-   "wrte_rec_yds"
+   "wrte_rec_yds",
+   "anytime_td"
   ],
   "min_ev": 0.05,
   "max_gap": 0.2,
@@ -1649,7 +1650,7 @@
   ],
   "graduate_weeks": 8
  },
- "updated_utc": "2026-11-12T03:50:42+00:00",
+ "updated_utc": "2026-11-12T14:05:46+00:00",
  "blend": {
   "picks": [
    {

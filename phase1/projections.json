@@ -7,7 +7,7 @@
     "recalibrated": [
       "yards"
     ],
-    "lines_fetched_utc": "2026-11-12T03:45+00:00",
+    "lines_fetched_utc": "2026-11-12T14:01+00:00",
     "rec_lines": [
       3.5,
       4.5,
@@ -301,9 +301,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.0823486151908805,
-        "team_targets": 30.20855852437267,
-        "share": 0.10203560731651597,
+        "exp_targets": 3.082348615190881,
+        "team_targets": 30.20855852437271,
+        "share": 0.10203560731651584,
         "catch_rate": 0.5110359824459993,
         "yds_per_catch": 13.278075141486832,
         "team_spread": 2.5,
@@ -590,9 +590,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.607652508783315,
-        "team_targets": 30.20855852437267,
-        "share": 0.2187344524715462,
+        "exp_targets": 6.607652508783317,
+        "team_targets": 30.20855852437271,
+        "share": 0.21873445247154596,
         "catch_rate": 0.6859567296708762,
         "yds_per_catch": 10.449213338549663,
         "team_spread": 2.5,
@@ -879,9 +879,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 8.962734078147342,
-        "team_targets": 30.20855852437267,
-        "share": 0.2966951922222998,
+        "exp_targets": 8.962734078147346,
+        "team_targets": 30.20855852437271,
+        "share": 0.2966951922222995,
         "catch_rate": 0.6600837295503339,
         "yds_per_catch": 12.70033795994991,
         "team_spread": 2.5,
@@ -1168,9 +1168,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 1.6839456597995948,
-        "team_targets": 30.20855852437267,
-        "share": 0.05574399249937612,
+        "exp_targets": 1.6839456597995954,
+        "team_targets": 30.20855852437271,
+        "share": 0.055743992499376074,
         "catch_rate": 0.6147772380142078,
         "yds_per_catch": 11.87158225253878,
         "team_spread": 2.5,
@@ -1457,11 +1457,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.273100807853138,
-        "team_targets": 30.20855852437267,
-        "share": 0.14145331709242406,
+        "exp_targets": 4.2731008078531385,
+        "team_targets": 30.20855852437271,
+        "share": 0.14145331709242392,
         "catch_rate": 0.5807004173646122,
-        "yds_per_catch": 13.970901549274686,
+        "yds_per_catch": 13.970901549274684,
         "team_spread": 2.5,
         "total": 40.5,
         "games_history": 8
@@ -1746,11 +1746,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.4402514847378605,
-        "team_targets": 28.35233142267505,
-        "share": 0.22715068432034508,
+        "exp_targets": 6.44025148473786,
+        "team_targets": 28.35233142267508,
+        "share": 0.22715068432034483,
         "catch_rate": 0.668692241893929,
-        "yds_per_catch": 11.721232637272426,
+        "yds_per_catch": 11.721232637272424,
         "team_spread": -2.5,
         "total": 40.5,
         "games_history": 162
@@ -2036,10 +2036,10 @@
       },
       "drivers": {
         "exp_targets": 2.9601167020523693,
-        "team_targets": 28.35233142267505,
-        "share": 0.10440470160718379,
+        "team_targets": 28.35233142267508,
+        "share": 0.10440470160718368,
         "catch_rate": 0.6089936778119089,
-        "yds_per_catch": 12.759627228910686,
+        "yds_per_catch": 12.759627228910684,
         "team_spread": -2.5,
         "total": 40.5,
         "games_history": 97
@@ -2325,8 +2325,8 @@
       },
       "drivers": {
         "exp_targets": 5.087307364029338,
-        "team_targets": 28.35233142267505,
-        "share": 0.17943171191772664,
+        "team_targets": 28.35233142267508,
+        "share": 0.17943171191772647,
         "catch_rate": 0.7216087183204831,
         "yds_per_catch": 10.251568744826423,
         "team_spread": -2.5,
@@ -2613,11 +2613,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.512977730090936,
-        "team_targets": 28.35233142267505,
-        "share": 0.19444530496994258,
+        "exp_targets": 5.5129777300909355,
+        "team_targets": 28.35233142267508,
+        "share": 0.19444530496994236,
         "catch_rate": 0.6389776045292288,
-        "yds_per_catch": 11.774361874020174,
+        "yds_per_catch": 11.77436187402017,
         "team_spread": -2.5,
         "total": 40.5,
         "games_history": 8
@@ -2903,8 +2903,8 @@
       },
       "drivers": {
         "exp_targets": 10.448112791357433,
-        "team_targets": 33.67883638902127,
-        "share": 0.3102278437019677,
+        "team_targets": 33.678836389021306,
+        "share": 0.3102278437019674,
         "catch_rate": 0.7008789898922355,
         "yds_per_catch": 11.519123887559553,
         "team_spread": 2.5,
@@ -3191,11 +3191,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.955740487704916,
-        "team_targets": 33.67883638902127,
-        "share": 0.17683925949550877,
+        "exp_targets": 5.955740487704915,
+        "team_targets": 33.678836389021306,
+        "share": 0.17683925949550855,
         "catch_rate": 0.6284349319075097,
-        "yds_per_catch": 15.324526169698693,
+        "yds_per_catch": 15.324526169698691,
         "team_spread": 2.5,
         "total": 51.5,
         "games_history": 58
@@ -3481,10 +3481,10 @@
       },
       "drivers": {
         "exp_targets": 5.628890428753877,
-        "team_targets": 33.67883638902127,
-        "share": 0.16713435000351734,
+        "team_targets": 33.678836389021306,
+        "share": 0.16713435000351717,
         "catch_rate": 0.736287189431566,
-        "yds_per_catch": 10.986844820141085,
+        "yds_per_catch": 10.986844820141084,
         "team_spread": 2.5,
         "total": 51.5,
         "games_history": 50
@@ -3770,10 +3770,10 @@
       },
       "drivers": {
         "exp_targets": 2.6697033678982294,
-        "team_targets": 33.67883638902127,
-        "share": 0.07926946575768595,
+        "team_targets": 33.678836389021306,
+        "share": 0.07926946575768587,
         "catch_rate": 0.5577704494621444,
-        "yds_per_catch": 14.082744419339445,
+        "yds_per_catch": 14.082744419339443,
         "team_spread": 2.5,
         "total": 51.5,
         "games_history": 25
@@ -4059,8 +4059,8 @@
       },
       "drivers": {
         "exp_targets": 3.8771561329866606,
-        "team_targets": 30.851066058238178,
-        "share": 0.12567332764669056,
+        "team_targets": 30.85106605823821,
+        "share": 0.12567332764669042,
         "catch_rate": 0.824680019650283,
         "yds_per_catch": 10.97651515697018,
         "team_spread": -2.5,
@@ -4348,10 +4348,10 @@
       },
       "drivers": {
         "exp_targets": 5.406952874526716,
-        "team_targets": 30.851066058238178,
-        "share": 0.1752598391355392,
+        "team_targets": 30.85106605823821,
+        "share": 0.17525983913553903,
         "catch_rate": 0.6612495700101714,
-        "yds_per_catch": 13.090104441156175,
+        "yds_per_catch": 13.090104441156173,
         "team_spread": -2.5,
         "total": 51.5,
         "games_history": 133
@@ -4636,9 +4636,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.152483042575244,
-        "team_targets": 30.851066058238178,
-        "share": 0.19942529800951053,
+        "exp_targets": 6.152483042575243,
+        "team_targets": 30.85106605823821,
+        "share": 0.19942529800951028,
         "catch_rate": 0.6760906659282635,
         "yds_per_catch": 14.12393636548538,
         "team_spread": -2.5,
@@ -4926,8 +4926,8 @@
       },
       "drivers": {
         "exp_targets": 2.362842118971819,
-        "team_targets": 30.851066058238178,
-        "share": 0.07658867004827109,
+        "team_targets": 30.85106605823821,
+        "share": 0.07658867004827101,
         "catch_rate": 0.5447870674458191,
         "yds_per_catch": 16.537809455095143,
         "team_spread": -2.5,
@@ -5214,11 +5214,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.918986809582744,
-        "team_targets": 30.851066058238178,
-        "share": 0.1270292184453138,
+        "exp_targets": 3.9189868095827434,
+        "team_targets": 30.85106605823821,
+        "share": 0.12702921844531365,
         "catch_rate": 0.7770406868372237,
-        "yds_per_catch": 11.567535105049254,
+        "yds_per_catch": 11.56753510504925,
         "team_spread": -2.5,
         "total": 51.5,
         "games_history": 16
@@ -5503,11 +5503,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.116164871870585,
-        "team_targets": 30.851066058238178,
-        "share": 0.1334205068991917,
+        "exp_targets": 4.116164871870584,
+        "team_targets": 30.85106605823821,
+        "share": 0.13342050689919152,
         "catch_rate": 0.6195442191472238,
-        "yds_per_catch": 11.943522772087505,
+        "yds_per_catch": 11.943522772087503,
         "team_spread": -2.5,
         "total": 51.5,
         "games_history": 8
@@ -5792,9 +5792,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 0.9746859332832624,
-        "team_targets": 29.62058691663991,
-        "share": 0.03290569278813698,
+        "exp_targets": 0.9746859332832625,
+        "team_targets": 29.620586916639944,
+        "share": 0.032905692788136945,
         "catch_rate": 0.7755392556243075,
         "yds_per_catch": 10.004040851837269,
         "team_spread": -3.0,
@@ -6081,11 +6081,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.6776658873037973,
-        "team_targets": 29.62058691663991,
-        "share": 0.09039881265146604,
+        "exp_targets": 2.6776658873037977,
+        "team_targets": 29.620586916639944,
+        "share": 0.09039881265146595,
         "catch_rate": 0.4896442942510933,
-        "yds_per_catch": 10.625199646231291,
+        "yds_per_catch": 10.62519964623129,
         "team_spread": -3.0,
         "total": 46.5,
         "games_history": 117
@@ -6370,11 +6370,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.103293707469606,
-        "team_targets": 29.62058691663991,
-        "share": 0.1722887436981452,
+        "exp_targets": 5.103293707469607,
+        "team_targets": 29.620586916639944,
+        "share": 0.17228874369814504,
         "catch_rate": 0.699124856831942,
-        "yds_per_catch": 9.639787936326666,
+        "yds_per_catch": 9.639787936326664,
         "team_spread": -3.0,
         "total": 46.5,
         "games_history": 87
@@ -6660,10 +6660,10 @@
       },
       "drivers": {
         "exp_targets": 8.18147312975721,
-        "team_targets": 29.62058691663991,
-        "share": 0.27620901479035576,
+        "team_targets": 29.620586916639944,
+        "share": 0.2762090147903554,
         "catch_rate": 0.626492618715264,
-        "yds_per_catch": 13.788474132153944,
+        "yds_per_catch": 13.788474132153942,
         "team_spread": -3.0,
         "total": 46.5,
         "games_history": 71
@@ -6948,9 +6948,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.925839728601229,
-        "team_targets": 29.62058691663991,
-        "share": 0.13253754017938843,
+        "exp_targets": 3.9258397286012294,
+        "team_targets": 29.620586916639944,
+        "share": 0.1325375401793883,
         "catch_rate": 0.5507136810599299,
         "yds_per_catch": 16.381766968094638,
         "team_spread": -3.0,
@@ -7237,11 +7237,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.757436010455668,
-        "team_targets": 30.049827280569794,
-        "share": 0.15831824808962625,
+        "exp_targets": 4.7574360104556686,
+        "team_targets": 30.049827280569833,
+        "share": 0.15831824808962608,
         "catch_rate": 0.5900281555442497,
-        "yds_per_catch": 13.612568382732487,
+        "yds_per_catch": 13.612568382732483,
         "team_spread": 8.5,
         "total": 50.5,
         "games_history": 137
@@ -7526,11 +7526,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.8029426220464964,
-        "team_targets": 30.049827280569794,
-        "share": 0.09327649692878195,
+        "exp_targets": 2.8029426220464972,
+        "team_targets": 30.049827280569833,
+        "share": 0.09327649692878186,
         "catch_rate": 0.7436884958764804,
-        "yds_per_catch": 9.33286094456273,
+        "yds_per_catch": 9.332860944562729,
         "team_spread": 8.5,
         "total": 50.5,
         "games_history": 111
@@ -7815,9 +7815,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.650499476664284,
-        "team_targets": 30.049827280569794,
-        "share": 0.18803766903239058,
+        "exp_targets": 5.650499476664285,
+        "team_targets": 30.049827280569833,
+        "share": 0.18803766903239036,
         "catch_rate": 0.7441027232911153,
         "yds_per_catch": 11.934947355829486,
         "team_spread": 8.5,
@@ -8104,11 +8104,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.661168923399375,
-        "team_targets": 30.049827280569794,
-        "share": 0.15511466604712515,
+        "exp_targets": 4.661168923399376,
+        "team_targets": 30.049827280569833,
+        "share": 0.15511466604712498,
         "catch_rate": 0.7669119721023249,
-        "yds_per_catch": 12.028609219805237,
+        "yds_per_catch": 12.028609219805235,
         "team_spread": 8.5,
         "total": 50.5,
         "games_history": 50
@@ -8393,11 +8393,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.863768377332112,
-        "team_targets": 30.049827280569794,
-        "share": 0.16185678313289414,
+        "exp_targets": 4.8637683773321125,
+        "team_targets": 30.049827280569833,
+        "share": 0.16185678313289398,
         "catch_rate": 0.6218897587712963,
-        "yds_per_catch": 12.785394176800878,
+        "yds_per_catch": 12.785394176800875,
         "team_spread": 8.5,
         "total": 50.5,
         "games_history": 34
@@ -8682,9 +8682,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.7077647427835054,
-        "team_targets": 32.072667962518004,
-        "share": 0.11560512356242443,
+        "exp_targets": 3.707764742783504,
+        "team_targets": 32.072667962518025,
+        "share": 0.11560512356242432,
         "catch_rate": 0.679828390998623,
         "yds_per_catch": 11.79476731532737,
         "team_spread": -2.5,
@@ -8971,11 +8971,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.8072271468452783,
-        "team_targets": 32.072667962518004,
-        "share": 0.08752708537144363,
+        "exp_targets": 2.8072271468452774,
+        "team_targets": 32.072667962518025,
+        "share": 0.08752708537144355,
         "catch_rate": 0.6968561770852721,
-        "yds_per_catch": 9.42289182262796,
+        "yds_per_catch": 9.422891822627957,
         "team_spread": -2.5,
         "total": 48.5,
         "games_history": 86
@@ -9260,9 +9260,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.984444257016772,
-        "team_targets": 32.072667962518004,
-        "share": 0.09305257238046327,
+        "exp_targets": 2.984444257016771,
+        "team_targets": 32.072667962518025,
+        "share": 0.09305257238046317,
         "catch_rate": 0.6609844884281549,
         "yds_per_catch": 11.34665084580474,
         "team_spread": -2.5,
@@ -9549,11 +9549,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 1.2028875868975186,
-        "team_targets": 32.072667962518004,
-        "share": 0.03750506781360639,
+        "exp_targets": 1.202887586897518,
+        "team_targets": 32.072667962518025,
+        "share": 0.03750506781360634,
         "catch_rate": 0.8078878742398836,
-        "yds_per_catch": 8.680852112820226,
+        "yds_per_catch": 8.680852112820224,
         "team_spread": -2.5,
         "total": 48.5,
         "games_history": 30
@@ -9838,9 +9838,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.8573411196577805,
-        "team_targets": 32.072667962518004,
-        "share": 0.182627186690643,
+        "exp_targets": 5.857341119657778,
+        "team_targets": 32.072667962518025,
+        "share": 0.18262718669064282,
         "catch_rate": 0.6367784500339618,
         "yds_per_catch": 12.314461104346307,
         "team_spread": -2.5,
@@ -10127,11 +10127,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 7.474548614731489,
-        "team_targets": 32.072667962518004,
-        "share": 0.2330504161196282,
+        "exp_targets": 7.474548614731487,
+        "team_targets": 32.072667962518025,
+        "share": 0.23305041611962798,
         "catch_rate": 0.632142458892017,
-        "yds_per_catch": 13.149916336359754,
+        "yds_per_catch": 13.149916336359752,
         "team_spread": -2.5,
         "total": 48.5,
         "games_history": 25
@@ -10416,9 +10416,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 1.5133873944594218,
-        "team_targets": 32.072667962518004,
-        "share": 0.04718620216528462,
+        "exp_targets": 1.5133873944594212,
+        "team_targets": 32.072667962518025,
+        "share": 0.047186202165284574,
         "catch_rate": 0.7896203082032056,
         "yds_per_catch": 10.561243408566813,
         "team_spread": -2.5,
@@ -10705,11 +10705,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.2111554702168763,
-        "team_targets": 30.265545049628752,
-        "share": 0.10609937686406429,
+        "exp_targets": 3.2111554702168754,
+        "team_targets": 30.265545049628777,
+        "share": 0.10609937686406418,
         "catch_rate": 0.6161406173129932,
-        "yds_per_catch": 12.290643133984073,
+        "yds_per_catch": 12.290643133984071,
         "team_spread": -4.5,
         "total": 41.5,
         "games_history": 100
@@ -10994,11 +10994,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.33543016181319,
-        "team_targets": 30.265545049628752,
-        "share": 0.20932813704245193,
+        "exp_targets": 6.335430161813188,
+        "team_targets": 30.265545049628777,
+        "share": 0.2093281370424517,
         "catch_rate": 0.7034757168066479,
-        "yds_per_catch": 11.763074379335766,
+        "yds_per_catch": 11.763074379335764,
         "team_spread": -4.5,
         "total": 41.5,
         "games_history": 25
@@ -11283,11 +11283,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 0.7573894707033773,
-        "team_targets": 30.265545049628752,
-        "share": 0.02502480855578273,
+        "exp_targets": 0.757389470703377,
+        "team_targets": 30.265545049628777,
+        "share": 0.025024808555782704,
         "catch_rate": 0.5749710432259276,
-        "yds_per_catch": 14.531785549969445,
+        "yds_per_catch": 14.531785549969442,
         "team_spread": -4.5,
         "total": 41.5,
         "games_history": 25
@@ -11572,11 +11572,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.197662317242519,
-        "team_targets": 30.265545049628752,
-        "share": 0.2047761673242538,
+        "exp_targets": 6.197662317242517,
+        "team_targets": 30.265545049628777,
+        "share": 0.20477616732425358,
         "catch_rate": 0.5660729945785458,
-        "yds_per_catch": 13.623839168527644,
+        "yds_per_catch": 13.62383916852764,
         "team_spread": -4.5,
         "total": 41.5,
         "games_history": 9
@@ -11861,11 +11861,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.466583589338629,
-        "team_targets": 30.265545049628752,
-        "share": 0.1806206886535382,
+        "exp_targets": 5.4665835893386285,
+        "team_targets": 30.265545049628777,
+        "share": 0.18062068865353803,
         "catch_rate": 0.6723986576123728,
-        "yds_per_catch": 12.902130760733819,
+        "yds_per_catch": 12.902130760733815,
         "team_spread": -4.5,
         "total": 41.5,
         "games_history": 9
@@ -12151,8 +12151,8 @@
       },
       "drivers": {
         "exp_targets": 0.8723852571760982,
-        "team_targets": 31.045023977211102,
-        "share": 0.028100646912577066,
+        "team_targets": 31.045023977211137,
+        "share": 0.028100646912577035,
         "catch_rate": 0.7319513459929864,
         "yds_per_catch": 9.970237335706699,
         "team_spread": 3.0,
@@ -12440,8 +12440,8 @@
       },
       "drivers": {
         "exp_targets": 6.578453115057487,
-        "team_targets": 31.045023977211102,
-        "share": 0.21190040374542676,
+        "team_targets": 31.045023977211137,
+        "share": 0.2119004037454265,
         "catch_rate": 0.6758069740641437,
         "yds_per_catch": 16.315092845401345,
         "team_spread": 3.0,
@@ -12729,8 +12729,8 @@
       },
       "drivers": {
         "exp_targets": 4.563972251096814,
-        "team_targets": 31.045023977211102,
-        "share": 0.1470113939820772,
+        "team_targets": 31.045023977211137,
+        "share": 0.14701139398207702,
         "catch_rate": 0.7115756937278811,
         "yds_per_catch": 10.315406534216846,
         "team_spread": 3.0,
@@ -13018,10 +13018,10 @@
       },
       "drivers": {
         "exp_targets": 2.6655654617548774,
-        "team_targets": 31.045023977211102,
-        "share": 0.08586127888680523,
+        "team_targets": 31.045023977211137,
+        "share": 0.08586127888680513,
         "catch_rate": 0.7513972942531629,
-        "yds_per_catch": 11.222878328973614,
+        "yds_per_catch": 11.222878328973612,
         "team_spread": 3.0,
         "total": 42.5,
         "games_history": 16
@@ -13306,9 +13306,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 8.434045604952239,
-        "team_targets": 31.045023977211102,
-        "share": 0.27167141539795014,
+        "exp_targets": 8.434045604952237,
+        "team_targets": 31.045023977211137,
+        "share": 0.27167141539794976,
         "catch_rate": 0.614365693742805,
         "yds_per_catch": 13.926051956562818,
         "team_spread": 3.0,
@@ -13596,8 +13596,8 @@
       },
       "drivers": {
         "exp_targets": 4.790019695494711,
-        "team_targets": 31.36760923969658,
-        "share": 0.1527059221788828,
+        "team_targets": 31.367609239696613,
+        "share": 0.15270592217888262,
         "catch_rate": 0.7441248577763797,
         "yds_per_catch": 10.425622866335148,
         "team_spread": 4.5,
@@ -13884,11 +13884,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.664498153451696,
-        "team_targets": 31.36760923969658,
-        "share": 0.1805843126317423,
+        "exp_targets": 5.664498153451695,
+        "team_targets": 31.367609239696613,
+        "share": 0.1805843126317421,
         "catch_rate": 0.6608817367304121,
-        "yds_per_catch": 14.137482509218996,
+        "yds_per_catch": 14.137482509218994,
         "team_spread": 4.5,
         "total": 41.5,
         "games_history": 72
@@ -14173,11 +14173,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.71858117033158,
-        "team_targets": 31.36760923969658,
-        "share": 0.08666842122258843,
+        "exp_targets": 2.7185811703315794,
+        "team_targets": 31.367609239696613,
+        "share": 0.08666842122258832,
         "catch_rate": 0.6672160143083171,
-        "yds_per_catch": 15.594825032103492,
+        "yds_per_catch": 15.59482503210349,
         "team_spread": 4.5,
         "total": 41.5,
         "games_history": 43
@@ -14463,10 +14463,10 @@
       },
       "drivers": {
         "exp_targets": 4.597469324644723,
-        "team_targets": 31.36760923969658,
-        "share": 0.14656741256603317,
+        "team_targets": 31.367609239696613,
+        "share": 0.14656741256603303,
         "catch_rate": 0.5744437836928024,
-        "yds_per_catch": 12.162519623245293,
+        "yds_per_catch": 12.16251962324529,
         "team_spread": 4.5,
         "total": 41.5,
         "games_history": 57
@@ -14752,10 +14752,10 @@
       },
       "drivers": {
         "exp_targets": 4.350221467059218,
-        "team_targets": 31.36760923969658,
-        "share": 0.13868514599939266,
+        "team_targets": 31.367609239696613,
+        "share": 0.13868514599939252,
         "catch_rate": 0.6126917750818498,
-        "yds_per_catch": 15.714110186485431,
+        "yds_per_catch": 15.71411018648543,
         "team_spread": 4.5,
         "total": 41.5,
         "games_history": 27
@@ -15040,11 +15040,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.9090079773156887,
-        "team_targets": 31.36760923969658,
-        "share": 0.09273923157759369,
+        "exp_targets": 2.9090079773156883,
+        "team_targets": 31.367609239696613,
+        "share": 0.09273923157759358,
         "catch_rate": 0.5359093151712067,
-        "yds_per_catch": 13.052241644870099,
+        "yds_per_catch": 13.052241644870096,
         "team_spread": 4.5,
         "total": 41.5,
         "games_history": 36
@@ -15330,8 +15330,8 @@
       },
       "drivers": {
         "exp_targets": 6.2146713947117345,
-        "team_targets": 30.023432134907946,
-        "share": 0.20699403608443545,
+        "team_targets": 30.02343213490798,
+        "share": 0.2069940360844352,
         "catch_rate": 0.67390256265404,
         "yds_per_catch": 10.247654059434284,
         "team_spread": 3.5,
@@ -15618,11 +15618,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.055999187647518,
-        "team_targets": 30.023432134907946,
-        "share": 0.10178713659103411,
+        "exp_targets": 3.0559991876475188,
+        "team_targets": 30.02343213490798,
+        "share": 0.10178713659103401,
         "catch_rate": 0.5617796565794895,
-        "yds_per_catch": 12.800035522580284,
+        "yds_per_catch": 12.80003552258028,
         "team_spread": 3.5,
         "total": 38.5,
         "games_history": 110
@@ -15907,9 +15907,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.728894704806477,
-        "team_targets": 30.023432134907946,
-        "share": 0.19081411742215668,
+        "exp_targets": 5.7288947048064776,
+        "team_targets": 30.02343213490798,
+        "share": 0.19081411742215648,
         "catch_rate": 0.5951151999170934,
         "yds_per_catch": 11.08917398333312,
         "team_spread": 3.5,
@@ -16196,9 +16196,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.5380039969488415,
-        "team_targets": 30.023432134907946,
-        "share": 0.21776337787001937,
+        "exp_targets": 6.538003996948842,
+        "team_targets": 30.02343213490798,
+        "share": 0.21776337787001915,
         "catch_rate": 0.6758189404237448,
         "yds_per_catch": 8.920688776797483,
         "team_spread": 3.5,
@@ -16485,11 +16485,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.343004797981955,
-        "team_targets": 30.436935869507355,
-        "share": 0.17554345223478093,
+        "exp_targets": 5.343004797981954,
+        "team_targets": 30.436935869507387,
+        "share": 0.1755434522347807,
         "catch_rate": 0.6609488101094949,
-        "yds_per_catch": 12.942033380413443,
+        "yds_per_catch": 12.942033380413442,
         "team_spread": 10.5,
         "total": 46.5,
         "games_history": 117
@@ -16775,10 +16775,10 @@
       },
       "drivers": {
         "exp_targets": 7.014408509509499,
-        "team_targets": 30.436935869507355,
-        "share": 0.23045711761467902,
+        "team_targets": 30.436935869507387,
+        "share": 0.23045711761467877,
         "catch_rate": 0.5398692300428832,
-        "yds_per_catch": 15.308629725889167,
+        "yds_per_catch": 15.308629725889165,
         "team_spread": 10.5,
         "total": 46.5,
         "games_history": 50
@@ -17064,10 +17064,10 @@
       },
       "drivers": {
         "exp_targets": 4.590090177697323,
-        "team_targets": 30.436935869507355,
-        "share": 0.1508065791305824,
+        "team_targets": 30.436935869507387,
+        "share": 0.15080657913058224,
         "catch_rate": 0.7852944941727623,
-        "yds_per_catch": 11.33084759423373,
+        "yds_per_catch": 11.330847594233727,
         "team_spread": 10.5,
         "total": 46.5,
         "games_history": 51
@@ -17353,10 +17353,10 @@
       },
       "drivers": {
         "exp_targets": 2.6810858288885115,
-        "team_targets": 30.436935869507355,
-        "share": 0.08808658796611996,
+        "team_targets": 30.436935869507387,
+        "share": 0.08808658796611987,
         "catch_rate": 0.5437824409054549,
-        "yds_per_catch": 13.120021858607986,
+        "yds_per_catch": 13.120021858607982,
         "team_spread": 10.5,
         "total": 46.5,
         "games_history": 39
@@ -17641,9 +17641,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 1.6362180841959078,
-        "team_targets": 30.436935869507355,
-        "share": 0.05375764798437285,
+        "exp_targets": 1.6362180841959075,
+        "team_targets": 30.436935869507387,
+        "share": 0.05375764798437278,
         "catch_rate": 0.6757203336382879,
         "yds_per_catch": 11.678240381170914,
         "team_spread": 10.5,
@@ -17931,10 +17931,10 @@
       },
       "drivers": {
         "exp_targets": 2.040140199557511,
-        "team_targets": 30.436935869507355,
-        "share": 0.06702843572376105,
+        "team_targets": 30.436935869507387,
+        "share": 0.06702843572376098,
         "catch_rate": 0.6219784782896692,
-        "yds_per_catch": 12.614130911073342,
+        "yds_per_catch": 12.614130911073339,
         "team_spread": 10.5,
         "total": 46.5,
         "games_history": 8
@@ -18219,11 +18219,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 1.8548352229023,
-        "team_targets": 30.436935869507355,
-        "share": 0.06094027437106539,
+        "exp_targets": 1.8548352229022997,
+        "team_targets": 30.436935869507387,
+        "share": 0.06094027437106532,
         "catch_rate": 0.7400393667195568,
-        "yds_per_catch": 12.705179076530335,
+        "yds_per_catch": 12.705179076530333,
         "team_spread": 10.5,
         "total": 46.5,
         "games_history": 8
@@ -18509,10 +18509,10 @@
       },
       "drivers": {
         "exp_targets": 5.806521705462533,
-        "team_targets": 31.530390104822267,
-        "share": 0.18415635474724057,
+        "team_targets": 31.530390104822303,
+        "share": 0.18415635474724035,
         "catch_rate": 0.6793967787453751,
-        "yds_per_catch": 11.929670829053435,
+        "yds_per_catch": 11.929670829053434,
         "team_spread": 3.0,
         "total": 46.5,
         "games_history": 169
@@ -18798,10 +18798,10 @@
       },
       "drivers": {
         "exp_targets": 2.250608108696505,
-        "team_targets": 31.530390104822267,
-        "share": 0.07137901247699109,
+        "team_targets": 31.530390104822303,
+        "share": 0.07137901247699101,
         "catch_rate": 0.7866905295018384,
-        "yds_per_catch": 10.828697184590718,
+        "yds_per_catch": 10.828697184590716,
         "team_spread": 3.0,
         "total": 46.5,
         "games_history": 91
@@ -19086,9 +19086,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.113593142076996,
-        "team_targets": 31.530390104822267,
-        "share": 0.19389525856649586,
+        "exp_targets": 6.113593142076997,
+        "team_targets": 31.530390104822303,
+        "share": 0.19389525856649567,
         "catch_rate": 0.7143346461442235,
         "yds_per_catch": 11.038420251545478,
         "team_spread": 3.0,
@@ -19375,11 +19375,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.7838882933531846,
-        "team_targets": 31.530390104822267,
-        "share": 0.18343852626385979,
+        "exp_targets": 5.783888293353185,
+        "team_targets": 31.530390104822303,
+        "share": 0.18343852626385962,
         "catch_rate": 0.6745583149970158,
-        "yds_per_catch": 10.655065494654883,
+        "yds_per_catch": 10.655065494654881,
         "team_spread": 3.0,
         "total": 46.5,
         "games_history": 39
@@ -19665,10 +19665,10 @@
       },
       "drivers": {
         "exp_targets": 4.764547927091375,
-        "team_targets": 26.414412809835294,
-        "share": 0.18037682538668115,
+        "team_targets": 26.414412809835323,
+        "share": 0.18037682538668096,
         "catch_rate": 0.7350209510961938,
-        "yds_per_catch": 10.983373489432823,
+        "yds_per_catch": 10.983373489432822,
         "team_spread": -3.5,
         "total": 38.5,
         "games_history": 39
@@ -19954,10 +19954,10 @@
       },
       "drivers": {
         "exp_targets": 5.1131999270460256,
-        "team_targets": 26.414412809835294,
-        "share": 0.19357613450873862,
+        "team_targets": 26.414412809835323,
+        "share": 0.19357613450873842,
         "catch_rate": 0.7044688068301886,
-        "yds_per_catch": 10.797728344231858,
+        "yds_per_catch": 10.797728344231857,
         "team_spread": -3.5,
         "total": 38.5,
         "games_history": 39
@@ -20243,10 +20243,10 @@
       },
       "drivers": {
         "exp_targets": 5.330727265335409,
-        "team_targets": 26.414412809835294,
-        "share": 0.2018113105035799,
+        "team_targets": 26.414412809835323,
+        "share": 0.2018113105035797,
         "catch_rate": 0.6819832979064143,
-        "yds_per_catch": 13.716819824686684,
+        "yds_per_catch": 13.716819824686683,
         "team_spread": -3.5,
         "total": 38.5,
         "games_history": 5
@@ -20531,11 +20531,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.0931387121126357,
-        "team_targets": 26.414412809835294,
-        "share": 0.11710041538235212,
+        "exp_targets": 3.0931387121126352,
+        "team_targets": 26.414412809835323,
+        "share": 0.11710041538235197,
         "catch_rate": 0.5591965018716428,
-        "yds_per_catch": 12.091040400131583,
+        "yds_per_catch": 12.09104040013158,
         "team_spread": -3.5,
         "total": 38.5,
         "games_history": 8
@@ -20820,11 +20820,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.2410966295832813,
-        "team_targets": 26.414412809835294,
-        "share": 0.08484370429574033,
+        "exp_targets": 2.2410966295832817,
+        "team_targets": 26.414412809835323,
+        "share": 0.08484370429574026,
         "catch_rate": 0.5319576651832513,
-        "yds_per_catch": 12.45883347848914,
+        "yds_per_catch": 12.458833478489137,
         "team_spread": -3.5,
         "total": 38.5,
         "games_history": 8
@@ -21109,9 +21109,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 0.7849656734340629,
-        "team_targets": 28.013538444898252,
-        "share": 0.028020939767322346,
+        "exp_targets": 0.784965673434063,
+        "team_targets": 28.013538444898288,
+        "share": 0.028020939767322315,
         "catch_rate": 0.5562083281078448,
         "yds_per_catch": 12.168806366416907,
         "team_spread": -3.0,
@@ -21398,9 +21398,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.2099955189228355,
-        "team_targets": 28.013538444898252,
-        "share": 0.18598134359822957,
+        "exp_targets": 5.209995518922836,
+        "team_targets": 28.013538444898288,
+        "share": 0.18598134359822938,
         "catch_rate": 0.7606553449181369,
         "yds_per_catch": 9.992215943991269,
         "team_spread": -3.0,
@@ -21687,11 +21687,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 7.779232838989239,
-        "team_targets": 28.013538444898252,
-        "share": 0.2776954740755348,
+        "exp_targets": 7.77923283898924,
+        "team_targets": 28.013538444898288,
+        "share": 0.27769547407553447,
         "catch_rate": 0.5743423946249996,
-        "yds_per_catch": 12.404063465824992,
+        "yds_per_catch": 12.40406346582499,
         "team_spread": -3.0,
         "total": 42.5,
         "games_history": 101
@@ -21976,11 +21976,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.092246515561371,
-        "team_targets": 28.013538444898252,
-        "share": 0.18177805440671693,
+        "exp_targets": 5.092246515561372,
+        "team_targets": 28.013538444898288,
+        "share": 0.18177805440671674,
         "catch_rate": 0.5411676889019872,
-        "yds_per_catch": 14.175040665695294,
+        "yds_per_catch": 14.17504066569529,
         "team_spread": -3.0,
         "total": 42.5,
         "games_history": 53
@@ -22265,9 +22265,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.2847930143086423,
-        "team_targets": 34.03668904668022,
-        "share": 0.06712735810393079,
+        "exp_targets": 2.284793014308642,
+        "team_targets": 34.03668904668025,
+        "share": 0.06712735810393072,
         "catch_rate": 0.7089422528562905,
         "yds_per_catch": 9.384126978075864,
         "team_spread": 2.5,
@@ -22554,11 +22554,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.201375007170984,
-        "team_targets": 34.03668904668022,
-        "share": 0.12343665394154331,
+        "exp_targets": 4.2013750071709834,
+        "team_targets": 34.03668904668025,
+        "share": 0.12343665394154318,
         "catch_rate": 0.72772823487967,
-        "yds_per_catch": 10.763857557770045,
+        "yds_per_catch": 10.763857557770041,
         "team_spread": 2.5,
         "total": 48.5,
         "games_history": 93
@@ -22843,9 +22843,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 8.298717516567164,
-        "team_targets": 34.03668904668022,
-        "share": 0.24381682675379324,
+        "exp_targets": 8.29871751656716,
+        "team_targets": 34.03668904668025,
+        "share": 0.24381682675379293,
         "catch_rate": 0.6455889980611933,
         "yds_per_catch": 12.982855572925882,
         "team_spread": 2.5,
@@ -23132,11 +23132,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.306285074242877,
-        "team_targets": 34.03668904668022,
-        "share": 0.15589897909768713,
+        "exp_targets": 5.306285074242875,
+        "team_targets": 34.03668904668025,
+        "share": 0.15589897909768696,
         "catch_rate": 0.6623897703967927,
-        "yds_per_catch": 11.597902583381222,
+        "yds_per_catch": 11.597902583381218,
         "team_spread": 2.5,
         "total": 48.5,
         "games_history": 34
@@ -23421,9 +23421,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.2224753869098466,
-        "team_targets": 34.03668904668022,
-        "share": 0.06529646241036527,
+        "exp_targets": 2.222475386909846,
+        "team_targets": 34.03668904668025,
+        "share": 0.0652964624103652,
         "catch_rate": 0.49301401666178235,
         "yds_per_catch": 11.350669323454436,
         "team_spread": 2.5,
@@ -23711,10 +23711,10 @@
       },
       "drivers": {
         "exp_targets": 2.024970742509148,
-        "team_targets": 30.815035547941065,
-        "share": 0.0657137240474301,
+        "team_targets": 30.815035547941097,
+        "share": 0.06571372404743003,
         "catch_rate": 0.7021020158980706,
-        "yds_per_catch": 12.161055323326629,
+        "yds_per_catch": 12.161055323326627,
         "team_spread": -8.5,
         "total": 50.5,
         "games_history": 33
@@ -23999,9 +23999,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 7.914122443521302,
-        "team_targets": 30.815035547941065,
-        "share": 0.25682665305411573,
+        "exp_targets": 7.914122443521301,
+        "team_targets": 30.815035547941097,
+        "share": 0.2568266530541154,
         "catch_rate": 0.46578678866453677,
         "yds_per_catch": 14.44659419123091,
         "team_spread": -8.5,
@@ -24288,11 +24288,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.784293479116548,
-        "team_targets": 30.815035547941065,
-        "share": 0.12280672119391403,
+        "exp_targets": 3.7842934791165477,
+        "team_targets": 30.815035547941097,
+        "share": 0.12280672119391388,
         "catch_rate": 0.6955339697354522,
-        "yds_per_catch": 9.6007362731126,
+        "yds_per_catch": 9.600736273112597,
         "team_spread": -8.5,
         "total": 50.5,
         "games_history": 20
@@ -24577,9 +24577,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.194013982078481,
-        "team_targets": 30.815035547941065,
-        "share": 0.10365115357758826,
+        "exp_targets": 3.1940139820784808,
+        "team_targets": 30.815035547941097,
+        "share": 0.10365115357758815,
         "catch_rate": 0.7032420299615907,
         "yds_per_catch": 10.792089245614553,
         "team_spread": -8.5,
@@ -24866,11 +24866,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.341232692006524,
-        "team_targets": 30.815035547941065,
-        "share": 0.2057837214609418,
+        "exp_targets": 6.341232692006523,
+        "team_targets": 30.815035547941097,
+        "share": 0.20578372146094154,
         "catch_rate": 0.7501564744459546,
-        "yds_per_catch": 12.88272528422216,
+        "yds_per_catch": 12.882725284222158,
         "team_spread": -8.5,
         "total": 50.5,
         "games_history": 5
@@ -25156,8 +25156,8 @@
       },
       "drivers": {
         "exp_targets": 2.8919787079708716,
-        "team_targets": 30.88102276386294,
-        "share": 0.09364905852001357,
+        "team_targets": 30.881022763862973,
+        "share": 0.09364905852001347,
         "catch_rate": 0.5281115317278124,
         "yds_per_catch": 14.239912190845457,
         "team_spread": -10.5,
@@ -25444,11 +25444,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.409801227452237,
-        "team_targets": 30.88102276386294,
-        "share": 0.07803501994992838,
+        "exp_targets": 2.4098012274522365,
+        "team_targets": 30.881022763862973,
+        "share": 0.07803501994992829,
         "catch_rate": 0.6616161253214042,
-        "yds_per_catch": 10.09832895719503,
+        "yds_per_catch": 10.098328957195028,
         "team_spread": -10.5,
         "total": 46.5,
         "games_history": 71
@@ -25734,10 +25734,10 @@
       },
       "drivers": {
         "exp_targets": 7.342412049157915,
-        "team_targets": 30.88102276386294,
-        "share": 0.23776453601627554,
+        "team_targets": 30.881022763862973,
+        "share": 0.23776453601627529,
         "catch_rate": 0.6773710167962218,
-        "yds_per_catch": 9.74667713122245,
+        "yds_per_catch": 9.746677131222448,
         "team_spread": -10.5,
         "total": 46.5,
         "games_history": 62
@@ -26023,10 +26023,10 @@
       },
       "drivers": {
         "exp_targets": 4.22632280668803,
-        "team_targets": 30.88102276386294,
-        "share": 0.136858252364416,
+        "team_targets": 30.881022763862973,
+        "share": 0.13685825236441587,
         "catch_rate": 0.5274151068432371,
-        "yds_per_catch": 13.34124416591303,
+        "yds_per_catch": 13.341244165913027,
         "team_spread": -10.5,
         "total": 46.5,
         "games_history": 24
@@ -26312,8 +26312,8 @@
       },
       "drivers": {
         "exp_targets": 1.7499610685612914,
-        "team_targets": 30.88102276386294,
-        "share": 0.05666784685023777,
+        "team_targets": 30.881022763862973,
+        "share": 0.056667846850237714,
         "catch_rate": 0.5671642187166024,
         "yds_per_catch": 12.802756529843075,
         "team_spread": -10.5,
@@ -26601,8 +26601,8 @@
       },
       "drivers": {
         "exp_targets": 4.4160493234951606,
-        "team_targets": 30.88102276386294,
-        "share": 0.1430020422983799,
+        "team_targets": 30.881022763862973,
+        "share": 0.14300204229837973,
         "catch_rate": 0.6769538207689725,
         "yds_per_catch": 10.111996475024384,
         "team_spread": -10.5,
@@ -26889,9 +26889,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.749987886551517,
-        "team_targets": 30.88102276386294,
-        "share": 0.08905106244633712,
+        "exp_targets": 2.7499878865515166,
+        "team_targets": 30.881022763862973,
+        "share": 0.08905106244633702,
         "catch_rate": 0.7162440413209047,
         "yds_per_catch": 11.887931325871474,
         "team_spread": -10.5,
@@ -27178,9 +27178,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 9.261667841815509,
-        "team_targets": 34.030167212106804,
-        "share": 0.2721605152301607,
+        "exp_targets": 9.26166784181551,
+        "team_targets": 34.03016721210684,
+        "share": 0.27216051523016044,
         "catch_rate": 0.7804496824581102,
         "yds_per_catch": 9.299407214119137,
         "team_spread": -9.5,
@@ -27468,8 +27468,8 @@
       },
       "drivers": {
         "exp_targets": 10.047679549808022,
-        "team_targets": 34.030167212106804,
-        "share": 0.2952580129031335,
+        "team_targets": 34.03016721210684,
+        "share": 0.2952580129031332,
         "catch_rate": 0.6010323039603701,
         "yds_per_catch": 12.20436290285609,
         "team_spread": -9.5,
@@ -27757,10 +27757,10 @@
       },
       "drivers": {
         "exp_targets": 2.5957700383288915,
-        "team_targets": 34.030167212106804,
-        "share": 0.076278497903043,
+        "team_targets": 34.03016721210684,
+        "share": 0.07627849790304292,
         "catch_rate": 0.8039255456387041,
-        "yds_per_catch": 9.371831013046538,
+        "yds_per_catch": 9.371831013046537,
         "team_spread": -9.5,
         "total": 39.5,
         "games_history": 54
@@ -28045,9 +28045,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.810402108606768,
-        "team_targets": 34.030167212106804,
-        "share": 0.08258560973532096,
+        "exp_targets": 2.8104021086067674,
+        "team_targets": 34.03016721210684,
+        "share": 0.08258560973532086,
         "catch_rate": 0.45648592720720294,
         "yds_per_catch": 13.839714998596358,
         "team_spread": -9.5,
@@ -28335,10 +28335,10 @@
       },
       "drivers": {
         "exp_targets": 4.021785996513226,
-        "team_targets": 33.22980157743652,
-        "share": 0.12102949176934216,
+        "team_targets": 33.229801577436554,
+        "share": 0.12102949176934202,
         "catch_rate": 0.6756275031624137,
-        "yds_per_catch": 10.630276934311999,
+        "yds_per_catch": 10.630276934311995,
         "team_spread": 9.5,
         "total": 39.5,
         "games_history": 148
@@ -28623,9 +28623,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.598870489831948,
-        "team_targets": 33.22980157743652,
-        "share": 0.10830249712582182,
+        "exp_targets": 3.5988704898319477,
+        "team_targets": 33.229801577436554,
+        "share": 0.1083024971258217,
         "catch_rate": 0.7641882489896736,
         "yds_per_catch": 8.63255429342667,
         "team_spread": 9.5,
@@ -28913,10 +28913,10 @@
       },
       "drivers": {
         "exp_targets": 2.3717897314947245,
-        "team_targets": 33.22980157743652,
-        "share": 0.07137538049896758,
+        "team_targets": 33.229801577436554,
+        "share": 0.0713753804989675,
         "catch_rate": 0.5480228508695709,
-        "yds_per_catch": 14.002170201516696,
+        "yds_per_catch": 14.002170201516693,
         "team_spread": 9.5,
         "total": 39.5,
         "games_history": 71
@@ -29202,10 +29202,10 @@
       },
       "drivers": {
         "exp_targets": 13.13431971525983,
-        "team_targets": 33.22980157743652,
-        "share": 0.3952572417458613,
+        "team_targets": 33.229801577436554,
+        "share": 0.3952572417458609,
         "catch_rate": 0.748632563356378,
-        "yds_per_catch": 11.237042816796501,
+        "yds_per_catch": 11.2370428167965,
         "team_spread": 9.5,
         "total": 39.5,
         "games_history": 51
@@ -29490,11 +29490,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.419965530280811,
-        "team_targets": 33.22980157743652,
-        "share": 0.07282515740099996,
+        "exp_targets": 2.4199655302808107,
+        "team_targets": 33.229801577436554,
+        "share": 0.07282515740099987,
         "catch_rate": 0.5449401289516959,
-        "yds_per_catch": 12.74629595183668,
+        "yds_per_catch": 12.746295951836677,
         "team_spread": 9.5,
         "total": 39.5,
         "games_history": 26
@@ -29779,11 +29779,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.673111028902569,
-        "team_targets": 31.081664375729076,
-        "share": 0.1181761370465995,
+        "exp_targets": 3.673111028902568,
+        "team_targets": 31.081664375729105,
+        "share": 0.11817613704659936,
         "catch_rate": 0.5705333820308801,
-        "yds_per_catch": 11.576181338615783,
+        "yds_per_catch": 11.576181338615779,
         "team_spread": -6.5,
         "total": 40.5,
         "games_history": 63
@@ -30068,11 +30068,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.667709315888541,
-        "team_targets": 31.081664375729076,
-        "share": 0.18234896456556293,
+        "exp_targets": 5.6677093158885405,
+        "team_targets": 31.081664375729105,
+        "share": 0.18234896456556274,
         "catch_rate": 0.569871700593394,
-        "yds_per_catch": 14.123391242857588,
+        "yds_per_catch": 14.123391242857586,
         "team_spread": -6.5,
         "total": 40.5,
         "games_history": 59
@@ -30357,11 +30357,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.111280185617689,
-        "team_targets": 31.081664375729076,
-        "share": 0.13227348882989962,
+        "exp_targets": 4.111280185617688,
+        "team_targets": 31.081664375729105,
+        "share": 0.13227348882989948,
         "catch_rate": 0.8028066851351936,
-        "yds_per_catch": 10.382164391544407,
+        "yds_per_catch": 10.382164391544405,
         "team_spread": -6.5,
         "total": 40.5,
         "games_history": 47
@@ -30646,9 +30646,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 7.322687399066932,
-        "team_targets": 31.081664375729076,
-        "share": 0.23559508623949502,
+        "exp_targets": 7.322687399066931,
+        "team_targets": 31.081664375729105,
+        "share": 0.23559508623949477,
         "catch_rate": 0.7222062843056627,
         "yds_per_catch": 12.08230379425225,
         "team_spread": -6.5,
@@ -30935,9 +30935,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.1516149529667805,
-        "team_targets": 31.081664375729076,
-        "share": 0.06922457327114453,
+        "exp_targets": 2.1516149529667796,
+        "team_targets": 31.081664375729105,
+        "share": 0.06922457327114445,
         "catch_rate": 0.6563038464716249,
         "yds_per_catch": 11.79665632921913,
         "team_spread": -6.5,
@@ -31224,9 +31224,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.8819054485486526,
-        "team_targets": 29.274151011429886,
-        "share": 0.1326052272885041,
+        "exp_targets": 3.8819054485486535,
+        "team_targets": 29.274151011429925,
+        "share": 0.13260522728850396,
         "catch_rate": 0.631119254062756,
         "yds_per_catch": 11.527595208371755,
         "team_spread": 6.5,
@@ -31513,11 +31513,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 10.307207099871846,
-        "team_targets": 29.274151011429886,
-        "share": 0.35209243457982675,
+        "exp_targets": 10.30720709987185,
+        "team_targets": 29.274151011429925,
+        "share": 0.35209243457982636,
         "catch_rate": 0.6950238147796532,
-        "yds_per_catch": 13.418236621099865,
+        "yds_per_catch": 13.418236621099863,
         "team_spread": 6.5,
         "total": 40.5,
         "games_history": 60
@@ -31802,9 +31802,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.667603738062156,
-        "team_targets": 29.274151011429886,
-        "share": 0.1594445467005934,
+        "exp_targets": 4.667603738062158,
+        "team_targets": 29.274151011429925,
+        "share": 0.15944454670059324,
         "catch_rate": 0.6431468504410797,
         "yds_per_catch": 9.399874605401662,
         "team_spread": 6.5,
@@ -32091,11 +32091,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.061631533467348,
-        "team_targets": 29.274151011429886,
-        "share": 0.104584810410794,
+        "exp_targets": 3.0616315334673483,
+        "team_targets": 29.274151011429925,
+        "share": 0.10458481041079387,
         "catch_rate": 0.5617612402705409,
-        "yds_per_catch": 12.125472764407904,
+        "yds_per_catch": 12.125472764407903,
         "team_spread": 6.5,
         "total": 40.5,
         "games_history": 16
@@ -32380,11 +32380,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 13.594399486488298,
-        "team_targets": 36.30929629392567,
-        "share": 0.3744054794243578,
+        "exp_targets": 13.594399486488292,
+        "team_targets": 36.3092962939257,
+        "share": 0.37440547942435737,
         "catch_rate": 0.6224352985790438,
-        "yds_per_catch": 13.068013760730288,
+        "yds_per_catch": 13.068013760730286,
         "team_spread": -3.5,
         "total": 55.5,
         "games_history": 104
@@ -32669,9 +32669,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.9098733129142254,
-        "team_targets": 36.30929629392567,
-        "share": 0.08014127537363014,
+        "exp_targets": 2.909873312914225,
+        "team_targets": 36.3092962939257,
+        "share": 0.08014127537363007,
         "catch_rate": 0.707356538815493,
         "yds_per_catch": 9.017312419330901,
         "team_spread": -3.5,
@@ -32958,9 +32958,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 6.385244226790926,
-        "team_targets": 36.30929629392567,
-        "share": 0.17585700849451988,
+        "exp_targets": 6.385244226790924,
+        "team_targets": 36.3092962939257,
+        "share": 0.17585700849451968,
         "catch_rate": 0.6983208214713585,
         "yds_per_catch": 12.79510652180368,
         "team_spread": -3.5,
@@ -33247,9 +33247,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.8140174496515558,
-        "team_targets": 36.30929629392567,
-        "share": 0.10504245025232335,
+        "exp_targets": 3.8140174496515544,
+        "team_targets": 36.3092962939257,
+        "share": 0.10504245025232323,
         "catch_rate": 0.7164337859132254,
         "yds_per_catch": 9.669575772736689,
         "team_spread": -3.5,
@@ -33537,8 +33537,8 @@
       },
       "drivers": {
         "exp_targets": 3.162676008348147,
-        "team_targets": 32.20054530978605,
-        "share": 0.09821808848022769,
+        "team_targets": 32.20054530978609,
+        "share": 0.09821808848022757,
         "catch_rate": 0.5826019484394911,
         "yds_per_catch": 13.331248036781519,
         "team_spread": 3.5,
@@ -33825,11 +33825,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.9458886920431095,
-        "team_targets": 32.20054530978605,
-        "share": 0.1225410518387686,
+        "exp_targets": 3.94588869204311,
+        "team_targets": 32.20054530978609,
+        "share": 0.12254105183876848,
         "catch_rate": 0.70887028964511,
-        "yds_per_catch": 12.663389413086648,
+        "yds_per_catch": 12.663389413086646,
         "team_spread": 3.5,
         "total": 55.5,
         "games_history": 164
@@ -34115,8 +34115,8 @@
       },
       "drivers": {
         "exp_targets": 8.087593613508567,
-        "team_targets": 32.20054530978605,
-        "share": 0.25116325005373963,
+        "team_targets": 32.20054530978609,
+        "share": 0.25116325005373935,
         "catch_rate": 0.7334429789740499,
         "yds_per_catch": 11.639380761277586,
         "team_spread": 3.5,
@@ -34404,10 +34404,10 @@
       },
       "drivers": {
         "exp_targets": 3.7052613901433484,
-        "team_targets": 32.20054530978605,
-        "share": 0.11506828081626569,
+        "team_targets": 32.20054530978609,
+        "share": 0.11506828081626556,
         "catch_rate": 0.6975145232225994,
-        "yds_per_catch": 15.82296837474002,
+        "yds_per_catch": 15.822968374740016,
         "team_spread": 3.5,
         "total": 55.5,
         "games_history": 11
@@ -34693,10 +34693,10 @@
       },
       "drivers": {
         "exp_targets": 4.044854486123305,
-        "team_targets": 35.56993322106074,
-        "share": 0.11371554905614419,
+        "team_targets": 35.56993322106077,
+        "share": 0.11371554905614407,
         "catch_rate": 0.7357158066797176,
-        "yds_per_catch": 11.584792607677164,
+        "yds_per_catch": 11.58479260767716,
         "team_spread": 3.5,
         "total": 49.5,
         "games_history": 136
@@ -34981,11 +34981,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 7.4988235405168995,
-        "team_targets": 35.56993322106074,
-        "share": 0.21081916274379994,
+        "exp_targets": 7.498823540516898,
+        "team_targets": 35.56993322106077,
+        "share": 0.2108191627437997,
         "catch_rate": 0.7189218882205805,
-        "yds_per_catch": 14.206981178638314,
+        "yds_per_catch": 14.206981178638312,
         "team_spread": 3.5,
         "total": 49.5,
         "games_history": 93
@@ -35270,11 +35270,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 9.541857868146101,
-        "team_targets": 35.56993322106074,
-        "share": 0.26825627725655743,
+        "exp_targets": 9.5418578681461,
+        "team_targets": 35.56993322106077,
+        "share": 0.2682562772565571,
         "catch_rate": 0.7087892852748351,
-        "yds_per_catch": 12.44363434057368,
+        "yds_per_catch": 12.443634340573679,
         "team_spread": 3.5,
         "total": 49.5,
         "games_history": 86
@@ -35560,10 +35560,10 @@
       },
       "drivers": {
         "exp_targets": 3.296286162596922,
-        "team_targets": 35.56993322106074,
-        "share": 0.09267057495191505,
+        "team_targets": 35.56993322106077,
+        "share": 0.09267057495191496,
         "catch_rate": 0.6726087188490315,
-        "yds_per_catch": 12.53729113494654,
+        "yds_per_catch": 12.537291134946539,
         "team_spread": 3.5,
         "total": 49.5,
         "games_history": 8
@@ -35849,8 +35849,8 @@
       },
       "drivers": {
         "exp_targets": 8.230927472668794,
-        "team_targets": 32.57353862136003,
-        "share": 0.2526875439707794,
+        "team_targets": 32.573538621360065,
+        "share": 0.25268754397077914,
         "catch_rate": 0.5425391489524826,
         "yds_per_catch": 12.551558613517368,
         "team_spread": -3.5,
@@ -36138,8 +36138,8 @@
       },
       "drivers": {
         "exp_targets": 4.321949822760653,
-        "team_targets": 32.57353862136003,
-        "share": 0.1326828464355587,
+        "team_targets": 32.573538621360065,
+        "share": 0.13268284643555855,
         "catch_rate": 0.7086607244867844,
         "yds_per_catch": 10.525392307000356,
         "team_spread": -3.5,
@@ -36426,11 +36426,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 1.1546271553010117,
-        "team_targets": 32.57353862136003,
-        "share": 0.03544678300759953,
+        "exp_targets": 1.1546271553010115,
+        "team_targets": 32.573538621360065,
+        "share": 0.035446783007599486,
         "catch_rate": 0.6648388564704782,
-        "yds_per_catch": 12.810430249072528,
+        "yds_per_catch": 12.810430249072525,
         "team_spread": -3.5,
         "total": 49.5,
         "games_history": 26
@@ -36715,9 +36715,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.9281607918898733,
-        "team_targets": 32.57353862136003,
-        "share": 0.12059361549727331,
+        "exp_targets": 3.9281607918898738,
+        "team_targets": 32.573538621360065,
+        "share": 0.12059361549727318,
         "catch_rate": 0.6964092740818383,
         "yds_per_catch": 11.888845447163998,
         "team_spread": -3.5,
@@ -37005,10 +37005,10 @@
       },
       "drivers": {
         "exp_targets": 6.689016645845778,
-        "team_targets": 32.57353862136003,
-        "share": 0.20535124303195815,
+        "team_targets": 32.573538621360065,
+        "share": 0.20535124303195793,
         "catch_rate": 0.7509473409755513,
-        "yds_per_catch": 10.06847561216212,
+        "yds_per_catch": 10.068475612162118,
         "team_spread": -3.5,
         "total": 49.5,
         "games_history": 8
@@ -37293,9 +37293,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.124311058368388,
-        "team_targets": 25.707824879602065,
-        "share": 0.16043018332682174,
+        "exp_targets": 4.12431105836839,
+        "team_targets": 25.7078248796021,
+        "share": 0.16043018332682157,
         "catch_rate": 0.7172414626465656,
         "yds_per_catch": 9.00321387036885,
         "team_spread": 4.5,
@@ -37582,11 +37582,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.89649444466938,
-        "team_targets": 25.707824879602065,
-        "share": 0.1126697594306242,
+        "exp_targets": 2.8964944446693806,
+        "team_targets": 25.7078248796021,
+        "share": 0.11266975943062406,
         "catch_rate": 0.5963452533427618,
-        "yds_per_catch": 13.503860310086807,
+        "yds_per_catch": 13.503860310086804,
         "team_spread": 4.5,
         "total": 38.5,
         "games_history": 73
@@ -37871,11 +37871,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 7.217801661920536,
-        "team_targets": 25.707824879602065,
-        "share": 0.28076282982803097,
+        "exp_targets": 7.2178016619205385,
+        "team_targets": 25.7078248796021,
+        "share": 0.2807628298280307,
         "catch_rate": 0.6365723638086214,
-        "yds_per_catch": 12.978428213885998,
+        "yds_per_catch": 12.978428213885996,
         "team_spread": 4.5,
         "total": 38.5,
         "games_history": 58
@@ -38160,11 +38160,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 2.4981730412534264,
-        "team_targets": 25.707824879602065,
-        "share": 0.0971755896484112,
+        "exp_targets": 2.498173041253427,
+        "team_targets": 25.7078248796021,
+        "share": 0.0971755896484111,
         "catch_rate": 0.6440699736849693,
-        "yds_per_catch": 11.878460719398175,
+        "yds_per_catch": 11.878460719398173,
         "team_spread": 4.5,
         "total": 38.5,
         "games_history": 5
@@ -38449,9 +38449,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 1.6755951112374707,
-        "team_targets": 25.707824879602065,
-        "share": 0.06517840848398558,
+        "exp_targets": 1.6755951112374712,
+        "team_targets": 25.7078248796021,
+        "share": 0.06517840848398551,
         "catch_rate": 0.7273211761536049,
         "yds_per_catch": 11.173179694617263,
         "team_spread": 4.5,
@@ -38738,11 +38738,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.3154694245937,
-        "team_targets": 29.257851860499926,
-        "share": 0.11331896273184046,
+        "exp_targets": 3.315469424593699,
+        "team_targets": 29.257851860499954,
+        "share": 0.1133189627318403,
         "catch_rate": 0.6697403506598961,
-        "yds_per_catch": 10.44961536724857,
+        "yds_per_catch": 10.449615367248569,
         "team_spread": -4.5,
         "total": 38.5,
         "games_history": 53
@@ -39027,11 +39027,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 4.419172111807746,
-        "team_targets": 29.257851860499926,
-        "share": 0.1510422615056687,
+        "exp_targets": 4.419172111807745,
+        "team_targets": 29.257851860499954,
+        "share": 0.15104226150566855,
         "catch_rate": 0.5479858506063933,
-        "yds_per_catch": 15.77548902442487,
+        "yds_per_catch": 15.775489024424866,
         "team_spread": -4.5,
         "total": 38.5,
         "games_history": 54
@@ -39316,11 +39316,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.0256704734346793,
-        "team_targets": 29.257851860499926,
-        "share": 0.10341396517628619,
+        "exp_targets": 3.025670473434679,
+        "team_targets": 29.257851860499954,
+        "share": 0.10341396517628607,
         "catch_rate": 0.6517442601284109,
-        "yds_per_catch": 14.14318797555397,
+        "yds_per_catch": 14.143187975553968,
         "team_spread": -4.5,
         "total": 38.5,
         "games_history": 41
@@ -39605,9 +39605,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.12295875747783,
-        "team_targets": 29.257851860499926,
-        "share": 0.10673916774095213,
+        "exp_targets": 3.122958757477829,
+        "team_targets": 29.257851860499954,
+        "share": 0.10673916774095199,
         "catch_rate": 0.5137969253804263,
         "yds_per_catch": 13.402753314485718,
         "team_spread": -4.5,
@@ -39894,9 +39894,9 @@
         }
       },
       "drivers": {
-        "exp_targets": 3.5296084688477802,
-        "team_targets": 29.257851860499926,
-        "share": 0.12063799098022605,
+        "exp_targets": 3.52960846884778,
+        "team_targets": 29.257851860499954,
+        "share": 0.12063799098022593,
         "catch_rate": 0.6881035181384861,
         "yds_per_catch": 10.25022346836299,
         "team_spread": -4.5,
@@ -40183,11 +40183,11 @@
         }
       },
       "drivers": {
-        "exp_targets": 5.11864867754449,
-        "team_targets": 29.257851860499926,
-        "share": 0.17494957257798585,
+        "exp_targets": 5.118648677544489,
+        "team_targets": 29.257851860499954,
+        "share": 0.17494957257798566,
         "catch_rate": 0.6090290438724478,
-        "yds_per_catch": 11.987279862378898,
+        "yds_per_catch": 11.987279862378895,
         "team_spread": -4.5,
         "total": 38.5,
         "games_history": 24

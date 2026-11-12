@@ -68,6 +68,23 @@ Written 2026-11-11, before any week 10 pick was logged.
   same graduation rule (8+ graded weeks, 95% ROI interval above zero). Version 1 continues unchanged. After 8 weeks
   both records are compared, but the version that graduates is decided by its own record, not by picking the better one.
 
+## Anytime TD added (2026-11-11, before any anytime TD line was collected)
+
+- Anytime TD passed every pre-registered test once recalibrated (Phase 8, confirmed in the Phase 11 refit), so it
+  qualifies under "markets that passed every test". It was missing only because its lines were not being collected.
+- **Lines:** The Odds API market `player_anytime_td` (Yes/No, no line; stored as line 0.5 with Yes = over). Most books
+  offer only Yes. When at least one book offers both sides, the market chance is the median no-vig chance. When only Yes
+  is offered, the market chance is the median implied chance of the Yes price, which still includes the book's cut
+  (flagged `vig_included`). That overstates the market's chance, which makes the 20-point gap filter slightly stricter
+  for Yes picks.
+- **Model chance:** the frozen projection's recalibrated anytime-TD probability (`markets.json`). EV = chance × best
+  licensed Yes price − 1 (or No, where a licensed book offers it). Every other rule is unchanged: EV ≥ 5%, unit
+  tiers, at most one pick per player per game and 3 per game across all markets, blended version 2 alongside.
+- **Settles** as a win if the player scored a rushing or receiving TD. Return and defensive TDs are not in our stats
+  (rare for these players). No stat line → the same 3-day wait for the active/inactive list, then 0 or void.
+- **Starts** with the first games whose lines are collected after this change (expected: week 10 Sunday games, at the
+  Saturday run). Costs 1 extra Odds API credit per game per snapshot.
+
 ## Deviations
 
 1. **Faster settling (2026-11-09, after the first 3 picks were graded).** Picks now settle the way sportsbooks pay

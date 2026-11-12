@@ -77,3 +77,20 @@ def test_blend_pulls_chances_toward_market():
     # a 5-point model edge at 1.95 is a pick for v1 (EV 7.25%) but not after blending (EV 3.4%)
     assert P.candidates(_snap(0.50, [1.95, "fanduel"], [1.87, "draftkings"]), _ledger(0.55))[0]["units"] == 1.0
     assert P.candidates(_snap(0.50, [1.95, "fanduel"], [1.87, "draftkings"]), _ledger(0.55), blend=0.75) == []
+
+
+def test_anytime_td_yes_only_and_yes_no():
+    ev = {"bookmakers": [
+        {"key": "draftkings", "markets": [{"key": "player_anytime_td", "outcomes": [{"name": "Yes", "description": "A Back", "price": 2.6}]}]},
+        {"key": "fanduel", "markets": [{"key": "player_anytime_td", "outcomes": [{"name": "Yes", "description": "A Back", "price": 2.8}]}]}]}
+    r = LN.consensus(ev)[0]
+    assert r["line"] == 0.5 and r.get("vig_included") and abs(r["p_over_market"] - (1 / 2.6 + 1 / 2.8) / 2) < 1e-9
+    assert r["licensed"]["best_over"] == [2.8, "fanduel"] and r["licensed"]["best_under"] is None
+    ev["bookmakers"][0]["markets"][0]["outcomes"].append({"name": "No", "description": "A Back", "price": 1.45})
+    r = LN.consensus(ev)[0]
+    assert not r.get("vig_included") and r["books"] == 1 and r["licensed"]["best_under"] == [1.45, "draftkings"]
+    # a 45% model chance at +180 (2.8) is EV 26% -> 2 units, Yes side
+    snap = {"game_id": "G", "lines": [{"market": "anytime_td", "gsis_id": "X", "line": 0.5, "p_over_market": 0.37,
+                                      "licensed": {"books": ["fanduel"], "best_over": [2.8, "fanduel"], "best_under": None}}]}
+    c = P.candidates(snap, {("td", "X"): {"player": "A Back", "gsis_id": "X", "pos": "RB", "team": "T", "opp": "O", "game_id": "G", "mean": 0.45}})
+    assert len(c) == 1 and c[0]["side"] == "over" and c[0]["units"] == 2.0 and abs(c[0]["ev"] - (0.45 * 2.8 - 1)) < 1e-9

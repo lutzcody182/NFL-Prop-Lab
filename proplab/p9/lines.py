@@ -39,7 +39,10 @@ API_MARKETS = {
     "player_rush_yds": {"QB": "qb_rush_yds", "RB": "rb_rush_yds"}, "player_rush_attempts": {"RB": "rb_rush_att"},
     "player_receptions": {"WR": "wrte_rec", "TE": "wrte_rec", "RB": "rb_rec"},
     "player_reception_yds": {"WR": "wrte_rec_yds", "TE": "wrte_rec_yds", "RB": "rb_rec_yds"},
+    # Yes/No market with no line (stored as line 0.5: Yes = over, No = under). Most books offer only Yes.
+    "player_anytime_td": {"QB": "anytime_td", "RB": "anytime_td", "WR": "anytime_td", "TE": "anytime_td"},
 }
+YES_NO = {"player_anytime_td"}
 
 
 def candidates(conn, games: dict) -> dict:
@@ -73,25 +76,37 @@ def consensus(event_odds: dict) -> list[dict]:
             pairs: dict = {}
             for o in mk.get("outcomes", []):
                 side = (o.get("name") or "").lower()
-                if side in ("over", "under") and o.get("point") is not None:
+                if mk["key"] in YES_NO and side in ("yes", "no"):
+                    pairs.setdefault((o.get("description", ""), 0.5), {})["over" if side == "yes" else "under"] = float(o["price"])
+                elif side in ("over", "under") and o.get("point") is not None:
                     pairs.setdefault((o.get("description", ""), float(o["point"])), {})[side] = float(o["price"])
             for (player, line), pr in pairs.items():
                 if "over" in pr and "under" in pr and pr["over"] > 1 and pr["under"] > 1:
                     by.setdefault((mk["key"], player), []).append((bk["key"], line, novig_multiplicative(pr["over"], pr["under"]),
                                                                     pr["over"], pr["under"]))
+                elif mk["key"] in YES_NO and pr.get("over", 0) > 1:      # Yes only: the cut cannot be removed
+                    by.setdefault((mk["key"], player), []).append((bk["key"], line, None, pr["over"], None))
     out = []
     for (mk, player), rows in by.items():
         lines = [r[1] for r in rows]
         modal = max(set(lines), key=lambda L: (lines.count(L), -abs(L - statistics.median(lines))))
-        ps = [r[2] for r in rows if r[1] == modal]
+        ps = [r[2] for r in rows if r[1] == modal and r[2] is not None]
+        vig_in = not ps                       # Yes-only market everywhere: implied chance still includes the book's cut
+        if vig_in:
+            ps = [1 / r[3] for r in rows if r[1] == modal]
         row = {"api_market": mk, "player_name": player, "line": modal, "p_over_market": statistics.median(ps),
                "books": len(ps), "books_any_line": len(rows)}
+        if vig_in:
+            row["vig_included"] = True
         # Phase 12: best price on each side at the consensus line among state-licensed US books only
         ok = licensed_books()
         lic = [r for r in rows if r[1] == modal and r[0] in ok]
         if lic:
-            bo, bu = max(lic, key=lambda r: r[3]), max(lic, key=lambda r: r[4])
-            row["licensed"] = {"books": sorted(r[0] for r in lic), "best_over": [bo[3], bo[0]], "best_under": [bu[4], bu[0]]}
+            bo = max(lic, key=lambda r: r[3])
+            two = [r for r in lic if r[4] is not None]
+            bu = max(two, key=lambda r: r[4]) if two else None
+            row["licensed"] = {"books": sorted(r[0] for r in lic), "best_over": [bo[3], bo[0]],
+                               "best_under": [bu[4], bu[0]] if bu else None}
         out.append(row)
     return out
 

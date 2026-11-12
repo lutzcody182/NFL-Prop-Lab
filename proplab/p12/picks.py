@@ -20,7 +20,9 @@ OUT = ROOT / "phase12" / "picks.json"
 LINES = ROOT / "phase9" / "market_lines.json"
 LEDGER = ROOT / "ledger"
 FIRST = (2026, 9)
-MARKETS = {"wrte_rec": ("rec", "receptions"), "wrte_rec_yds": ("yds", "receiving_yards")}   # ledger key, outcome column
+# ledger key, outcome column. anytime_td (added 2026-11-11, passed every test after Phase 8 recalibration) is a Yes/No
+# market stored as line 0.5: Yes = over. Its chance is the frozen projection's recalibrated probability.
+MARKETS = {"wrte_rec": ("rec", "receptions"), "wrte_rec_yds": ("yds", "receiving_yards"), "anytime_td": ("td", "anytime_td")}
 MIN_EV, MAX_GAP = 0.05, 0.20
 UNIT_TIERS = [(0.12, 2.0), (0.08, 1.5), (0.05, 1.0)]
 MAX_PER_GAME = 3
@@ -67,11 +69,14 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
         lic = ln.get("licensed")
         if mk not in MARKETS or not lic or not ln.get("gsis_id"):
             continue
-        p = ledger_players.get(ln["gsis_id"])
+        key = MARKETS[mk][0]
+        p = ledger_players.get((key, ln["gsis_id"])) if key == "td" else ledger_players.get(ln["gsis_id"])
         if p is None or p["game_id"] != snapshot["game_id"]:
             continue
-        key = MARKETS[mk][0]
-        over, under, push = chances(p[key]["g"], ln["line"])
+        if key == "td":
+            over = float(p["mean"]); under, push = 1.0 - over, 0.0
+        else:
+            over, under, push = chances(p[key]["g"], ln["line"])
         if abs(over - ln["p_over_market"]) > MAX_GAP:
             continue
         m_over, m_under = over, under
@@ -79,7 +84,7 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
             pk = ln["p_over_market"]
             over = blend * over + (1 - blend) * pk * (1 - push)
             under = blend * under + (1 - blend) * (1 - pk) * (1 - push)
-        sides = [("over", over, *lic["best_over"]), ("under", under, *lic["best_under"])]
+        sides = [("over", over, *lic["best_over"])] + ([("under", under, *lic["best_under"])] if lic.get("best_under") else [])
         best = max(({"side": s, "p_win": pw, "price": pr, "book": bk, "ev": pw * pr + push - 1} for s, pw, pr, bk in sides),
                    key=lambda r: r["ev"])
         if best["ev"] < MIN_EV:
@@ -120,6 +125,9 @@ def log(store: dict, now: dt.datetime, conn, blend: float | None = None, first: 
         if now - dt.datetime.fromisoformat(snap["snapshot_utc"]) > SNAPSHOT_MAX_AGE:
             continue
         players = {p["gsis_id"]: p for p in json.loads((wdir / "wrte.json").read_text())["players"]}
+        if (wdir / "markets.json").exists():     # anytime TD chances, keyed ("td", gsis_id)
+            for q in json.loads((wdir / "markets.json").read_text())["markets"].get("anytime_td", {}).get("players", []):
+                players[("td", q["gsis_id"])] = q
         picks = candidates(snap, players, blend)
         for r in picks:
             store["picks"].append({"id": f"{gid}|{r['gsis_id']}|{r['market']}", "season": g["season"], "week": g["week"],
@@ -157,8 +165,10 @@ def grade(store: dict, now: dt.datetime, conn) -> int:
         loaded = {r[0] for r in conn.execute("SELECT DISTINCT game_id FROM player_game WHERE game_id LIKE %s",
                                              (f"{sw[0]}_{sw[1]:02d}_%",)).fetchall()}
         cols = {mk: col for mk, (_, col) in MARKETS.items()}
-        stat = {(r[0], r[1]): {"receptions": float(r[2]), "receiving_yards": float(r[3])} for r in conn.execute(
-            """SELECT gsis_id, game_id, coalesce(receptions, 0), coalesce(receiving_yards, 0) FROM player_game
+        stat = {(r[0], r[1]): {"receptions": float(r[2]), "receiving_yards": float(r[3]), "anytime_td": float(r[4] > 0)}
+                for r in conn.execute(
+            """SELECT gsis_id, game_id, coalesce(receptions, 0), coalesce(receiving_yards, 0),
+                      coalesce(rushing_tds, 0) + coalesce(receiving_tds, 0) FROM player_game
                WHERE game_id LIKE %s""", (f"{sw[0]}_{sw[1]:02d}_%",)).fetchall()}
         acts = None
         for p in todo:

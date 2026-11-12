@@ -213,3 +213,6 @@ Known approximations:
 ## Data credits
 
 Data from [nflverse](https://github.com/nflverse) (CC-BY 4.0); FTN charting data CC-BY-SA 4.0.
+- Phase 13 (RB low bias): live RB carries ran low when a projected teammate RB sat. Dropping RBs listed Out/Doubtful
+  was tested on 2026 weeks 6–9 and not adopted (rush yards did not improve; most scratches are not on the injury
+  report). Projections tab tags affected RBs "RB ↑". See `phase13/PREREGISTRATION.md`.

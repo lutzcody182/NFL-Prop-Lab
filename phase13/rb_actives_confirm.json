@@ -1,0 +1,146 @@
+{
+  "markets": {},
+  "counts": {
+    "L": {
+      "projected": 4292,
+      "void": 362,
+      "missed": 290,
+      "played_eligible": 4214
+    },
+    "B": {
+      "projected": 4251,
+      "void": 321,
+      "missed": 290,
+      "played_eligible": 4214
+    },
+    "R": {
+      "projected": 4151,
+      "void": 221,
+      "missed": 290,
+      "played_eligible": 4214
+    }
+  },
+  "B_vs_L": {
+    "change": 0.000183246919208561,
+    "ci95": [
+      -0.0044437158311926425,
+      0.005276176953105051
+    ],
+    "by_market": {
+      "wrte_rec": -0.0012802879199255157,
+      "wrte_rec_yds": -0.0007576285539971916,
+      "qb_pass_yds": 0.0026807302005329436,
+      "qb_pass_att": -0.0032014337553988303,
+      "qb_pass_tds": 0.0074444611976414166,
+      "qb_ints": 0.007069170222160137,
+      "qb_rush_yds": 0.024002394495381996,
+      "rb_rush_yds": 0.0039678726265302,
+      "rb_rush_att": -0.022606060246080473,
+      "rb_rec": -0.0031105415279389925,
+      "rb_rec_yds": -0.00069713043762476,
+      "anytime_td": -0.003048449176617174,
+      "rb_rush_rec_yds": -0.008399146547095948,
+      "qb_completions": 0.001952390678922944,
+      "rec_td": -0.001267637468362337
+    },
+    "rows": {
+      "wrte_rec": 538,
+      "wrte_rec_yds": 538,
+      "qb_pass_yds": 97,
+      "qb_pass_att": 97,
+      "qb_pass_tds": 97,
+      "qb_ints": 97,
+      "qb_rush_yds": 97,
+      "rb_rush_yds": 185,
+      "rb_rush_att": 185,
+      "rb_rec": 147,
+      "rb_rec_yds": 147,
+      "anytime_td": 738,
+      "rb_rush_rec_yds": 185,
+      "qb_completions": 97,
+      "rec_td": 685
+    }
+  },
+  "R_vs_L": {
+    "change": 0.0005871030785974914,
+    "ci95": [
+      -0.004369849786917271,
+      0.005414530569232649
+    ],
+    "by_market": {
+      "wrte_rec": -0.007438394290493755,
+      "wrte_rec_yds": -0.004241288976509994,
+      "qb_pass_yds": 0.00026943276168944763,
+      "qb_pass_att": -0.005240018211461583,
+      "qb_pass_tds": 0.003364319804128213,
+      "qb_ints": -0.0003441536336503681,
+      "qb_rush_yds": 0.024522616254103236,
+      "rb_rush_yds": 0.013061752505112656,
+      "rb_rush_att": -0.0167109095747372,
+      "rb_rec": -0.004716574508073057,
+      "rb_rec_yds": 0.0020929141382699523,
+      "anytime_td": -0.007158729203377345,
+      "rb_rush_rec_yds": -0.0018066260632465525,
+      "qb_completions": 0.013697519806951775,
+      "rec_td": -0.0005453146297430544
+    },
+    "rows": {
+      "wrte_rec": 538,
+      "wrte_rec_yds": 538,
+      "qb_pass_yds": 97,
+      "qb_pass_att": 97,
+      "qb_pass_tds": 97,
+      "qb_ints": 97,
+      "qb_rush_yds": 97,
+      "rb_rush_yds": 185,
+      "rb_rush_att": 185,
+      "rb_rec": 147,
+      "rb_rec_yds": 147,
+      "anytime_td": 738,
+      "rb_rush_rec_yds": 185,
+      "qb_completions": 97,
+      "rec_td": 685
+    }
+  },
+  "O_vs_L": {
+    "change": -0.007258103538406961,
+    "ci95": [
+      -0.01292781807642722,
+      -0.0011847833448361122
+    ],
+    "by_market": {
+      "wrte_rec": -0.009944845983234862,
+      "wrte_rec_yds": -0.003086657460240505,
+      "qb_pass_yds": -0.0072205704006753635,
+      "qb_pass_att": -0.009277641009136417,
+      "qb_pass_tds": 0.0040806844348206806,
+      "qb_ints": -0.0005517777187303841,
+      "qb_rush_yds": 0.028040014989534345,
+      "rb_rush_yds": -0.03061240355487871,
+      "rb_rush_att": -0.05365073387094332,
+      "rb_rec": 0.00326064994056785,
+      "rb_rec_yds": -0.0015477440051522295,
+      "anytime_td": -0.0022150265679230507,
+      "rb_rush_rec_yds": -0.028601771684248822,
+      "qb_completions": 0.00423634103128534,
+      "rec_td": -0.0017800712171489597
+    },
+    "rows": {
+      "wrte_rec": 538,
+      "wrte_rec_yds": 538,
+      "qb_pass_yds": 96,
+      "qb_pass_att": 96,
+      "qb_pass_tds": 96,
+      "qb_ints": 96,
+      "qb_rush_yds": 96,
+      "rb_rush_yds": 185,
+      "rb_rush_att": 185,
+      "rb_rec": 147,
+      "rb_rec_yds": 147,
+      "anytime_td": 738,
+      "rb_rush_rec_yds": 185,
+      "qb_completions": 96,
+      "rec_td": 685
+    }
+  }
+}

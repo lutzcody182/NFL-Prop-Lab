@@ -46,6 +46,7 @@ def expected_actives(u: pl.DataFrame, tg: pl.DataFrame, targets: pl.DataFrame, i
     """For each target (game_id, team) -> the players expected active, by method L or I.
     Uses only games before the target's kickoff and (for I) that week's injury report."""
     tgp = team_games(tg).filter(pl.col("played"))
+    rbs = set(u.filter(pl.col("pos") == "RB")["gsis_id"].to_list()) if method == "B" else set()
     rows = []
     for t in targets.iter_rows(named=True):
         prev = tgp.filter((pl.col("team") == t["team"]) & (pl.col("kickoff_utc") < t["kickoff_utc"])) \
@@ -54,8 +55,10 @@ def expected_actives(u: pl.DataFrame, tg: pl.DataFrame, targets: pl.DataFrame, i
             continue
         last = set(u.filter((pl.col("game_id") == prev[0]) & (pl.col("team") == t["team"]))["gsis_id"].to_list())
         chosen = set(last)
-        if method == "R":   # exploratory, added after the pre-registered test: removals only
+        if method in ("R", "B"):   # R: exploratory, removals only. B (Phase 13): removals of RBs only
             out = set(inj.filter((pl.col("season") == t["season"]) & (pl.col("week") == t["week"]) & (pl.col("team") == t["team"]))["gsis_id"].to_list())
+            if method == "B":
+                out &= rbs
             chosen = last - out
         if method == "I":
             out = set(inj.filter((pl.col("season") == t["season"]) & (pl.col("week") == t["week"]) & (pl.col("team") == t["team"]))["gsis_id"].to_list())
@@ -123,7 +126,8 @@ def draws_for(market, params_by_vt, k_by_vt, rng):
     return rows, E.market_draws(market, rows, k, N_SIMS, rng)
 
 
-def backtest() -> None:
+def backtest(windows=((2025, 1, 18), (2026, 1, 5)), methods: str = "LIOR", compare=("I", "O", "R"),
+             out_path: Path | None = None) -> dict:
     conn = db.connect()
     D = E.load(conn)
     u, tg, pools = D["u"], D["tg"], D["pools"]
@@ -132,19 +136,19 @@ def backtest() -> None:
     cfgs = base_configs()
     cfg_vt = {vt: cfgs[vt] for vt in ("tgt", "car", "att")}
     wr = cfgs["wrte_rec"]
-    targets_all = tg.filter(pl.col("played") & (((pl.col("season") == 2025) & (pl.col("week") <= 18))
-                                                | ((pl.col("season") == 2026) & (pl.col("week") <= 5)))) \
-                    .select("game_id", "team", "season", "week", "kickoff_utc")
+    win = pl.lit(False)
+    for ws, w0, w1 in windows:
+        win = win | ((pl.col("season") == ws) & pl.col("week").is_between(w0, w1))
+    targets_all = tg.filter(pl.col("played") & win).select("game_id", "team", "season", "week", "kickoff_utc")
     real = u.select("gsis_id", "game_id", "team")
-    per = {m: {meth: [] for meth in "LIOR"} for m in MARKETS}   # rows: (key, game, crps)
-    counts = {meth: {"projected": 0, "void": 0, "missed": 0, "played_eligible": 0} for meth in "LIR"}
+    per = {m: {meth: [] for meth in methods} for m in MARKETS}   # rows: (key, game, crps)
+    counts = {meth: {"projected": 0, "void": 0, "missed": 0, "played_eligible": 0} for meth in methods if meth != "O"}
     feats, dfeats, preps = {}, {}, {}
-    for season in (2025, 2026):
+    for season in sorted({w[0] for w in windows}):
         targets = targets_all.filter(pl.col("season") == season)
-        sets = {"L": expected_actives(u, tg, targets, inj, "L"), "I": expected_actives(u, tg, targets, inj, "I"),
-                "R": expected_actives(u, tg, targets, inj, "R"),
-                "O": real.join(targets.select("game_id", "team"), on=["game_id", "team"])}
-        need = pl.concat([sets["L"], sets["I"]]).unique().join(real, on=["gsis_id", "game_id", "team"], how="anti")
+        sets = {m: expected_actives(u, tg, targets, inj, m) for m in methods if m != "O"}
+        sets["O"] = real.join(targets.select("game_id", "team"), on=["game_id", "team"])
+        need = pl.concat([v for k, v in sets.items() if k != "O"]).unique().join(real, on=["gsis_id", "game_id", "team"], how="anti")
         for c in {cfg_vt["tgt"], cfg_vt["car"], cfg_vt["att"], wr}:
             if c.half_life not in feats:
                 feats[c.half_life] = E.features(u, tg, c.half_life)
@@ -155,7 +159,7 @@ def backtest() -> None:
         ph = {h: phantom_features(u, tg, need, h, dfeats[h]) for h in feats}
         for week in sorted(targets["week"].unique().to_list()):
             wk_games = targets.filter(pl.col("week") == week)
-            for meth in "LIOR":
+            for meth in methods:
                 s = sets[meth].join(wk_games.select("game_id", "team"), on=["game_id", "team"])
                 by_vt, k_by_vt = {}, {}
                 for vt in ("tgt", "car", "att", "wrte"):
@@ -186,14 +190,14 @@ def backtest() -> None:
                             cr = crps_samples(dm, ym)
                         per[m][meth].append(pl.DataFrame({"key": keys[playedmask], "game": rows["game_id"].to_numpy()[playedmask],
                                                           "crps": cr}))
-                    if meth in "LIR":
+                    if meth in counts:
                         counts[meth]["projected"] += len(rows)
                         counts[meth]["void"] += int((~playedmask).sum())
             print(f"{season} week {week} done", flush=True)
     # missed = played-and-eligible under O but not projected by the method
     res = {"markets": {}, "counts": counts}
     rng = np.random.default_rng(SEED)
-    for meth in "LIR":
+    for meth in counts:
         miss = tot = 0
         for m in MARKETS:
             o = pl.concat(per[m]["O"]) if per[m]["O"] else None
@@ -203,16 +207,18 @@ def backtest() -> None:
             tot += o.height
             miss += o.height - (o.join(x, on="key").height if x is not None else 0)
         counts[meth]["missed"], counts[meth]["played_eligible"] = miss, tot
-    for comp in ("I", "O", "R"):
+    for comp in compare:
         stats_in = {}
         for m in MARKETS:
             a, b = pl.concat(per[m]["L"]), pl.concat(per[m][comp])
             j = a.join(b, on="key", suffix="_b")
             stats_in[m] = j
         res[f"{comp}_vs_L"] = compare_rows(stats_in, rng)
-    OUT.parent.mkdir(exist_ok=True)
-    OUT.write_text(json.dumps(res, indent=2, default=str))
+    out_path = out_path or OUT
+    out_path.parent.mkdir(exist_ok=True)
+    out_path.write_text(json.dumps(res, indent=2, default=str))
     print(json.dumps({k: v for k, v in res.items() if k != "markets"}, indent=1, default=str))
+    return res
 
 
 def compare_rows(joined: dict, rng) -> dict:
@@ -236,4 +242,7 @@ def compare_rows(joined: dict, rng) -> dict:
 
 
 if __name__ == "__main__":
-    {"backtest": backtest}[sys.argv[1]]()
+    {"backtest": backtest,
+     # Phase 13 confirmation: RB-only removals on 2026 weeks 6-9 (not used by the Phase 7 backtest)
+     "confirm_rb": lambda: backtest(windows=((2026, 6, 9),), methods="LBRO", compare=("B", "R", "O"),
+                                    out_path=ROOT / "phase13" / "rb_actives_confirm.json")}[sys.argv[1]]()

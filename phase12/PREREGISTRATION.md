@@ -53,6 +53,21 @@ The picks may be called recommendations only after **at least 8 weeks with grade
 interval is entirely above zero. Until then the dashboard labels them as a tracked record, not advice. If the rule is
 never met, they stay tracked picks.
 
+## Version 2 (test, tracked alongside version 1): blended chances
+
+Written 2026-11-11, before any week 10 pick was logged.
+
+- **Why.** In weeks 7–9, WR/TE over chances at the book line were scored for 642 props. When the model and market
+  disagreed, the result usually landed between them but closer to the model: Brier was lowest at about 75% model and
+  25% market for both markets. Version 1's expected returns (median 23%) are far above any realistic edge, so its unit
+  tiers act as flat 2-unit bets.
+- **Rule.** Everything is the same as version 1 (markets, books, the 20-point gap filter, EV ≥ 5%, unit tiers, at most
+  3 per game, when picks are logged, how they settle). The only change: the chance used for EV is 0.75 × model + 0.25 ×
+  market no-vig chance. The push chance stays as the model has it, and the rest is split by the blend.
+- **Judged only on weeks 10 onward**, because the 75/25 weight was chosen using weeks 7–9. It has its own record and the
+  same graduation rule (8+ graded weeks, 95% ROI interval above zero). Version 1 continues unchanged. After 8 weeks
+  both records are compared, but the version that graduates is decided by its own record, not by picking the better one.
+
 ## Deviations
 
 1. **Faster settling (2026-11-09, after the first 3 picks were graded).** Picks now settle the way sportsbooks pay

@@ -67,3 +67,13 @@ def test_summary_and_graduation():
               "result": r, "net": 0.9 if r == "win" else -1.0} for i, r in enumerate(rng.choice(["win", "loss"], 40))]
     s = P.summarize(picks)
     assert s["win"] + s["loss"] == 40 and "roi_ci95" in s and s["graduated"] is False   # only 4 weeks
+
+
+def test_blend_pulls_chances_toward_market():
+    # model 60% over vs market 50%: blend 0.75 -> 57.5%; EV at 1.95 = 12.1% -> 2 units (model-only would be 17%)
+    c = P.candidates(_snap(0.50, [1.95, "fanduel"], [1.87, "draftkings"]), _ledger(0.60), blend=0.75)
+    assert c[0]["side"] == "over" and abs(c[0]["p_win"] - 0.575) < 1e-9 and abs(c[0]["p_model_win"] - 0.60) < 1e-9
+    assert abs(c[0]["ev"] - (0.575 * 1.95 - 1)) < 1e-9
+    # a 5-point model edge at 1.95 is a pick for v1 (EV 7.25%) but not after blending (EV 3.4%)
+    assert P.candidates(_snap(0.50, [1.95, "fanduel"], [1.87, "draftkings"]), _ledger(0.55))[0]["units"] == 1.0
+    assert P.candidates(_snap(0.50, [1.95, "fanduel"], [1.87, "draftkings"]), _ledger(0.55), blend=0.75) == []

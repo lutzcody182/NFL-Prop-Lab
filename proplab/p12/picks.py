@@ -31,6 +31,10 @@ RUNS = [(1, 13, 41), (2, 13, 41), (5, 13, 41)]       # pick-logging runs (Mon=0)
 #  Wednesday for Thursday games and Saturday for Sunday/Monday games, as pre-registered)
 RUN_SLACK = dt.timedelta(hours=1)                    # a run within the next hour is this run, not a later one
 GRADUATE_WEEKS = 8
+# Phase 12 v2 (shadow, pre-registered 2026-11-11): same rules, but the chance used for EV is
+# 75% model + 25% market (no-vig). Tracked separately from week 10 on; the v1 record is unchanged.
+BLEND_WEIGHT = 0.75
+BLEND_FIRST = (2026, 10)
 
 
 def next_run(now: dt.datetime) -> dt.datetime:
@@ -54,8 +58,9 @@ def chances(grid: list, line: float) -> tuple[float, float, float]:
     return over, under, 1.0 - over - under
 
 
-def candidates(snapshot: dict, ledger_players: dict) -> list[dict]:
-    """Every eligible side for one game snapshot, with EV at the best licensed price."""
+def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None) -> list[dict]:
+    """Every eligible side for one game snapshot, with EV at the best licensed price.
+    blend: weight on the model when mixing its chances with the market's no-vig chance (None = model only)."""
     out = []
     for ln in snapshot["lines"]:
         mk = ln.get("market")
@@ -69,6 +74,11 @@ def candidates(snapshot: dict, ledger_players: dict) -> list[dict]:
         over, under, push = chances(p[key]["g"], ln["line"])
         if abs(over - ln["p_over_market"]) > MAX_GAP:
             continue
+        m_over, m_under = over, under
+        if blend is not None:   # pushes stay as the model has them; the rest is split by the market's no-vig chance
+            pk = ln["p_over_market"]
+            over = blend * over + (1 - blend) * pk * (1 - push)
+            under = blend * under + (1 - blend) * (1 - pk) * (1 - push)
         sides = [("over", over, *lic["best_over"]), ("under", under, *lic["best_under"])]
         best = max(({"side": s, "p_win": pw, "price": pr, "book": bk, "ev": pw * pr + push - 1} for s, pw, pr, bk in sides),
                    key=lambda r: r["ev"])
@@ -76,7 +86,8 @@ def candidates(snapshot: dict, ledger_players: dict) -> list[dict]:
             continue
         out.append({"player": p["player"], "gsis_id": p["gsis_id"], "pos": p["pos"], "team": p["team"], "opp": p["opp"],
                     "market": mk, "line": ln["line"], **best, "book_name": LICENSED.get(best["book"], best["book"]),
-                    "p_push": push, "p_model_over": over, "p_market_over": ln["p_over_market"],
+                    "p_push": push, "p_model_over": m_over, "p_market_over": ln["p_over_market"],
+                    "p_model_win": m_over if best["side"] == "over" else m_under,
                     "licensed_books": len(lic["books"]), "units": units_for(best["ev"])})
     # one pick per player per game, then the top MAX_PER_GAME by EV
     out.sort(key=lambda r: -r["ev"])
@@ -88,7 +99,7 @@ def candidates(snapshot: dict, ledger_players: dict) -> list[dict]:
     return keep[:MAX_PER_GAME]
 
 
-def log(store: dict, now: dt.datetime, conn) -> int:
+def log(store: dict, now: dt.datetime, conn, blend: float | None = None, first: tuple = FIRST) -> int:
     lines = json.loads(LINES.read_text())["snapshots"] if LINES.exists() else []
     nxt = next_run(now)
     games = {r[0]: {"kickoff": r[1], "season": r[2], "week": r[3]} for r in conn.execute(
@@ -97,7 +108,7 @@ def log(store: dict, now: dt.datetime, conn) -> int:
     done = {p["game_id"] for p in store["picks"]} | set(store.get("games_logged", {}))
     added = 0
     for gid, g in sorted(games.items(), key=lambda kv: kv[1]["kickoff"]):
-        if gid in done or (g["season"], g["week"]) < FIRST:
+        if gid in done or (g["season"], g["week"]) < first:
             continue
         wdir = LEDGER / f"{g['season']}_w{g['week']:02d}"
         if not (wdir / "wrte.json").exists():
@@ -109,7 +120,7 @@ def log(store: dict, now: dt.datetime, conn) -> int:
         if now - dt.datetime.fromisoformat(snap["snapshot_utc"]) > SNAPSHOT_MAX_AGE:
             continue
         players = {p["gsis_id"]: p for p in json.loads((wdir / "wrte.json").read_text())["players"]}
-        picks = candidates(snap, players)
+        picks = candidates(snap, players, blend)
         for r in picks:
             store["picks"].append({"id": f"{gid}|{r['gsis_id']}|{r['market']}", "season": g["season"], "week": g["week"],
                                    "game_id": gid, "kickoff": g["kickoff"].isoformat(), "logged_utc": now.isoformat(timespec="seconds"),
@@ -198,10 +209,14 @@ def main(now: dt.datetime | None = None) -> dict:
     conn = db.connect()
     store = json.loads(OUT.read_text()) if OUT.exists() else {"picks": [], "games_logged": {}}
     added, graded = log(store, now, conn), grade(store, now, conn)
-    weeks = sorted({(p["season"], p["week"]) for p in store["picks"]})
-    store["summary"] = {"overall": summarize(store["picks"]),
-                        "by_week": [{"season": s, "week": w, **summarize([p for p in store["picks"] if (p["season"], p["week"]) == (s, w)])}
-                                    for s, w in weeks]}
+    bl = store.setdefault("blend", {"picks": [], "games_logged": {}})
+    b_added, b_graded = log(bl, now, conn, blend=BLEND_WEIGHT, first=BLEND_FIRST), grade(bl, now, conn)
+    for st in (store, bl):
+        weeks = sorted({(p["season"], p["week"]) for p in st["picks"]})
+        st["summary"] = {"overall": summarize(st["picks"]),
+                         "by_week": [{"season": s, "week": w, **summarize([p for p in st["picks"] if (p["season"], p["week"]) == (s, w)])}
+                                     for s, w in weeks]}
+    bl["rules"] = {"model_weight": BLEND_WEIGHT, "first_week": list(BLEND_FIRST)}
     store["rules"] = {"markets": list(MARKETS), "min_ev": MIN_EV, "max_gap": MAX_GAP, "unit_tiers": UNIT_TIERS,
                       "max_per_game": MAX_PER_GAME, "books": [LICENSED[b] for b in LICENSED if b in allowed()], "state": STATE,
                       "first_week": list(FIRST), "graduate_weeks": GRADUATE_WEEKS}
@@ -211,6 +226,9 @@ def main(now: dt.datetime | None = None) -> dict:
     o = store["summary"]["overall"]
     print(f"picks: {added} logged, {graded} graded | record {o['win']}-{o['loss']}-{o['push']} ({o['void']} void, {o['pending']} pending), "
           f"net {o['net_units']:+.2f}u on {o['units_staked']:.1f}u")
+    b = bl["summary"]["overall"]
+    print(f"blended picks (v2 shadow): {b_added} logged, {b_graded} graded | record {b['win']}-{b['loss']}-{b['push']}, "
+          f"net {b['net_units']:+.2f}u on {b['units_staked']:.1f}u")
     return store
 
 

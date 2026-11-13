@@ -1437,10 +1437,10 @@
    "p_model_win": 0.51,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 4.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-13T15:38:09+00:00"
   },
   {
    "id": "2026_10_WAS_NYG|00-0036309|wrte_rec",
@@ -1470,10 +1470,10 @@
    "p_model_win": 0.59,
    "licensed_books": 3,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 2.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-13T15:38:09+00:00"
   }
  ],
  "games_logged": {
@@ -1561,17 +1561,17 @@
  "summary": {
   "overall": {
    "win": 28,
-   "loss": 15,
+   "loss": 17,
    "push": 0,
    "void": 0,
-   "pending": 3,
-   "units_staked": 80.0,
-   "net_units": 25.56,
-   "roi": 0.3195,
-   "weeks_graded": 1,
+   "pending": 1,
+   "units_staked": 84.0,
+   "net_units": 21.56,
+   "roi": 0.25666666666666665,
+   "weeks_graded": 2,
    "roi_ci95": [
-    0.01602059364933269,
-    0.5791917050691242
+    -0.05848147939017506,
+    0.5354122731201383
    ],
    "graduated": false
   },
@@ -1598,14 +1598,14 @@
     "season": 2026,
     "week": 10,
     "win": 0,
-    "loss": 0,
+    "loss": 2,
     "push": 0,
     "void": 0,
-    "pending": 3,
-    "units_staked": 0,
-    "net_units": 0,
-    "roi": null,
-    "weeks_graded": 0,
+    "pending": 1,
+    "units_staked": 4.0,
+    "net_units": -4.0,
+    "roi": -1.0,
+    "weeks_graded": 1,
     "graduated": false
    }
   ]
@@ -1650,7 +1650,7 @@
   ],
   "graduate_weeks": 8
  },
- "updated_utc": "2026-11-12T14:05:46+00:00",
+ "updated_utc": "2026-11-13T15:38:09+00:00",
  "blend": {
   "picks": [
    {
@@ -1714,10 +1714,10 @@
     "p_model_win": 0.59,
     "licensed_books": 3,
     "units": 1.5,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "loss",
+    "actual": 2.0,
+    "net": -1.5,
+    "graded_utc": "2026-11-13T15:38:09+00:00"
    },
    {
     "id": "2026_10_WAS_NYG|00-0037809|wrte_rec",
@@ -1747,10 +1747,10 @@
     "p_model_win": 0.51,
     "licensed_books": 2,
     "units": 1.5,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "loss",
+    "actual": 4.0,
+    "net": -1.5,
+    "graded_utc": "2026-11-13T15:38:09+00:00"
    }
   ],
   "games_logged": {
@@ -1763,14 +1763,14 @@
   "summary": {
    "overall": {
     "win": 0,
-    "loss": 0,
+    "loss": 2,
     "push": 0,
     "void": 0,
-    "pending": 3,
-    "units_staked": 0,
-    "net_units": 0,
-    "roi": null,
-    "weeks_graded": 0,
+    "pending": 1,
+    "units_staked": 3.0,
+    "net_units": -3.0,
+    "roi": -1.0,
+    "weeks_graded": 1,
     "graduated": false
    },
    "by_week": [
@@ -1778,14 +1778,14 @@
      "season": 2026,
      "week": 10,
      "win": 0,
-     "loss": 0,
+     "loss": 2,
      "push": 0,
      "void": 0,
-     "pending": 3,
-     "units_staked": 0,
-     "net_units": 0,
-     "roi": null,
-     "weeks_graded": 0,
+     "pending": 1,
+     "units_staked": 3.0,
+     "net_units": -3.0,
+     "roi": -1.0,
+     "weeks_graded": 1,
      "graduated": false
     }
    ]

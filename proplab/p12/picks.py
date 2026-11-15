@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -27,6 +28,9 @@ MARKETS = {"wrte_rec": ("rec", "receptions"), "wrte_rec_yds": ("yds", "receiving
            "rb_rush_yds": ("eng", "rushing_yards"), "rb_rush_att": ("eng", "carries")}
 MARKET_FIRST = {"rb_rush_yds": (2026, 11), "rb_rush_att": (2026, 11)}   # first week frozen with the engine that passed
 MIN_EV, MAX_GAP = 0.05, 0.20
+# Added 2026-11-14 (deviation 2): long-shot guards. No side priced longer than +300, and the model's odds may differ from
+# the market's by at most a factor of e^0.85 (about 2.3x), which equals the 20-point limit for a 50/50 prop.
+MAX_PRICE, MAX_LOGIT_GAP = 4.0, 0.85
 UNIT_TIERS = [(0.12, 2.0), (0.08, 1.5), (0.05, 1.0)]
 MAX_PER_GAME = 3
 SNAPSHOT_MAX_AGE = dt.timedelta(hours=48)
@@ -51,6 +55,11 @@ def next_run(now: dt.datetime) -> dt.datetime:
             if d.weekday() == wd and t > now + RUN_SLACK:
                 return t
     raise AssertionError("unreachable")
+
+
+def logit_gap(a: float, b: float) -> float:
+    lg = lambda x: math.log(min(max(x, 1e-4), 1 - 1e-4) / (1 - min(max(x, 1e-4), 1 - 1e-4)))
+    return abs(lg(a) - lg(b))
 
 
 def units_for(ev: float) -> float:
@@ -83,7 +92,7 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
             over, under, push = chances(p["g"], ln["line"])
         else:
             over, under, push = chances(p[key]["g"], ln["line"])
-        if abs(over - ln["p_over_market"]) > MAX_GAP:
+        if abs(over - ln["p_over_market"]) > MAX_GAP or logit_gap(over, ln["p_over_market"]) > MAX_LOGIT_GAP:
             continue
         m_over, m_under = over, under
         if blend is not None:   # pushes stay as the model has them; the rest is split by the market's no-vig chance
@@ -91,6 +100,9 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
             over = blend * over + (1 - blend) * pk * (1 - push)
             under = blend * under + (1 - blend) * (1 - pk) * (1 - push)
         sides = [("over", over, *lic["best_over"])] + ([("under", under, *lic["best_under"])] if lic.get("best_under") else [])
+        sides = [sd for sd in sides if sd[2] <= MAX_PRICE]
+        if not sides:
+            continue
         best = max(({"side": s, "p_win": pw, "price": pr, "book": bk, "ev": pw * pr + push - 1} for s, pw, pr, bk in sides),
                    key=lambda r: r["ev"])
         if best["ev"] < MIN_EV:
@@ -170,7 +182,7 @@ def grade(store: dict, now: dt.datetime, conn) -> int:
     STATUS_WAIT and are then settled from the final active/inactive list.
     """
     from proplab.live.score import outcomes
-    todo = [p for p in store["picks"] if p["result"] is None]
+    todo = [p for p in store["picks"] if p["result"] is None and not p.get("excluded")]
     n = 0
     for sw in sorted({(p["season"], p["week"]) for p in todo}):
         finals = {r[0] for r in conn.execute("SELECT game_id FROM game_results").fetchall()}
@@ -204,6 +216,7 @@ def grade(store: dict, now: dt.datetime, conn) -> int:
 
 
 def summarize(picks: list[dict], seed: int = 12) -> dict:
+    picks = [p for p in picks if not p.get("excluded")]     # removed before kickoff (deviation 2): not in the record
     g = [p for p in picks if p["result"] in ("win", "loss", "push")]
     res = {k: sum(p["result"] == k for p in picks) for k in ("win", "loss", "push", "void")}
     res["pending"] = sum(p["result"] is None for p in picks)

@@ -104,3 +104,19 @@ def test_rb_engine_markets_use_markets_grid():
     c = P.candidates(snap, pl_)
     assert len(c) == 1 and c[0]["side"] == "over" and abs(c[0]["p_win"] - 0.62) < 1e-9
     assert P.MARKET_FIRST["rb_rush_yds"] == (2026, 11)
+
+
+def test_long_shot_guards():
+    # +1400 TD, model 22% vs market 8%: within 20 points but odds ratio ~3.2x and price over +300 -> no pick
+    snap = {"game_id": "G", "lines": [{"market": "anytime_td", "gsis_id": "X", "line": 0.5, "p_over_market": 0.08,
+                                      "licensed": {"books": ["draftkings"], "best_over": [15.0, "draftkings"], "best_under": None}}]}
+    led = {("td", "X"): {"player": "A Back", "gsis_id": "X", "pos": "RB", "team": "T", "opp": "O", "game_id": "G", "mean": 0.22}}
+    assert P.candidates(snap, led) == []
+    # same chances at +250 still fail the odds-ratio guard; close chances at +250 pass
+    snap["lines"][0]["licensed"]["best_over"] = [3.5, "draftkings"]
+    assert P.candidates(snap, led) == []
+    snap["lines"][0]["p_over_market"] = 0.26
+    led[("td", "X")]["mean"] = 0.33
+    c = P.candidates(snap, led)
+    assert len(c) == 1 and abs(c[0]["ev"] - (0.33 * 3.5 - 1)) < 1e-9
+    assert P.summarize([{"result": "win", "net": 1.0, "units": 1.0, "game_id": "g", "season": 2026, "week": 10, "excluded": "x"}])["win"] == 0

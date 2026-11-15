@@ -106,6 +106,10 @@ class Config:
     g_wx: float = 0.0          # weather multiplier on completion rate and yards per completion (QB attempts, targets)
     # Phase 9 role changes (off by default)
     g_role: float = 0.0        # snap-share role signal on target and carry shares
+    # Phase 14 (off by default)
+    rb_disp_bins: bool = False # RB carry/target dispersion fit in 3 bins of expected volume
+    rb_eff_sd: float = 0.0     # RB yards-per-unit uncertainty: lognormal log-SD per player per simulated game
+    avail: float = 0.0         # chance-of-playing weight w on teammates' shares in the split (needs column p_play)
 
     def label(self) -> str:
         s = f"{self.model}(h={self.half_life:g},as={self.a_share:g},ae={self.a_eff:g}"
@@ -114,7 +118,8 @@ class Config:
         if self.model == "M2":
             s += f",gam={self.opponent:g}"
         for name, v in (("depth", self.g_depth), ("gap", self.g_gap), ("press", self.g_press),
-                        ("blitz", self.g_blitz), ("box", self.g_box), ("pa", self.g_pa), ("wx", self.g_wx), ("role", self.g_role)):
+                        ("blitz", self.g_blitz), ("box", self.g_box), ("pa", self.g_pa), ("wx", self.g_wx), ("role", self.g_role),
+                        ("rbdisp3", float(self.rb_disp_bins)), ("rbeff", self.rb_eff_sd), ("avail", self.avail)):
             if v:
                 s += f",{name}={v:g}"
         if self.arch:
@@ -297,6 +302,8 @@ class Constants:
     dispersion: dict = field(default_factory=dict)   # (vt, pos) -> r, fit on full games
     exit_rate: dict = field(default_factory=dict)    # (vt, pos) -> share of games far below expectation
     pools: dict = field(default_factory=dict)        # (pool, pos) -> draws normalized to mean 1
+    disp_cuts: dict = field(default_factory=dict)    # (vt, pos) -> (cut1, cut2) of expected volume (Phase 14 D)
+    eff_sd: dict = field(default_factory=dict)       # (vt, pos) -> log-SD of yards-per-unit factor (Phase 14 U)
 
 
 def volume_design(df: pl.DataFrame, vt: str, k: "Constants", team_ratings: bool) -> np.ndarray:
@@ -375,7 +382,13 @@ def parameters(feat: pl.DataFrame, k: Constants, cfg: Config) -> pl.DataFrame:
         if cfg.g_role and vt in ("tgt", "car") and "role_r" in df.columns:
             df = df.with_columns((pl.col(f"{vt}_share") * pl.col("role_r") ** cfg.g_role).alias(f"{vt}_share"))
         share = pl.col(f"{vt}_share")
-        if cfg.lam > 0:
+        if cfg.lam > 0 and cfg.avail and vt in ("tgt", "car") and "p_play" in df.columns:
+            # Phase 14 A: teammates count by their chance of playing; the player himself is assumed to play
+            pw = pl.col("p_play").fill_null(1.0) ** cfg.avail
+            df = df.with_columns((pl.col(f"{vt}_share") * pw).sum().over("game_id", "team").alias(f"{vt}_share_eff"))
+            denom = pl.col(f"{vt}_share_eff") - pl.col(f"{vt}_share") * pw + pl.col(f"{vt}_share")
+            share = share * (k.covered[vt] / denom) ** cfg.lam
+        elif cfg.lam > 0:
             df = df.with_columns(pl.col(f"{vt}_share").sum().over("game_id", "team").alias(f"{vt}_share_sum"))
             share = share * (k.covered[vt] / pl.col(f"{vt}_share_sum")) ** cfg.lam
         mu = pl.col(f"{vt}_tpg") if cfg.model == "B1" else share * pl.col(f"{vt}_team_hat")
@@ -454,6 +467,16 @@ def prepare(feat: pl.DataFrame, tf: pl.DataFrame, pools: pl.DataFrame, season: i
         k.exit_rate[(vt, pos)] = pi
         full_mu = mu / ((1 - pi) + EXIT_MEAN_FRACTION * pi)
         k.dispersion[(vt, pos)] = fit_dispersion(full_mu[~exited], y[~exited])
+        if pos == "RB" and vt in ("car", "tgt"):
+            if cfg.rb_disp_bins:   # Phase 14 D
+                m_, y_ = full_mu[~exited], y[~exited]
+                cuts = tuple(float(x) for x in np.quantile(m_, [1 / 3, 2 / 3]))
+                b = np.digitize(m_, cuts)
+                k.disp_cuts[(vt, pos)] = cuts
+                for i in range(3):
+                    k.dispersion[(vt, pos, i)] = fit_dispersion(m_[b == i], y_[b == i])
+            if cfg.rb_eff_sd:      # Phase 14 U
+                k.eff_sd[(vt, pos)] = cfg.rb_eff_sd
     for vt in VT:
         f = pl.col("pos").replace_strict({p: k.calibration.get((vt, p), 1.0) for p in POSITIONS},
                                          default=1.0, return_dtype=pl.Float64)
@@ -471,6 +494,11 @@ def simulate_vt(rows: pl.DataFrame, vt: str, k: Constants, n: int, rng) -> dict:
     pi = np.array([k.exit_rate.get((vt, p), 0.0) for p in pos])
     # mixture: full game with prob 1-pi, early exit with prob pi; the overall mean stays mu
     mu = np.clip(rows[f"{vt}_mu"].to_numpy(), 0.02, None) / ((1 - pi) + EXIT_MEAN_FRACTION * pi)
+    for (kvt, kp), cuts in k.disp_cuts.items():     # Phase 14 D: size by expected-volume bin
+        if kvt == vt:
+            sel = pos == kp
+            if sel.any():
+                r[sel] = np.array([k.dispersion[(vt, kp, i)] for i in range(3)])[np.digitize(mu[sel], cuts)]
     vol = rng.negative_binomial(r[:, None], (r / (r + mu))[:, None], size=(m, n))
     exits = rng.uniform(size=(m, n)) < pi[:, None]
     vol = np.where(exits, np.floor(vol * rng.uniform(0, EXIT_CUTOFF, size=(m, n))), vol).astype(np.int64)
@@ -485,7 +513,12 @@ def simulate_vt(rows: pl.DataFrame, vt: str, k: Constants, n: int, rng) -> dict:
         idx = np.where(pos == p)[0]
         counts = succ[idx].ravel()
         draws = rng.choice(pool, size=int(counts.sum()))
-        scale = np.repeat(np.repeat(ypu[idx], n), counts).astype(np.float32)
+        sd = k.eff_sd.get((vt, p), 0.0)
+        if sd:   # Phase 14 U: one efficiency factor per player per simulated game, mean 1
+            fac = np.exp(rng.normal(-sd * sd / 2, sd, size=(len(idx), n)))
+            scale = np.repeat((ypu[idx][:, None] * fac).ravel(), counts).astype(np.float32)
+        else:
+            scale = np.repeat(np.repeat(ypu[idx], n), counts).astype(np.float32)
         cs = np.concatenate([[0.0], np.cumsum(draws * scale, dtype=np.float64)])
         ends = np.cumsum(counts)
         yds[idx] = (cs[ends] - cs[ends - counts]).reshape(len(idx), n)
@@ -584,7 +617,8 @@ def run_market(feat, tf, pools, season: int, market: str, cfg_by_vt: dict, n_sim
         k = Constants(prior=k.prior, pools={**k.pools, **tk.pools},
                       calibration={**k.calibration, **pick(tk.calibration)},
                       dispersion={**k.dispersion, **pick(tk.dispersion)},
-                      exit_rate={**k.exit_rate, **pick(tk.exit_rate)})
+                      exit_rate={**k.exit_rate, **pick(tk.exit_rate)},
+                      disp_cuts={**k.disp_cuts, **pick(tk.disp_cuts)}, eff_sd={**k.eff_sd, **pick(tk.eff_sd)})
         rows = rows.sort("game_id", "gsis_id")
     rng = np.random.default_rng(seed)
     draws = market_draws(market, rows, k, n_sims, rng)

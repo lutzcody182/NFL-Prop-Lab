@@ -94,3 +94,13 @@ def test_anytime_td_yes_only_and_yes_no():
                                       "licensed": {"books": ["fanduel"], "best_over": [2.8, "fanduel"], "best_under": None}}]}
     c = P.candidates(snap, {("td", "X"): {"player": "A Back", "gsis_id": "X", "pos": "RB", "team": "T", "opp": "O", "game_id": "G", "mean": 0.45}})
     assert len(c) == 1 and c[0]["side"] == "over" and c[0]["units"] == 2.0 and abs(c[0]["ev"] - (0.45 * 2.8 - 1)) < 1e-9
+
+
+def test_rb_engine_markets_use_markets_grid():
+    snap = {"game_id": "G", "lines": [{"market": "rb_rush_yds", "gsis_id": "R", "line": 60.5, "p_over_market": 0.5,
+                                      "licensed": {"books": ["fanduel"], "best_over": [1.91, "fanduel"], "best_under": [1.91, "draftkings"]}}]}
+    g = sorted([80.0] * 62 + [40.0] * 38)
+    pl_ = {("rb_rush_yds", "R"): {"player": "A Back", "gsis_id": "R", "pos": "RB", "team": "T", "opp": "O", "game_id": "G", "g": g}}
+    c = P.candidates(snap, pl_)
+    assert len(c) == 1 and c[0]["side"] == "over" and abs(c[0]["p_win"] - 0.62) < 1e-9
+    assert P.MARKET_FIRST["rb_rush_yds"] == (2026, 11)

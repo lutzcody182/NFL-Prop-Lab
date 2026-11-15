@@ -22,7 +22,10 @@ LEDGER = ROOT / "ledger"
 FIRST = (2026, 9)
 # ledger key, outcome column. anytime_td (added 2026-11-11, passed every test after Phase 8 recalibration) is a Yes/No
 # market stored as line 0.5: Yes = over. Its chance is the frozen projection's recalibrated probability.
-MARKETS = {"wrte_rec": ("rec", "receptions"), "wrte_rec_yds": ("yds", "receiving_yards"), "anytime_td": ("td", "anytime_td")}
+MARKETS = {"wrte_rec": ("rec", "receptions"), "wrte_rec_yds": ("yds", "receiving_yards"), "anytime_td": ("td", "anytime_td"),
+           # passed in the Phase 14 re-check (2026-11-14); engine markets read their grid from markets.json
+           "rb_rush_yds": ("eng", "rushing_yards"), "rb_rush_att": ("eng", "carries")}
+MARKET_FIRST = {"rb_rush_yds": (2026, 11), "rb_rush_att": (2026, 11)}   # first week frozen with the engine that passed
 MIN_EV, MAX_GAP = 0.05, 0.20
 UNIT_TIERS = [(0.12, 2.0), (0.08, 1.5), (0.05, 1.0)]
 MAX_PER_GAME = 3
@@ -70,11 +73,14 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
         if mk not in MARKETS or not lic or not ln.get("gsis_id"):
             continue
         key = MARKETS[mk][0]
-        p = ledger_players.get((key, ln["gsis_id"])) if key == "td" else ledger_players.get(ln["gsis_id"])
+        p = (ledger_players.get((key, ln["gsis_id"])) if key == "td" else ledger_players.get((mk, ln["gsis_id"])) if key == "eng"
+             else ledger_players.get(ln["gsis_id"]))
         if p is None or p["game_id"] != snapshot["game_id"]:
             continue
         if key == "td":
             over = float(p["mean"]); under, push = 1.0 - over, 0.0
+        elif key == "eng":
+            over, under, push = chances(p["g"], ln["line"])
         else:
             over, under, push = chances(p[key]["g"], ln["line"])
         if abs(over - ln["p_over_market"]) > MAX_GAP:
@@ -126,8 +132,14 @@ def log(store: dict, now: dt.datetime, conn, blend: float | None = None, first: 
             continue
         players = {p["gsis_id"]: p for p in json.loads((wdir / "wrte.json").read_text())["players"]}
         if (wdir / "markets.json").exists():     # anytime TD chances, keyed ("td", gsis_id)
-            for q in json.loads((wdir / "markets.json").read_text())["markets"].get("anytime_td", {}).get("players", []):
+            mj = json.loads((wdir / "markets.json").read_text())["markets"]
+            for q in mj.get("anytime_td", {}).get("players", []):
                 players[("td", q["gsis_id"])] = q
+            for mk in (m for m, (k_, _) in MARKETS.items() if k_ == "eng"):   # RB engine markets, keyed (market, gsis_id)
+                for q in mj.get(mk, {}).get("players", []):
+                    players[(mk, q["gsis_id"])] = q
+        wk = (g["season"], g["week"])
+        snap = {**snap, "lines": [ln for ln in snap["lines"] if wk >= MARKET_FIRST.get(ln.get("market"), (0, 0))]}
         picks = candidates(snap, players, blend)
         for r in picks:
             store["picks"].append({"id": f"{gid}|{r['gsis_id']}|{r['market']}", "season": g["season"], "week": g["week"],
@@ -165,10 +177,12 @@ def grade(store: dict, now: dt.datetime, conn) -> int:
         loaded = {r[0] for r in conn.execute("SELECT DISTINCT game_id FROM player_game WHERE game_id LIKE %s",
                                              (f"{sw[0]}_{sw[1]:02d}_%",)).fetchall()}
         cols = {mk: col for mk, (_, col) in MARKETS.items()}
-        stat = {(r[0], r[1]): {"receptions": float(r[2]), "receiving_yards": float(r[3]), "anytime_td": float(r[4] > 0)}
+        stat = {(r[0], r[1]): {"receptions": float(r[2]), "receiving_yards": float(r[3]), "anytime_td": float(r[4] > 0),
+                               "rushing_yards": float(r[5]), "carries": float(r[6])}
                 for r in conn.execute(
             """SELECT gsis_id, game_id, coalesce(receptions, 0), coalesce(receiving_yards, 0),
-                      coalesce(rushing_tds, 0) + coalesce(receiving_tds, 0) FROM player_game
+                      coalesce(rushing_tds, 0) + coalesce(receiving_tds, 0), coalesce(rushing_yards, 0), coalesce(carries, 0)
+               FROM player_game
                WHERE game_id LIKE %s""", (f"{sw[0]}_{sw[1]:02d}_%",)).fetchall()}
         acts = None
         for p in todo:

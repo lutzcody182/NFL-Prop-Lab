@@ -22,8 +22,10 @@ from proplab.p8.recal import MAPS, apply_map
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "phase3" / "projections.json"
 N_SIMS = 4000
-_P11 = Path(__file__).resolve().parents[2] / "phase11" / "recalibration.json"   # Phase 11: maps refit on the role-signal engine
-RECAL = json.loads((_P11 if _P11.exists() else MAPS).read_text())["maps"] if (_P11.exists() or MAPS.exists()) else {}
+# latest maps first: Phase 14 (refit with RB dispersion bins), Phase 11 (role signal), Phase 8
+_SRC = next((p for p in (Path(__file__).resolve().parents[2] / "phase14" / "recalibration.json",
+                         Path(__file__).resolve().parents[2] / "phase11" / "recalibration.json", MAPS) if p.exists()), None)
+RECAL = json.loads(_SRC.read_text())["maps"] if _SRC else {}
 QUANTILES = [round(0.05 * i, 2) for i in range(1, 20)]   # 5th..95th percentiles, stored for live scoring
 GRID = [(i + 0.5) / 100 for i in range(100)]              # 100-point grid for "your own line" on the dashboard
 
@@ -75,6 +77,13 @@ def main(season: int = 2026) -> None:
         g_role = json.loads(roles_path.read_text())["best"]
         u2 = u2.join(role_signal(conn, u2), on=["gsis_id", "game_id"], how="left").with_columns(pl.col("role_r").fill_null(1.0))
         chosen = {vt: (_replace(c, g_role=g_role) if vt in ("tgt", "car") else c) for vt, c in chosen.items()}
+    # Phase 14: RB volume-dependent dispersion, adopted after its pre-registered confirmation
+    p14 = ROOT / "phase14" / "ablation.json"
+    if p14.exists() and json.loads(p14.read_text()).get("adopted"):
+        from dataclasses import replace as _replace14
+        fin = json.loads(p14.read_text())["final_configs"]["car"]
+        extra = {f: fin[f] for f in ("rb_disp_bins", "rb_eff_sd") if fin.get(f)}
+        chosen = {vt: (_replace14(c, **extra) if vt in ("tgt", "car") else c) for vt, c in chosen.items()}
 
     tf = E.team_features(tg)
     feats = {c.half_life: E.features(u2, tg, c.half_life) for c in chosen.values()}
@@ -97,7 +106,7 @@ def main(season: int = 2026) -> None:
                        .sort("kickoff_utc", "team", "gsis_id")
             pick = lambda d: {kk: v for kk, v in d.items() if kk[0] == "tgt"}
             k = E.Constants(prior=k.prior, pools={**k.pools, **tk.pools}, dispersion={**k.dispersion, **pick(tk.dispersion)},
-                            exit_rate={**k.exit_rate, **pick(tk.exit_rate)})
+                            exit_rate={**k.exit_rate, **pick(tk.exit_rate)}, disp_cuts={**k.disp_cuts, **pick(tk.disp_cuts)}, eff_sd={**k.eff_sd, **pick(tk.eff_sd)})
         draws = E.market_draws(m, rows, k, N_SIMS, rng)
         if RECAL.get(m, {}).get("adopted") and draws.shape[0]:
             draws = apply_map(m, draws, RECAL[m])   # Phase 8 recalibration (adopted markets only)

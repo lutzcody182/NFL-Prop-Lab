@@ -216,3 +216,6 @@ Data from [nflverse](https://github.com/nflverse) (CC-BY 4.0); FTN charting data
 - Phase 13 (RB low bias): live RB carries ran low when a projected teammate RB sat. Dropping RBs listed Out/Doubtful
   was tested on 2026 weeks 6–9 and not adopted (rush yards did not improve; most scratches are not on the injury
   report). Projections tab tags affected RBs "RB ↑". See `phase13/PREREGISTRATION.md`.
+- Phase 14 (RB markets): RB volume-dependent dispersion adopted (RB CRPS −0.67% pooled over 2025 and 2026 weeks 1–9).
+  RB rushing yards and RB rush attempts now pass (5 of 16) and join the tracked picks from week 11. Efficiency
+  uncertainty and chance-of-playing weights did not help. See `phase14/PREREGISTRATION.md`.

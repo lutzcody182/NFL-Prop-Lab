@@ -1,0 +1,328 @@
+{
+  "seasons": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "groups": {
+    "dispersion_bins": {
+      "trials": [
+        {
+          "value": true,
+          "change": -0.011390428519540686,
+          "ci95": [
+            -0.013179768410540815,
+            -0.009799651840570765
+          ],
+          "by_market": {
+            "rb_rush_att": -0.032090941968278885,
+            "rb_rush_yds": -0.012627028092506154,
+            "rb_rec": -0.002005457434088642,
+            "rb_rec_yds": 0.000413837059559663,
+            "rb_rush_rec_yds": -0.010642552162389407
+          },
+          "rows": {
+            "rb_rush_att": 5817,
+            "rb_rush_yds": 5817,
+            "rb_rec": 4978,
+            "rb_rec_yds": 4978,
+            "rb_rush_rec_yds": 5817
+          }
+        }
+      ],
+      "best": true,
+      "survived": true
+    },
+    "efficiency_uncertainty": {
+      "trials": [
+        {
+          "value": 0.1,
+          "change": 0.00017202548233501424,
+          "ci95": [
+            5.634577897895566e-05,
+            0.0002838965463565601
+          ],
+          "by_market": {
+            "rb_rush_att": 0.0,
+            "rb_rush_yds": 0.0007192130996866997,
+            "rb_rec": 0.0,
+            "rb_rec_yds": 4.127001378062545e-05,
+            "rb_rush_rec_yds": 9.964429820774612e-05
+          },
+          "rows": {
+            "rb_rush_att": 5817,
+            "rb_rush_yds": 5817,
+            "rb_rec": 4978,
+            "rb_rec_yds": 4978,
+            "rb_rush_rec_yds": 5817
+          }
+        },
+        {
+          "value": 0.2,
+          "change": 0.0013116281323300339,
+          "ci95": [
+            0.0010324991885048518,
+            0.001613893471649016
+          ],
+          "by_market": {
+            "rb_rush_att": 0.0,
+            "rb_rush_yds": 0.0035391737297603143,
+            "rb_rec": 0.0,
+            "rb_rec_yds": 0.0007008803080734705,
+            "rb_rush_rec_yds": 0.0023180866238163844
+          },
+          "rows": {
+            "rb_rush_att": 5817,
+            "rb_rush_yds": 5817,
+            "rb_rec": 4978,
+            "rb_rec_yds": 4978,
+            "rb_rush_rec_yds": 5817
+          }
+        }
+      ],
+      "best": 0.1,
+      "survived": false
+    }
+  },
+  "combined_check": {},
+  "kept": {
+    "dispersion_bins": true
+  },
+  "final_configs": {
+    "att": {
+      "model": "B2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 0.0,
+      "rb_disp_bins": false,
+      "rb_eff_sd": 0.0,
+      "avail": 0.0
+    },
+    "car": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.5,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 1.0,
+      "rb_disp_bins": true,
+      "rb_eff_sd": 0.0,
+      "avail": 0.0
+    },
+    "tgt": {
+      "model": "M2",
+      "half_life": 4.0,
+      "a_share": 40.0,
+      "a_eff": 30.0,
+      "a_tpg": 4.0,
+      "redistribute": 0.0,
+      "opponent": 1.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 1.0,
+      "rb_disp_bins": true,
+      "rb_eff_sd": 0.0,
+      "avail": 0.0
+    },
+    "wrte_rec": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 0.0,
+      "rb_disp_bins": false,
+      "rb_eff_sd": 0.0,
+      "avail": 0.0
+    },
+    "wrte_rec_yds": {
+      "model": "M1",
+      "half_life": 4.0,
+      "a_share": 10.0,
+      "a_eff": 10.0,
+      "a_tpg": 4.0,
+      "redistribute": 1.0,
+      "opponent": 0.0,
+      "g_depth": 0.0,
+      "g_gap": 0.0,
+      "g_press": 0.0,
+      "arch": false,
+      "team_ratings": false,
+      "g_blitz": 0.0,
+      "g_box": 0.0,
+      "g_pa": 0.0,
+      "g_wx": 0.0,
+      "g_role": 0.0,
+      "rb_disp_bins": false,
+      "rb_eff_sd": 0.0,
+      "avail": 0.0
+    }
+  },
+  "confirmation": {
+    "live_2026_wk1_9": {
+      "change": -0.006189140121992298,
+      "ci95": [
+        -0.010691311121132445,
+        -0.0021522962134791893
+      ],
+      "by_market": {
+        "rb_rush_att": -0.016775311300169515,
+        "rb_rush_yds": -0.006957032972478849,
+        "rb_rec": 0.000514030774281693,
+        "rb_rec_yds": -0.0025472063714633286,
+        "rb_rush_rec_yds": -0.00518018074013149
+      },
+      "rows": {
+        "rb_rush_att": 483,
+        "rb_rush_yds": 483,
+        "rb_rec": 377,
+        "rb_rec_yds": 377,
+        "rb_rush_rec_yds": 483
+      }
+    },
+    "second_look_2025": {
+      "change": -0.006972183646607633,
+      "ci95": [
+        -0.010661504555226282,
+        -0.0032126454150368947
+      ],
+      "by_market": {
+        "rb_rush_att": -0.02220802835890967,
+        "rb_rush_yds": -0.0054497362872006905,
+        "rb_rec": 0.00024504462662711113,
+        "rb_rec_yds": -0.0011895222258735405,
+        "rb_rush_rec_yds": -0.0062586759876813725
+      },
+      "rows": {
+        "rb_rush_att": 980,
+        "rb_rush_yds": 980,
+        "rb_rec": 792,
+        "rb_rec_yds": 792,
+        "rb_rush_rec_yds": 980
+      }
+    },
+    "pooled": {
+      "change": -0.0066982088169394325,
+      "ci95": [
+        -0.00949026693376717,
+        -0.003771454155251392
+      ],
+      "by_market": {
+        "rb_rush_att": -0.020321124645049427,
+        "rb_rush_yds": -0.005937089291988551,
+        "rb_rec": 0.0003375748937775036,
+        "rb_rec_yds": -0.0016562776051500805,
+        "rb_rush_rec_yds": -0.005914127436286609
+      },
+      "rows": {
+        "rb_rush_att": 1463,
+        "rb_rush_yds": 1463,
+        "rb_rec": 1169,
+        "rb_rec_yds": 1169,
+        "rb_rush_rec_yds": 1463
+      }
+    }
+  },
+  "adopted": true,
+  "calibration_2025": {
+    "base": {
+      "rb_rush_att": {
+        "ece": 0.03548061224489796,
+        "ece_null95": 0.02258384353741496,
+        "coverage80": 0.7928571428571428
+      },
+      "rb_rush_yds": {
+        "ece": 0.023677040816326527,
+        "ece_null95": 0.02381663265306123,
+        "coverage80": 0.7612244897959184
+      },
+      "rb_rec": {
+        "ece": 0.02106670875420876,
+        "ece_null95": 0.030501367845117852,
+        "coverage80": 0.8055555555555556
+      },
+      "rb_rec_yds": {
+        "ece": 0.01495159932659932,
+        "ece_null95": 0.030220496632996634,
+        "coverage80": 0.7891414141414141
+      },
+      "rb_rush_rec_yds": {
+        "ece": 0.025910714285714294,
+        "ece_null95": 0.026763673469387742,
+        "coverage80": 0.7489795918367347
+      }
+    },
+    "final": {
+      "rb_rush_att": {
+        "ece": 0.0295562925170068,
+        "ece_null95": 0.023221921768707476,
+        "coverage80": 0.8316326530612245
+      },
+      "rb_rush_yds": {
+        "ece": 0.016412925170068007,
+        "ece_null95": 0.02460554421768707,
+        "coverage80": 0.7826530612244897
+      },
+      "rb_rec": {
+        "ece": 0.024002946127946127,
+        "ece_null95": 0.030334553872053836,
+        "coverage80": 0.8068181818181818
+      },
+      "rb_rec_yds": {
+        "ece": 0.017697811447811455,
+        "ece_null95": 0.03048305976430977,
+        "coverage80": 0.7828282828282829
+      },
+      "rb_rush_rec_yds": {
+        "ece": 0.019045748299319723,
+        "ece_null95": 0.025600459183673457,
+        "coverage80": 0.7510204081632653
+      }
+    }
+  }
+}

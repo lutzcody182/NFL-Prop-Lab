@@ -120,14 +120,18 @@ def draws_for(market, params_by_vt, k_by_vt, rng):
         rows = rows.drop(tcols).join(tp.select("game_id", "gsis_id", *tcols), on=["game_id", "gsis_id"]).sort("game_id", "gsis_id")
         pick = lambda d: {kk: v for kk, v in d.items() if kk[0] == "tgt"}
         k = E.Constants(prior=k.prior, pools={**k.pools, **tk.pools}, calibration={**k.calibration, **pick(tk.calibration)},
-                        dispersion={**k.dispersion, **pick(tk.dispersion)}, exit_rate={**k.exit_rate, **pick(tk.exit_rate)})
+                        dispersion={**k.dispersion, **pick(tk.dispersion)}, exit_rate={**k.exit_rate, **pick(tk.exit_rate)},
+                        disp_cuts={**k.disp_cuts, **pick(tk.disp_cuts)}, eff_sd={**k.eff_sd, **pick(tk.eff_sd)})
     if rows.is_empty():
         return rows, np.zeros((0, N_SIMS))
     return rows, E.market_draws(market, rows, k, N_SIMS, rng)
 
 
 def backtest(windows=((2025, 1, 18), (2026, 1, 5)), methods: str = "LIOR", compare=("I", "O", "R"),
-             out_path: Path | None = None) -> dict:
+             out_path: Path | None = None, avail: dict | None = None) -> dict:
+    """avail (Phase 14 A): method letter -> w. Those methods use method L's players, with teammates' shares in the
+    split weighted by P(play)^w (proplab.p14.avail). Results for them are compared with L."""
+    avail = avail or {}
     conn = db.connect()
     D = E.load(conn)
     u, tg, pools = D["u"], D["tg"], D["pools"]
@@ -144,9 +148,16 @@ def backtest(windows=((2025, 1, 18), (2026, 1, 5)), methods: str = "LIOR", compa
     per = {m: {meth: [] for meth in methods} for m in MARKETS}   # rows: (key, game, crps)
     counts = {meth: {"projected": 0, "void": 0, "missed": 0, "played_eligible": 0} for meth in methods if meth != "O"}
     feats, dfeats, preps = {}, {}, {}
+    if avail:
+        from dataclasses import replace as _replace
+        from proplab.p14 import avail as AV
+        av_pairs = AV.pairs(conn, u, tg)
     for season in sorted({w[0] for w in windows}):
         targets = targets_all.filter(pl.col("season") == season)
-        sets = {m: expected_actives(u, tg, targets, inj, m) for m in methods if m != "O"}
+        sets = {m: expected_actives(u, tg, targets, inj, m) for m in methods if m != "O" and m not in avail}
+        for m in avail:
+            sets[m] = sets["L"] if "L" in sets else expected_actives(u, tg, targets, inj, "L")
+        pp = AV.p_play(av_pairs, season) if avail else None
         sets["O"] = real.join(targets.select("game_id", "team"), on=["game_id", "team"])
         need = pl.concat([v for k, v in sets.items() if k != "O"]).unique().join(real, on=["gsis_id", "game_id", "team"], how="anti")
         for c in {cfg_vt["tgt"], cfg_vt["car"], cfg_vt["att"], wr}:
@@ -169,7 +180,11 @@ def backtest(windows=((2025, 1, 18), (2026, 1, 5)), methods: str = "LIOR", compa
                     phr = ph[c.half_life].join(s, on=["gsis_id", "game_id", "team"]) if not ph[c.half_life].is_empty() else ph[c.half_life]
                     rows = pl.concat([realrows, phr.select(realrows.columns).cast(dict(realrows.schema))]) if phr.height else realrows
                     _, k = preps[(season, c)]
-                    by_vt[vt], k_by_vt[vt] = finish(rows, k, c), k
+                    if meth in avail and vt in ("tgt", "car", "wrte"):
+                        rows = rows.join(pp, on=["gsis_id", "game_id", "team"], how="left")
+                        by_vt[vt], k_by_vt[vt] = finish(rows, k, _replace(c, avail=avail[meth])), k
+                    else:
+                        by_vt[vt], k_by_vt[vt] = finish(rows, k, c), k
                 rng = np.random.default_rng(SEED + season * 100 + week)
                 for m in MARKETS:
                     use = dict(by_vt)
@@ -214,6 +229,13 @@ def backtest(windows=((2025, 1, 18), (2026, 1, 5)), methods: str = "LIOR", compa
             j = a.join(b, on="key", suffix="_b")
             stats_in[m] = j
         res[f"{comp}_vs_L"] = compare_rows(stats_in, rng)
+        if avail:   # Phase 14: the pre-registered decision uses the five RB markets
+            rb5 = ("rb_rush_att", "rb_rush_yds", "rb_rec", "rb_rec_yds", "rb_rush_rec_yds")
+            res[f"{comp}_vs_L_rb"] = compare_rows({m: stats_in[m] for m in rb5 if m in stats_in}, rng)
+    if avail:
+        best = min(avail, key=lambda m: res[f"{m}_vs_L_rb"]["change"])
+        res["best_w"], res["best_method"] = avail[best], best
+        res["survived"] = bool(res[f"{best}_vs_L_rb"]["ci95"][1] < 0)
     out_path = out_path or OUT
     out_path.parent.mkdir(exist_ok=True)
     out_path.write_text(json.dumps(res, indent=2, default=str))
@@ -245,4 +267,10 @@ if __name__ == "__main__":
     {"backtest": backtest,
      # Phase 13 confirmation: RB-only removals on 2026 weeks 6-9 (not used by the Phase 7 backtest)
      "confirm_rb": lambda: backtest(windows=((2026, 6, 9),), methods="LBRO", compare=("B", "R", "O"),
-                                    out_path=ROOT / "phase13" / "rb_actives_confirm.json")}[sys.argv[1]]()
+                                    out_path=ROOT / "phase13" / "rb_actives_confirm.json"),
+     # Phase 14 A: chance-of-playing weights (H: w = 0.5, A: w = 1.0) vs L
+     "avail_dev": lambda: backtest(windows=((2024, 1, 18),), methods="LHAO", compare=("H", "A"), avail={"H": 0.5, "A": 1.0},
+                                   out_path=ROOT / "phase14" / "avail_dev.json"),
+     "avail_confirm": lambda: backtest(windows=((2025, 1, 18), (2026, 1, 9)), methods="LAO", compare=("A",),
+                                       avail={"A": float(json.loads((ROOT / "phase14" / "avail_dev.json").read_text())["best_w"])},
+                                       out_path=ROOT / "phase14" / "avail_confirm.json")}[sys.argv[1]]()

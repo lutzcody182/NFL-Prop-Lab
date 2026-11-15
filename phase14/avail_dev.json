@@ -1,0 +1,150 @@
+{
+  "markets": {},
+  "counts": {
+    "L": {
+      "projected": 20600,
+      "void": 1734,
+      "missed": 1526,
+      "played_eligible": 20368
+    },
+    "H": {
+      "projected": 20600,
+      "void": 1734,
+      "missed": 1526,
+      "played_eligible": 20368
+    },
+    "A": {
+      "projected": 20600,
+      "void": 1734,
+      "missed": 1526,
+      "played_eligible": 20368
+    }
+  },
+  "H_vs_L": {
+    "change": 0.00010303672377155089,
+    "ci95": [
+      -0.0012066992303857824,
+      0.0014179070273114328
+    ],
+    "by_market": {
+      "wrte_rec": -0.00030215883960293954,
+      "wrte_rec_yds": 0.001434982381904204,
+      "qb_pass_yds": -0.00234034804612937,
+      "qb_pass_att": 0.00316939969297092,
+      "qb_pass_tds": 0.0027368625740271657,
+      "qb_ints": 0.0008929849856116334,
+      "qb_rush_yds": -3.48221332024945e-05,
+      "rb_rush_yds": 0.0039090951637246185,
+      "rb_rush_att": -0.0023224754810243775,
+      "rb_rec": -0.0016081444410360746,
+      "rb_rec_yds": 0.0002513283398430932,
+      "anytime_td": -0.0015539437194876937,
+      "rb_rush_rec_yds": -0.00389052907111187,
+      "qb_completions": 0.0007983276048215693,
+      "rec_td": 0.0004049918452648793
+    },
+    "rows": {
+      "wrte_rec": 2584,
+      "wrte_rec_yds": 2584,
+      "qb_pass_yds": 449,
+      "qb_pass_att": 449,
+      "qb_pass_tds": 449,
+      "qb_ints": 449,
+      "qb_rush_yds": 449,
+      "rb_rush_yds": 881,
+      "rb_rush_att": 881,
+      "rb_rec": 740,
+      "rb_rec_yds": 740,
+      "anytime_td": 3557,
+      "rb_rush_rec_yds": 881,
+      "qb_completions": 449,
+      "rec_td": 3324
+    }
+  },
+  "H_vs_L_rb": {
+    "change": -0.000732145097920922,
+    "ci95": [
+      -0.0028569569030113687,
+      0.0015141815702080104
+    ],
+    "by_market": {
+      "rb_rush_att": -0.0023224754810243775,
+      "rb_rush_yds": 0.0039090951637246185,
+      "rb_rec": -0.0016081444410360746,
+      "rb_rec_yds": 0.0002513283398430932,
+      "rb_rush_rec_yds": -0.00389052907111187
+    },
+    "rows": {
+      "rb_rush_att": 881,
+      "rb_rush_yds": 881,
+      "rb_rec": 740,
+      "rb_rec_yds": 740,
+      "rb_rush_rec_yds": 881
+    }
+  },
+  "A_vs_L": {
+    "change": 8.289125232838016e-05,
+    "ci95": [
+      -0.0016293738244204604,
+      0.0017953510352887573
+    ],
+    "by_market": {
+      "wrte_rec": 0.002795892281554746,
+      "wrte_rec_yds": 0.002831514080319897,
+      "qb_pass_yds": -0.0003838320596822875,
+      "qb_pass_att": 0.0016746533459657265,
+      "qb_pass_tds": -0.00026875219890376556,
+      "qb_ints": -0.0016811263057490144,
+      "qb_rush_yds": 0.0001885706269593168,
+      "rb_rush_yds": 0.003531643192732803,
+      "rb_rush_att": -0.0011127834662054692,
+      "rb_rec": -0.0023085984589836794,
+      "rb_rec_yds": 0.0012592078734088297,
+      "anytime_td": 0.0004221798630912321,
+      "rb_rush_rec_yds": -0.004057091428743664,
+      "qb_completions": 0.0010763818310817186,
+      "rec_td": -0.0027244903919206864
+    },
+    "rows": {
+      "wrte_rec": 2584,
+      "wrte_rec_yds": 2584,
+      "qb_pass_yds": 449,
+      "qb_pass_att": 449,
+      "qb_pass_tds": 449,
+      "qb_ints": 449,
+      "qb_rush_yds": 449,
+      "rb_rush_yds": 881,
+      "rb_rush_att": 881,
+      "rb_rec": 740,
+      "rb_rec_yds": 740,
+      "anytime_td": 3557,
+      "rb_rush_rec_yds": 881,
+      "qb_completions": 449,
+      "rec_td": 3324
+    }
+  },
+  "A_vs_L_rb": {
+    "change": -0.000537524457558236,
+    "ci95": [
+      -0.003941858101900375,
+      0.0032188722988360056
+    ],
+    "by_market": {
+      "rb_rush_att": -0.0011127834662054692,
+      "rb_rush_yds": 0.003531643192732803,
+      "rb_rec": -0.0023085984589836794,
+      "rb_rec_yds": 0.0012592078734088297,
+      "rb_rush_rec_yds": -0.004057091428743664
+    },
+    "rows": {
+      "rb_rush_att": 881,
+      "rb_rush_yds": 881,
+      "rb_rec": 740,
+      "rb_rec_yds": 740,
+      "rb_rush_rec_yds": 881
+    }
+  },
+  "best_w": 0.5,
+  "best_method": "H",
+  "survived": false
+}

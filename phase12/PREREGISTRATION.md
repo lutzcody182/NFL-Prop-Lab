@@ -85,6 +85,13 @@ Written 2026-11-11, before any week 10 pick was logged.
 - **Starts** with the first games whose lines are collected after this change (expected: week 10 Sunday games, at the
   Saturday run). Costs 1 extra Odds API credit per game per snapshot.
 
+## RB rushing yards and RB rush attempts added (2026-11-14)
+
+Both passed every test in the Phase 14 re-check, so they join under "others join only if they later pass". They start
+with **week 11**, the first week frozen with that engine. The model chance comes from the frozen engine grid
+(`markets.json`). Every other rule is unchanged. Note: in live weeks 7–9 the market beat the old engine on both, and
+the live actives bias for RBs (Phase 13) remains, so the record will show whether the new engine holds up.
+
 ## Deviations
 
 1. **Faster settling (2026-11-09, after the first 3 picks were graded).** Picks now settle the way sportsbooks pay

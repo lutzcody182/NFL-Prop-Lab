@@ -167,6 +167,7 @@
   .qseg button, .qbtn { font: inherit; font-size: 13px; border: 0; background: var(--surface); color: var(--ink-2); padding: 7px 12px; cursor: pointer; }
   .qseg button.on { background: var(--ink); color: var(--surface); }
   .qbtn { border: 1px solid var(--border); border-radius: 8px; white-space: nowrap; }
+  .pk-game td { background: var(--surface-2, rgba(127,127,127,.08)); border-top: 2px solid var(--border); padding-top: 9px; padding-bottom: 9px; }
 </style>
 </head>
 <body>
@@ -1642,12 +1643,25 @@
       const rows = K.picks.filter((p) => p.season * 100 + p.week === w).sort((a, b) => a.kickoff.localeCompare(b.kickoff) || b.ev - a.ev);
       const res = (p) => p.result === null ? `<span class="pill wait">Pending</span>` : p.result === "win" ? `<span class="pill ok">Win ${u(p.net)}</span>`
         : p.result === "loss" ? `<span class="pill bad">Loss ${u(p.net)}</span>` : `<span class="pill wait">${p.result === "push" ? "Push" : "Void"}</span>`;
-      $("#pk").innerHTML = `<thead><tr><th class="l">Player</th><th class="l">Prop</th><th class="l">Pick</th><th>Price</th><th class="l">Book</th><th>Model</th><th>Market</th><th>EV</th><th>Units</th><th>Actual</th><th class="l">Result</th></tr></thead><tbody>` +
-        (rows.map((p) => `<tr><td class="l">${esc(p.player)}<span class="pos">${p.team}</span>${injTag(p.gsis_id)}<div class="small">vs ${p.opp} · ${new Date(p.kickoff).toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit" })}</div></td>
+      // grouped by game: a header row per game (matchup, kickoff, that game's record), its picks below
+      const games = [];
+      for (const p of rows) { let g = games.find((x) => x.id === p.game_id); if (!g) games.push(g = { id: p.game_id, kick: p.kickoff, picks: [] }); g.picks.push(p); }
+      const gameHead = (g) => {
+        const [, , away, home] = g.id.split("_");
+        const done = g.picks.filter((p) => p.result === "win" || p.result === "loss" || p.result === "push");
+        const w = done.filter((p) => p.result === "win").length, l = done.filter((p) => p.result === "loss").length;
+        const net = done.reduce((t, p) => t + (p.net || 0), 0), staked = g.picks.reduce((t, p) => t + p.units, 0);
+        const when = new Date(g.kick).toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+        const rec = done.length ? `<span class="pill ${net > 0 ? "ok" : net < 0 ? "bad" : "wait"}" style="margin-left:8px">${w}-${l}${done.length > w + l ? "-" + (done.length - w - l) : ""} · ${u(net)}</span>` : `<span class="pill wait" style="margin-left:8px">Pending</span>`;
+        return `<tr class="pk-game"><td colspan="11" class="l"><b>${away} @ ${home}</b><span class="small" style="margin-left:8px">${when} · ${g.picks.length} pick${g.picks.length > 1 ? "s" : ""} · ${staked.toFixed(1)}u</span>${rec}</td></tr>`;
+      };
+      const pickRow = (p) => `<tr><td class="l" style="padding-left:18px">${esc(p.player)}<span class="pos">${p.team}</span>${p.week === D.p1proj.meta.week ? injTag(p.gsis_id) : ""}</td>
           <td class="l">${MK[p.market] || p.market}</td><td class="l"><b>${pickTxt(p)}</b></td>
           <td class="num">${amer(p.price)}</td><td class="l">${esc(p.book_name)}</td>
           <td class="num">${pct0(p.p_win)}</td><td class="num">${pct0(p.side === "over" ? p.p_market_over : 1 - p.p_market_over)}</td>
-          <td class="num">${pct(p.ev, 1)}</td><td class="num">${p.units}</td><td class="num">${actTxt(p)}</td><td class="l">${res(p)}</td></tr>`).join("")
+          <td class="num">${pct(p.ev, 1)}</td><td class="num">${p.units}</td><td class="num">${actTxt(p)}</td><td class="l">${res(p)}</td></tr>`;
+      $("#pk").innerHTML = `<thead><tr><th class="l">Player</th><th class="l">Prop</th><th class="l">Pick</th><th>Price</th><th class="l">Book</th><th>Model</th><th>Market</th><th>EV</th><th>Units</th><th>Actual</th><th class="l">Result</th></tr></thead><tbody>` +
+        (games.map((g) => gameHead(g) + g.picks.map(pickRow).join("")).join("")
         || `<tr><td colspan="11" class="l small">No picks this week.</td></tr>`) + `</tbody>`;
     };
     $("#pk-week").oninput = render; render();

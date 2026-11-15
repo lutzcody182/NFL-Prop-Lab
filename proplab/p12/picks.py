@@ -28,6 +28,12 @@ MARKETS = {"wrte_rec": ("rec", "receptions"), "wrte_rec_yds": ("yds", "receiving
            "rb_rush_yds": ("eng", "rushing_yards"), "rb_rush_att": ("eng", "carries")}
 MARKET_FIRST = {"rb_rush_yds": (2026, 11), "rb_rush_att": (2026, 11)}   # first week frozen with the engine that passed
 MIN_EV, MAX_GAP = 0.05, 0.20
+# EV method (changed 2026-11-14, deviation 3): EV = blended chance x decimal price + push chance - 1, where the blended
+# chance mixes the model with the market's fair chance on the log-odds scale; stake = quarter Kelly, 1 unit = 1% of
+# bankroll, capped at MAX_UNITS. Version 1 weights the model 75%, the blended test version 50%.
+MAIN_WEIGHT = 0.75
+KELLY_FRACTION, MAX_UNITS = 0.25, 2.0
+TD_SCORERS = (-0.492, 0.1012)    # distinct rush/rec TD scorers per game = a + b x over/under (2021-2025, 1,359 games)
 
 UNIT_TIERS = [(0.12, 2.0), (0.08, 1.5), (0.05, 1.0)]
 MAX_PER_GAME = 3
@@ -38,9 +44,10 @@ RUNS = [(1, 13, 41), (2, 13, 41), (5, 13, 41)]       # pick-logging runs (Mon=0)
 #  Wednesday for Thursday games and Saturday for Sunday/Monday games, as pre-registered)
 RUN_SLACK = dt.timedelta(hours=1)                    # a run within the next hour is this run, not a later one
 GRADUATE_WEEKS = 8
-# Phase 12 v2 (shadow, pre-registered 2026-11-11): same rules, but the chance used for EV is
-# 75% model + 25% market (no-vig). Tracked separately from week 10 on; the v1 record is unchanged.
-BLEND_WEIGHT = 0.75
+# Phase 12 v2 (test version, tracked alongside v1 from week 10): same rules with a more market-heavy blend.
+# Pre-registered 2026-11-11 as a 75/25 linear blend; from 2026-11-14 (deviation 3) a 50/50 log-odds blend, because v1
+# itself now uses the 75/25 blend.
+BLEND_WEIGHT = 0.50
 BLEND_FIRST = (2026, 10)
 
 
@@ -70,9 +77,49 @@ def chances(grid: list, line: float) -> tuple[float, float, float]:
     return over, under, 1.0 - over - under
 
 
-def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None) -> list[dict]:
+def fair_td(lines: list[dict], total: float | None) -> dict:
+    """gsis_id -> fair anytime-TD chance for one game's Yes-only lines (book's cut included in the consensus price).
+
+    Power de-vig across the game's scorer list: find k >= 1 so that the sum of q_i^k equals the expected number of
+    distinct rush/receiving TD scorers for the game total (fit on 2021-2025: TD_SCORERS[0] + TD_SCORERS[1] x total).
+    Long shots lose proportionally more of their implied chance, as with real sportsbook margins."""
+    td = [(ln["gsis_id"], ln["p_over_market"]) for ln in lines
+          if ln.get("market") == "anytime_td" and ln.get("vig_included") and ln.get("gsis_id")]
+    if not td or total is None:
+        return {}
+    target = TD_SCORERS[0] + TD_SCORERS[1] * total
+    q = np.clip(np.array([x for _, x in td]), 1e-4, 0.999)
+    if q.sum() <= target:
+        return {g: float(x) for (g, _), x in zip(td, q)}
+    lo, hi = 1.0, 4.0
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if (q ** mid).sum() > target else (lo, mid)
+    return {g: float(x) for (g, _), x in zip(td, q ** hi)}
+
+
+def blend_chance(model: float, market: float, w: float) -> float:
+    """w x model + (1 - w) x market, on the log-odds scale."""
+    lg = lambda x: math.log(min(max(x, 1e-4), 1 - 1e-4) / (1 - min(max(x, 1e-4), 1 - 1e-4)))
+    z = w * lg(model) + (1 - w) * lg(market)
+    return 1 / (1 + math.exp(-z))
+
+
+def kelly_units(p_win: float, push: float, price: float) -> float:
+    """Quarter-Kelly stake in units (1 unit = 1% of bankroll), rounded to 0.1, between 0.1 and MAX_UNITS."""
+    b = price - 1
+    f = (p_win * b - (1 - p_win - push)) / b
+    return float(min(MAX_UNITS, max(0.1, round(KELLY_FRACTION * f * 100, 1))))
+
+
+def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None, total: float | None = None,
+               select: bool = True) -> list[dict]:
     """Every eligible side for one game snapshot, with EV at the best licensed price.
-    blend: weight on the model when mixing its chances with the market's no-vig chance (None = model only)."""
+
+    blend: weight on the model when mixing its chance with the market's fair chance on the log-odds scale
+    (None = model only). total: the game's over/under, used to remove the book's cut from Yes-only TD prices.
+    select=False returns every prop's best side (no EV bar, no per-game limit), for recomputing logged picks."""
+    fair = fair_td(snapshot["lines"], total)
     out = []
     for ln in snapshot["lines"]:
         mk = ln.get("market")
@@ -90,23 +137,26 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
             over, under, push = chances(p["g"], ln["line"])
         else:
             over, under, push = chances(p[key]["g"], ln["line"])
-        if abs(over - ln["p_over_market"]) > MAX_GAP:
+        pk = fair.get(ln["gsis_id"], ln["p_over_market"]) if mk == "anytime_td" else ln["p_over_market"]
+        if select and abs(over - pk) > MAX_GAP:
             continue
         m_over, m_under = over, under
-        if blend is not None:   # pushes stay as the model has them; the rest is split by the market's no-vig chance
-            pk = ln["p_over_market"]
-            over = blend * over + (1 - blend) * pk * (1 - push)
-            under = blend * under + (1 - blend) * (1 - pk) * (1 - push)
+        if blend is not None:   # pushes stay as the model has them; the rest is blended with the market's fair chance
+            rest = 1 - push
+            over = blend_chance(m_over / rest, pk, blend) * rest if rest > 0 else 0.0
+            under = rest - over
         sides = [("over", over, *lic["best_over"])] + ([("under", under, *lic["best_under"])] if lic.get("best_under") else [])
         best = max(({"side": s, "p_win": pw, "price": pr, "book": bk, "ev": pw * pr + push - 1} for s, pw, pr, bk in sides),
                    key=lambda r: r["ev"])
-        if best["ev"] < MIN_EV:
+        if select and best["ev"] < MIN_EV:
             continue
         out.append({"player": p["player"], "gsis_id": p["gsis_id"], "pos": p["pos"], "team": p["team"], "opp": p["opp"],
                     "market": mk, "line": ln["line"], **best, "book_name": LICENSED.get(best["book"], best["book"]),
-                    "p_push": push, "p_model_over": m_over, "p_market_over": ln["p_over_market"],
+                    "p_push": push, "p_model_over": m_over, "p_market_over": ln["p_over_market"], "p_market_fair_over": pk,
                     "p_model_win": m_over if best["side"] == "over" else m_under,
-                    "licensed_books": len(lic["books"]), "units": units_for(best["ev"])})
+                    "licensed_books": len(lic["books"]), "units": kelly_units(best["p_win"], push, best["price"])})
+    if not select:
+        return out
     # one pick per player per game, then the top MAX_PER_GAME by EV
     out.sort(key=lambda r: -r["ev"])
     seen, keep = set(), []
@@ -117,7 +167,15 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
     return keep[:MAX_PER_GAME]
 
 
-def log(store: dict, now: dt.datetime, conn, blend: float | None = None, first: tuple = FIRST) -> int:
+def game_total(players: dict, gid: str) -> float | None:
+    """The game's over/under as frozen with the week's WR/TE projections (stored per player as drivers.total)."""
+    for k, p in players.items():
+        if isinstance(k, str) and p.get("game_id") == gid and (p.get("drivers") or {}).get("total") is not None:
+            return float(p["drivers"]["total"])
+    return None
+
+
+def log(store: dict, now: dt.datetime, conn, blend: float | None = MAIN_WEIGHT, first: tuple = FIRST) -> int:
     lines = json.loads(LINES.read_text())["snapshots"] if LINES.exists() else []
     nxt = next_run(now)
     games = {r[0]: {"kickoff": r[1], "season": r[2], "week": r[3]} for r in conn.execute(
@@ -147,7 +205,7 @@ def log(store: dict, now: dt.datetime, conn, blend: float | None = None, first: 
                     players[(mk, q["gsis_id"])] = q
         wk = (g["season"], g["week"])
         snap = {**snap, "lines": [ln for ln in snap["lines"] if wk >= MARKET_FIRST.get(ln.get("market"), (0, 0))]}
-        picks = candidates(snap, players, blend)
+        picks = candidates(snap, players, blend, total=game_total(players, gid))
         for r in picks:
             store["picks"].append({"id": f"{gid}|{r['gsis_id']}|{r['market']}", "season": g["season"], "week": g["week"],
                                    "game_id": gid, "kickoff": g["kickoff"].isoformat(), "logged_utc": now.isoformat(timespec="seconds"),
@@ -249,7 +307,8 @@ def main(now: dt.datetime | None = None) -> dict:
                          "by_week": [{"season": s, "week": w, **summarize([p for p in st["picks"] if (p["season"], p["week"]) == (s, w)])}
                                      for s, w in weeks]}
     bl["rules"] = {"model_weight": BLEND_WEIGHT, "first_week": list(BLEND_FIRST)}
-    store["rules"] = {"markets": list(MARKETS), "min_ev": MIN_EV, "max_gap": MAX_GAP, "unit_tiers": UNIT_TIERS,
+    store["rules"] = {"markets": list(MARKETS), "min_ev": MIN_EV, "max_gap": MAX_GAP, "model_weight": MAIN_WEIGHT,
+                      "kelly_fraction": KELLY_FRACTION, "max_units": MAX_UNITS,
                       "max_per_game": MAX_PER_GAME, "books": [LICENSED[b] for b in LICENSED if b in allowed()], "state": STATE,
                       "first_week": list(FIRST), "graduate_weeks": GRADUATE_WEEKS}
     store["updated_utc"] = now.isoformat(timespec="seconds")

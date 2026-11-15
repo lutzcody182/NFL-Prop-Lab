@@ -103,3 +103,16 @@ the live actives bias for RBs (Phase 13) remains, so the record will show whethe
    correction had changed them).
 
 2. *(Withdrawn the same evening, before any game: long-shot guards and the removal of 12/13 anytime TD picks were reversed. The picks stand as logged; how EV is calculated is being revisited instead.)*
+
+3. **EV and unit method (2026-11-14, before any week 10 Sunday or Monday game).** Anytime TD long shots showed EVs up to
+   +230%. A check of 2025 and 2026 weeks 1–9 showed the model's TD chances are calibrated even at long odds (5–10%
+   predicted vs 8–10% actual), so EV = chance × price − 1 was arithmetically right. But it used the model's chance alone.
+   Weeks 7–9 showed the truth lands between model and market when they disagree. New method, for both versions:
+   (a) market fair chance: two-sided props as before (multiplicative no-vig); Yes-only anytime TD by a power de-vig across
+   each game's scorer list, so the fair chances sum to the expected number of distinct rush/receiving TD scorers for the
+   game total (−0.492 + 0.1012 × total, fit on 2021–2025, 1,359 games); (b) chance used for EV: log-odds blend of model
+   and fair market, 75% model for version 1 and 50% for the blended test version (previously a 75/25 linear blend);
+   (c) EV ≥ 5% to pick, unchanged; (d) units = quarter Kelly, 1 unit = 1% of bankroll, between 0.1 and 2 units (replaces
+   the 1/1.5/2-unit EV tiers). The 39 logged picks for games not yet started kept their side, line, price and book; their
+   EV and units were recalculated with the new method (originals are kept in each pick's `recalculated` note). Graded
+   picks are unchanged.

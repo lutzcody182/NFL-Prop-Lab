@@ -386,6 +386,7 @@
       <p class="small" id="pk-blendnote" style="margin:8px 0 0"></p>
       <div class="table-wrap" style="margin-top:10px"><table id="pk"></table></div>
       <div id="pk-weeks" style="margin-top:14px"></div>
+      <div id="pk-tiers" style="margin-top:14px"></div>
       <p class="small" id="pk-rules"></p>
     </div>
   </section>
@@ -1668,6 +1669,26 @@
     const bw = K.summary.by_week.filter((w) => w.win + w.loss + w.push > 0);
     $("#pk-weeks").innerHTML = !bw.length ? "" : `<h3>By week</h3><div class="table-wrap"><table><thead><tr><th class="l">Week</th><th>Record</th><th>Staked</th><th>Net</th><th>Return</th></tr></thead><tbody>${
       bw.map((w) => `<tr><td class="l">${w.season} week ${w.week}</td><td class="num">${w.win}-${w.loss}${w.push ? "-" + w.push : ""}</td><td class="num">${w.units_staked.toFixed(1)}u</td><td class="num">${u(w.net_units)}</td><td class="num">${pct(w.roi, 1)}</td></tr>`).join("")}</tbody></table></div>`;
+    // results by value level: do the biggest-value picks actually win more often?
+    {
+      const TIERS = [[0.05, 0.08, "5–8%"], [0.08, 0.12, "8–12%"], [0.12, 0.2, "12–20%"], [0.2, 0.3, "20–30%"], [0.3, 9, "30%+"]];
+      const mk = (p) => p.side === "over" ? p.p_market_over : 1 - p.p_market_over;
+      const done = K.picks.filter((p) => p.result === "win" || p.result === "loss");
+      const avgOf = (a, f) => a.length ? a.reduce((t, x) => t + f(x), 0) / a.length : NaN;
+      const rowsT = TIERS.map(([lo, hi, label]) => {
+        const g = done.filter((p) => p.ev >= lo && p.ev < hi);
+        const st = g.reduce((t, p) => t + p.units, 0), net = g.reduce((t, p) => t + p.net, 0), w = g.filter((p) => p.result === "win").length;
+        return { label, n: g.length, w, l: g.length - w, model: avgOf(g, (p) => p.p_win), market: avgOf(g, mk), actual: g.length ? w / g.length : NaN,
+                 be: avgOf(g, (p) => 1 / p.price), st, net, roi: st ? net / st : NaN };
+      }).filter((r) => r.n);
+      const f0 = (v) => isFinite(v) ? pct0(v) : "–";
+      $("#pk-tiers").innerHTML = !rowsT.length ? "" : `<h3>By value level</h3>
+        <p class="small" style="margin:-4px 0 8px">Picks grouped by the expected return the rule saw when they were logged (pushes and voids left out). If the model's big disagreements are real, "Actual win %" should climb with value and stay close to "Model said". If the biggest-value picks win no more often than the small ones, the model is overconfident and a higher bar is worth testing.</p>
+        <div class="table-wrap"><table><thead><tr><th class="l">Expected return</th><th>Picks</th><th>Record</th><th>Model said</th><th>Market said</th><th>Break-even</th><th>Actual win %</th><th>Staked</th><th>Net</th><th>Return</th></tr></thead><tbody>${
+        rowsT.map((r) => `<tr><td class="l">${r.label}</td><td class="num">${r.n}</td><td class="num">${r.w}-${r.l}</td><td class="num">${f0(r.model)}</td><td class="num">${f0(r.market)}</td><td class="num">${f0(r.be)}</td>
+          <td class="num"><b>${f0(r.actual)}</b></td><td class="num">${r.st.toFixed(1)}u</td><td class="num">${u(r.net)}</td><td class="num">${pct(r.roi, 1)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="small" style="margin:6px 0 0">Each level holds only a handful of picks so far, so differences between rows are mostly noise until there are 30+ picks per level. Break-even = the win rate the average price needs to make money.</p>`;
+    }
     $("#pk-rules").innerHTML = `Rules, fixed before the first pick (phase12/PREREGISTRATION.md): only markets that passed every test (${R.markets.map((m) => MK[m]).join(", ")}). Prices are the best available at state-licensed US books (${R.books.join(", ")}${R.state ? "; " + R.state + " only" : ""}); offshore books are excluded. A side is picked when its expected return at that price is at least ${pct0(R.min_ev)} and the model is within ${Math.round(R.max_gap * 100)} points of the market's chance. Units: 1u at 5–8% EV, 1.5u at 8–12%, 2u at 12%+, at most ${R.max_per_game} picks per game. Logged once per game at the last weekly run before kickoff and never changed. Void if the player doesn't play. Model = model's chance the pick wins; Market = the sportsbooks' no-vig chance. Book availability varies by state, and the price may have moved since it was logged.`;
     };
     ver.oninput = draw; draw();

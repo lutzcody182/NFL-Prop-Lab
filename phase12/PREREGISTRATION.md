@@ -102,12 +102,4 @@ the live actives bias for RBs (Phase 13) remains, so the record will show whethe
    are still logged at the Wednesday and Saturday runs. The 3 picks already graded keep their results (no stat
    correction had changed them).
 
-2. **Long-shot guards (2026-11-14, before any week 10 Sunday or Monday game).** Anytime TD picks at long odds showed
-   expected returns up to +230% (+1400 and +3500 prices). EV = chance × decimal price − 1 is correct, but at long odds
-   any small error in the model's chance is multiplied by the payout. The 20-point gap filter is too loose there
-   (7% vs 3% is only 4 points but more than twice the odds), and the model's chances for rarely used players were
-   never checked separately. Two rules were added for both versions: no side priced longer than +300 (decimal 4.0),
-   and the model's odds may differ from the market's by at most a factor of 2.3 (|logit difference| ≤ 0.85, equal to
-   the 20-point limit at 50%). Already-logged picks for games not yet started that break either rule (12 in version 1,
-   13 in version 2, all anytime TD at +400 or longer) are marked "removed before kickoff" and left out of the record. No
-   result was known for any of them. Removed slots are not refilled, and graded picks are unchanged.
+2. *(Withdrawn the same evening, before any game: long-shot guards and the removal of 12/13 anytime TD picks were reversed. The picks stand as logged; how EV is calculated is being revisited instead.)*

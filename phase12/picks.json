@@ -1539,8 +1539,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_NE_DET|00-0041395|wrte_rec",
@@ -1705,8 +1704,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_HOU_CLE|00-0038618|wrte_rec",
@@ -1937,8 +1935,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_MIA_IND|00-0040128|wrte_rec_yds",
@@ -2004,8 +2001,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_CAR_NO|00-0037614|anytime_td",
@@ -2038,8 +2034,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_CAR_NO|00-0039491|wrte_rec",
@@ -2105,8 +2100,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_BUF_NYJ|00-0034827|wrte_rec_yds",
@@ -2172,8 +2166,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_JAX_TEN|00-0040705|wrte_rec_yds",
@@ -2404,8 +2397,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_SEA_LV|00-0039066|anytime_td",
@@ -2438,8 +2430,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_SEA_LV|00-0040648|anytime_td",
@@ -2472,8 +2463,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_SF_DAL|00-0040172|wrte_rec",
@@ -2539,8 +2529,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_SF_DAL|00-0039410|wrte_rec",
@@ -2705,8 +2694,7 @@
    "result": null,
    "actual": null,
    "net": null,
-   "graded_utc": null,
-   "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+   "graded_utc": null
   },
   {
    "id": "2026_10_LAC_BAL|00-0040870|wrte_rec_yds",
@@ -2928,7 +2916,7 @@
    "loss": 17,
    "push": 0,
    "void": 0,
-   "pending": 28,
+   "pending": 40,
    "units_staked": 84.0,
    "net_units": 21.56,
    "roi": 0.25666666666666665,
@@ -2965,7 +2953,7 @@
     "loss": 2,
     "push": 0,
     "void": 0,
-    "pending": 28,
+    "pending": 40,
     "units_staked": 4.0,
     "net_units": -4.0,
     "roi": -1.0,
@@ -3012,9 +3000,7 @@
    2026,
    9
   ],
-  "graduate_weeks": 8,
-  "max_price": 4.0,
-  "max_logit_gap": 0.85
+  "graduate_weeks": 8
  },
  "updated_utc": "2026-11-15T02:25:46+00:00",
  "blend": {
@@ -3149,8 +3135,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_NE_DET|00-0033090|wrte_rec_yds",
@@ -3348,8 +3333,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_HOU_CLE|00-0038618|wrte_rec",
@@ -3547,8 +3531,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_MIA_IND|00-0032951|wrte_rec_yds",
@@ -3647,8 +3630,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_CAR_NO|00-0037614|anytime_td",
@@ -3681,8 +3663,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_CAR_NO|00-0039491|wrte_rec",
@@ -3748,8 +3729,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_BUF_NYJ|00-0039451|anytime_td",
@@ -3782,8 +3762,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_BUF_NYJ|00-0034827|wrte_rec",
@@ -3915,8 +3894,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_LA_ARI|00-0037263|anytime_td",
@@ -4048,8 +4026,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_SEA_LV|00-0040648|anytime_td",
@@ -4082,8 +4059,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_SEA_LV|00-0039066|anytime_td",
@@ -4116,8 +4092,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_SF_DAL|00-0031236|anytime_td",
@@ -4150,8 +4125,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_SF_DAL|00-0040172|wrte_rec",
@@ -4349,8 +4323,7 @@
     "result": null,
     "actual": null,
     "net": null,
-    "graded_utc": null,
-    "excluded": "removed before kickoff on 2026-11-15: fails the long-shot guards added then (price over +300 or model/market odds ratio over 2.3x)"
+    "graded_utc": null
    },
    {
     "id": "2026_10_LAC_BAL|00-0040870|wrte_rec_yds",
@@ -4497,7 +4470,7 @@
     "loss": 2,
     "push": 0,
     "void": 0,
-    "pending": 27,
+    "pending": 40,
     "units_staked": 3.0,
     "net_units": -3.0,
     "roi": -1.0,
@@ -4512,7 +4485,7 @@
      "loss": 2,
      "push": 0,
      "void": 0,
-     "pending": 27,
+     "pending": 40,
      "units_staked": 3.0,
      "net_units": -3.0,
      "roi": -1.0,

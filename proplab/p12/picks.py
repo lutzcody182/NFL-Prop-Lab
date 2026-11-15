@@ -28,9 +28,7 @@ MARKETS = {"wrte_rec": ("rec", "receptions"), "wrte_rec_yds": ("yds", "receiving
            "rb_rush_yds": ("eng", "rushing_yards"), "rb_rush_att": ("eng", "carries")}
 MARKET_FIRST = {"rb_rush_yds": (2026, 11), "rb_rush_att": (2026, 11)}   # first week frozen with the engine that passed
 MIN_EV, MAX_GAP = 0.05, 0.20
-# Added 2026-11-14 (deviation 2): long-shot guards. No side priced longer than +300, and the model's odds may differ from
-# the market's by at most a factor of e^0.85 (about 2.3x), which equals the 20-point limit for a 50/50 prop.
-MAX_PRICE, MAX_LOGIT_GAP = 4.0, 0.85
+
 UNIT_TIERS = [(0.12, 2.0), (0.08, 1.5), (0.05, 1.0)]
 MAX_PER_GAME = 3
 SNAPSHOT_MAX_AGE = dt.timedelta(hours=48)
@@ -92,7 +90,7 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
             over, under, push = chances(p["g"], ln["line"])
         else:
             over, under, push = chances(p[key]["g"], ln["line"])
-        if abs(over - ln["p_over_market"]) > MAX_GAP or logit_gap(over, ln["p_over_market"]) > MAX_LOGIT_GAP:
+        if abs(over - ln["p_over_market"]) > MAX_GAP:
             continue
         m_over, m_under = over, under
         if blend is not None:   # pushes stay as the model has them; the rest is split by the market's no-vig chance
@@ -100,9 +98,6 @@ def candidates(snapshot: dict, ledger_players: dict, blend: float | None = None)
             over = blend * over + (1 - blend) * pk * (1 - push)
             under = blend * under + (1 - blend) * (1 - pk) * (1 - push)
         sides = [("over", over, *lic["best_over"])] + ([("under", under, *lic["best_under"])] if lic.get("best_under") else [])
-        sides = [sd for sd in sides if sd[2] <= MAX_PRICE]
-        if not sides:
-            continue
         best = max(({"side": s, "p_win": pw, "price": pr, "book": bk, "ev": pw * pr + push - 1} for s, pw, pr, bk in sides),
                    key=lambda r: r["ev"])
         if best["ev"] < MIN_EV:

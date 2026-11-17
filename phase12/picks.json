@@ -2763,10 +2763,10 @@
    "p_model_win": 0.23849999904632568,
    "licensed_books": 6,
    "units": 1.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null,
+   "result": "loss",
+   "actual": 0.0,
+   "net": -1.0,
+   "graded_utc": "2026-11-17T13:54:47+00:00",
    "p_market_fair_over": 0.1575779191521896,
    "recalculated": "EV and units recalculated on 2026-11-15 before kickoff (deviation 3); originally EV +0.312, 2.0u"
   },
@@ -2798,10 +2798,10 @@
    "p_model_win": 0.66,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null,
+   "result": "loss",
+   "actual": 61.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-17T13:54:47+00:00",
    "p_market_fair_over": 0.5,
    "recalculated": "EV and units recalculated on 2026-11-15 before kickoff (deviation 3); originally EV +0.247, 2.0u"
   },
@@ -2833,10 +2833,10 @@
    "p_model_win": 0.66,
    "licensed_books": 2,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null,
+   "result": "loss",
+   "actual": 74.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-17T13:54:47+00:00",
    "p_market_fair_over": 0.49734042553191493,
    "recalculated": "EV and units recalculated on 2026-11-15 before kickoff (deviation 3); originally EV +0.241, 2.0u"
   }
@@ -2991,17 +2991,17 @@
  "summary": {
   "overall": {
    "win": 43,
-   "loss": 34,
+   "loss": 37,
    "push": 0,
    "void": 0,
-   "pending": 8,
-   "units_staked": 140.0,
-   "net_units": 23.56,
-   "roi": 0.1682857142857143,
+   "pending": 5,
+   "units_staked": 145.0,
+   "net_units": 18.56,
+   "roi": 0.128,
    "weeks_graded": 2,
    "roi_ci95": [
-    -0.059750707095274906,
-    0.3873465740205243
+    -0.10472703258700346,
+    0.36891238931931347
    ],
    "graduated": false
   },
@@ -3028,17 +3028,17 @@
     "season": 2026,
     "week": 10,
     "win": 15,
-    "loss": 19,
+    "loss": 22,
     "push": 0,
     "void": 0,
-    "pending": 8,
-    "units_staked": 60.0,
-    "net_units": -2.0,
-    "roi": -0.03333333333333333,
+    "pending": 5,
+    "units_staked": 65.0,
+    "net_units": -7.0,
+    "roi": -0.1076923076923077,
     "weeks_graded": 1,
     "roi_ci95": [
-     -0.3843774380242549,
-     0.3262755434397787
+     -0.44349126674943273,
+     0.22280162136385312
     ],
     "graduated": false
    }
@@ -3075,7 +3075,7 @@
   ],
   "graduate_weeks": 8
  },
- "updated_utc": "2026-11-16T20:43:12+00:00",
+ "updated_utc": "2026-11-17T13:54:47+00:00",
  "blend": {
   "picks": [
    {
@@ -4465,10 +4465,10 @@
     "p_model_win": 0.23849999904632568,
     "licensed_books": 6,
     "units": 0.4,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null,
+    "result": "loss",
+    "actual": 0.0,
+    "net": -0.4,
+    "graded_utc": "2026-11-17T13:54:47+00:00",
     "p_market_fair_over": 0.1575779191521896,
     "recalculated": "EV and units recalculated on 2026-11-15 before kickoff (deviation 3); originally EV +0.270, 2.0u"
    },
@@ -4500,10 +4500,10 @@
     "p_model_win": 0.66,
     "licensed_books": 2,
     "units": 2.0,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null,
+    "result": "loss",
+    "actual": 61.0,
+    "net": -2.0,
+    "graded_utc": "2026-11-17T13:54:47+00:00",
     "p_market_fair_over": 0.5,
     "recalculated": "EV and units recalculated on 2026-11-15 before kickoff (deviation 3); originally EV +0.172, 2.0u"
    },
@@ -4535,10 +4535,10 @@
     "p_model_win": 0.66,
     "licensed_books": 2,
     "units": 2.0,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null,
+    "result": "loss",
+    "actual": 74.0,
+    "net": -2.0,
+    "graded_utc": "2026-11-17T13:54:47+00:00",
     "p_market_fair_over": 0.49734042553191493,
     "recalculated": "EV and units recalculated on 2026-11-15 before kickoff (deviation 3); originally EV +0.167, 2.0u"
    }
@@ -4618,17 +4618,17 @@
   "summary": {
    "overall": {
     "win": 15,
-    "loss": 18,
+    "loss": 21,
     "push": 0,
     "void": 0,
-    "pending": 9,
-    "units_staked": 49.3,
-    "net_units": 4.468,
-    "roi": 0.09062880324543611,
+    "pending": 6,
+    "units_staked": 53.7,
+    "net_units": 0.06800000000000017,
+    "roi": 0.001266294227188085,
     "weeks_graded": 1,
     "roi_ci95": [
-     -0.3098855850032321,
-     0.4853053051455918
+     -0.3851601059190031,
+     0.39248797601481794
     ],
     "graduated": false
    },
@@ -4637,17 +4637,17 @@
      "season": 2026,
      "week": 10,
      "win": 15,
-     "loss": 18,
+     "loss": 21,
      "push": 0,
      "void": 0,
-     "pending": 9,
-     "units_staked": 49.3,
-     "net_units": 4.468,
-     "roi": 0.09062880324543611,
+     "pending": 6,
+     "units_staked": 53.7,
+     "net_units": 0.06800000000000017,
+     "roi": 0.001266294227188085,
      "weeks_graded": 1,
      "roi_ci95": [
-      -0.3098855850032321,
-      0.4853053051455918
+      -0.3851601059190031,
+      0.39248797601481794
      ],
      "graduated": false
     }

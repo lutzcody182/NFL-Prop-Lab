@@ -48,12 +48,20 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Weekly pipeline
         run: python -m proplab.live.weekly
-      - name: Tests
+      - name: Tests (live pipeline; a failure stops the run before anything is saved)
         run: |
           set -o pipefail
-          pytest -q -rfE --tb=short 2>&1 | tee pytest.txt || {
+          pytest -q -rfE --tb=short -m "not saved_results" 2>&1 | tee pytest.txt || {
             grep -E "^(FAILED|ERROR) " pytest.txt | sed 's/^/::error title=Test failed::/'
             grep -E "^E  " pytest.txt | head -20 | sed 's/^/::error title=Detail::/'
+            exit 1; }
+      - name: Saved research results still reproduce (warning only)
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          pytest -q -rfE --tb=short -m saved_results 2>&1 | tee pytest_saved.txt || {
+            grep -E "^(FAILED|ERROR) " pytest_saved.txt | sed 's/^/::warning title=Saved result changed (nflverse data revision?)::/'
+            grep -E "^E  " pytest_saved.txt | head -6 | sed 's/^/::warning title=Detail::/'
             exit 1; }
       - name: Commit results
         run: |

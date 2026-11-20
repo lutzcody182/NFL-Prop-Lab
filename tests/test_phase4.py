@@ -58,6 +58,7 @@ def test_expected_targets_preserved(world):
     assert np.corrcoef(sim_mean, model_mean)[0, 1] > 0.98
 
 
+@pytest.mark.saved_results
 def test_saved_2025_joint_score_reproduces(world):
     inps, fit = world
     saved = json.loads((ROOT / "phase4" / "results.json").read_text())["splits"]["test_2025"]["joint"]

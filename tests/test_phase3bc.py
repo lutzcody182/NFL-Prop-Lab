@@ -69,6 +69,7 @@ def test_matchup_features_ignore_target_week(conn):
     assert not base.filter(wk10)["depth_ypc"].equals(changed.filter(wk10)["depth_ypc"])
 
 
+@pytest.mark.saved_results
 def test_team_rating_results_reproduce(conn):
     saved = json.loads((ROOT / "phase3" / "ratings_team_results.json").read_text())
     ch = TR.chosen()

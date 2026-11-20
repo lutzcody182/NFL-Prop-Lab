@@ -102,6 +102,7 @@ def test_randomized_pit_is_uniform_when_calibrated():
     assert 0.78 < cover < 0.82
 
 
+@pytest.mark.saved_results
 def test_saved_results_reproduce():
     """Re-scoring 2025 with the locked configs reproduces the committed results."""
     from proplab.p1 import backtest

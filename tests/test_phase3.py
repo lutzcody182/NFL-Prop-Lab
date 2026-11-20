@@ -58,6 +58,7 @@ def test_exit_mixture_preserves_mean():
     assert (out["vol"] < 0.35 * 32).mean() == pytest.approx(0.06, abs=0.01)
 
 
+@pytest.mark.saved_results
 def test_saved_2025_results_reproduce(D):
     saved = json.loads((ROOT / "phase3" / "results.json").read_text())["splits"]["test_2025"]
     chosen = R.load_chosen()

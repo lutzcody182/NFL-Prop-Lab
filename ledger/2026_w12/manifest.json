@@ -1,0 +1,32 @@
+{
+  "season": 2026,
+  "week": 12,
+  "frozen_utc": "2026-11-24T20:57:11+00:00",
+  "first_kickoff_utc": "2026-11-26T01:00:00+00:00",
+  "minutes_before_kickoff": 1683,
+  "code_git_sha": "3f529402521f8cb64d0260cbf841ca44be90c39b",
+  "files": {
+    "wrte.json": {
+      "sha256": "1a314939e1aad1e6fdb32ff49086a1e28f5815036ba2a1063d458372409681c7",
+      "generated": "2026-11-24T20:54+00:00"
+    },
+    "markets.json": {
+      "sha256": "e0c133bba7da9242d616aaa8684ff36f336e6c87761578aad7894367a59a4229",
+      "generated": "2026-11-24T20:54+00:00"
+    },
+    "sims.json": {
+      "sha256": "db69fb7827f86cf185559dcce6544cb202aacc8a082861caa8e66b0ad2709210",
+      "generated": "2026-11-24T20:54+00:00"
+    }
+  },
+  "models": {
+    "wrte": "Phase 1 M1 + Phase 10 role and air yards + Phase 11 volume-dependent ranges, position-aware redistribution and yards recalibration (phase11/)",
+    "markets": "Phase 3a locked (phase3/tuning.json)",
+    "sims": "Phase 4 simulator (phase4/tuning.json)",
+    "recalibration": "Phase 8 method, maps refit in Phase 14 with RB volume-dependent dispersion (phase14/recalibration.json)",
+    "new_markets": "Phase 7 engine markets and kicker points (phase7/)",
+    "roles": "Phase 9 snap-share role signal on RB/TD markets (phase9/roles_ablation.json)",
+    "rb_ranges": "Phase 14 RB volume-dependent dispersion (phase14/ablation.json)"
+  },
+  "assumption": "Actives = each team's actives in its last completed game; injuries for this week not used."
+}

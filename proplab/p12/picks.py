@@ -294,13 +294,22 @@ def summarize(picks: list[dict], seed: int = 12) -> dict:
     return out
 
 
+# Pick tracking stopped 2026-11-27 (week 12): no new picks are logged and no sportsbook lines are pulled. Picks
+# already logged are still graded, so the record finishes cleanly; the record is kept and shown on the dashboard.
+LOGGING = False
+STOPPED = "2026-11-27"
+
+
 def main(now: dt.datetime | None = None) -> dict:
     now = now or dt.datetime.now(dt.timezone.utc)
     conn = db.connect()
     store = json.loads(OUT.read_text()) if OUT.exists() else {"picks": [], "games_logged": {}}
-    added, graded = log(store, now, conn), grade(store, now, conn)
+    added = log(store, now, conn) if LOGGING else 0
+    graded = grade(store, now, conn)
     bl = store.setdefault("blend", {"picks": [], "games_logged": {}})
-    b_added, b_graded = log(bl, now, conn, blend=BLEND_WEIGHT, first=BLEND_FIRST), grade(bl, now, conn)
+    b_added = log(bl, now, conn, blend=BLEND_WEIGHT, first=BLEND_FIRST) if LOGGING else 0
+    b_graded = grade(bl, now, conn)
+    store["stopped"] = None if LOGGING else STOPPED
     for st in (store, bl):
         weeks = sorted({(p["season"], p["week"]) for p in st["picks"]})
         st["summary"] = {"overall": summarize(st["picks"]),

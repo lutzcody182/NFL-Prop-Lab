@@ -116,3 +116,14 @@ the live actives bias for RBs (Phase 13) remains, so the record will show whethe
    the 1/1.5/2-unit EV tiers). The 39 logged picks for games not yet started kept their side, line, price and book; their
    EV and units were recalculated with the new method (originals are kept in each pick's `recalculated` note). Graded
    picks are unchanged.
+
+## Stopped (2026-11-27)
+
+Pick tracking was stopped by the owner during week 12. From this date no sportsbook lines are pulled (the Odds API
+step was removed from the weekly run and no API key is passed to it) and no new picks are logged. Picks already logged
+(3 in each version, Friday of week 12) are still graded so the record finishes cleanly. Record at the stop, before
+those 3: version 1 58–68, +15.5 units on 221.9 staked over 4 graded weeks; version 2 (blended test) 30–50, +14.5 units on
+108.6 staked over 3 weeks. Neither reached the graduation rule (8 graded weeks with a 95% ROI interval above zero), so
+these were never betting recommendations. The code and records are kept; setting `LOGGING = True` in
+`proplab/p12/picks.py` and restoring the lines step would resume tracking.
+

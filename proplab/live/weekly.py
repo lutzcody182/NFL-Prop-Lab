@@ -24,9 +24,8 @@ STEPS = [
     ("defensive scheme profiles (Phase 6)", ["proplab.p6.export"], True),
     ("game simulations (Phase 4)", ["proplab.p4.export"], True),
     ("game scores linked to the simulations (Phase 9)", ["proplab.p9.scores", "export"], True),
-    ("sportsbook lines snapshot (Phase 9, needs ODDS_API_KEY)", ["proplab.p9.lines"], False),
     ("freeze the week in the ledger", ["proplab.live.freeze"], False),   # exits non-zero after kickoff: OK
-    ("tracked picks at US-licensed books: log + grade (Phase 12)", ["proplab.p12.picks"], False),
+    ("tracked picks: grade remaining (logging stopped 2026-11-27)", ["proplab.p12.picks"], False),
     ("score finished ledger weeks", ["proplab.live.score"], True),
     ("week / players / health export", ["proplab.live.export"], True),
     ("quadrant charts export", ["proplab.live.quadrants"], False),

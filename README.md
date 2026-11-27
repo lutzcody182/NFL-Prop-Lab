@@ -219,3 +219,5 @@ Data from [nflverse](https://github.com/nflverse) (CC-BY 4.0); FTN charting data
 - Phase 14 (RB markets): RB volume-dependent dispersion adopted (RB CRPS −0.67% pooled over 2025 and 2026 weeks 1–9).
   RB rushing yards and RB rush attempts now pass (5 of 16) and join the tracked picks from week 11. Efficiency
   uncertainty and chance-of-playing weights did not help. See `phase14/PREREGISTRATION.md`.
+- Tracked picks stopped 2026-11-27 (week 12): no more Odds API pulls or new picks; the record is kept and the last logged
+  picks are still graded. Projections, live scoring, leaders and quadrants continue unchanged.

@@ -36,9 +36,7 @@ jobs:
           --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/nflprop
-      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}   # optional; the lines step is skipped without it
-      ODDS_MAX_PER_RUN: "400"                      # credits per run (the key is shared with another dashboard)
-      ODDS_RESERVE: "2000"                         # never go below this many remaining credits
+      # Sportsbook lines (The Odds API) are no longer pulled (stopped 2026-11-27); no API key is passed to the run.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

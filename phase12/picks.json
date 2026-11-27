@@ -4093,10 +4093,10 @@
    "p_model_win": 0.61,
    "licensed_books": 4,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 3.0,
+   "net": 2.58,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_GB_LA|00-0040667|wrte_rec",
@@ -4127,10 +4127,10 @@
    "p_model_win": 0.6,
    "licensed_books": 4,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 1.0,
+   "net": 2.12,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_GB_LA|00-0040009|anytime_td",
@@ -4161,10 +4161,10 @@
    "p_model_win": 0.19474999606609344,
    "licensed_books": 6,
    "units": 0.8,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 0.0,
+   "net": -0.8,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_CHI_DET|00-0036275|rb_rush_yds",
@@ -4195,10 +4195,10 @@
    "p_model_win": 0.68,
    "licensed_books": 1,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 65.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_CHI_DET|00-0036963|wrte_rec_yds",
@@ -4229,10 +4229,10 @@
    "p_model_win": 0.6,
    "licensed_books": 1,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 146.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_CHI_DET|00-0039065|wrte_rec",
@@ -4263,10 +4263,10 @@
    "p_model_win": 0.67,
    "licensed_books": 4,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 4.0,
+   "net": 1.4,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_PHI_DAL|00-0030061|anytime_td",
@@ -4297,10 +4297,10 @@
    "p_model_win": 0.12349999696016312,
    "licensed_books": 6,
    "units": 1.3,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 0.0,
+   "net": -1.3,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_PHI_DAL|00-0040024|anytime_td",
@@ -4331,10 +4331,10 @@
    "p_model_win": 0.2409999966621399,
    "licensed_books": 6,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 0.0,
+   "net": -2.0,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_PHI_DAL|00-0040867|anytime_td",
@@ -4365,10 +4365,10 @@
    "p_model_win": 0.28725001215934753,
    "licensed_books": 6,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 1.0,
+   "net": 8.5,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_KC_BUF|00-0039894|anytime_td",
@@ -4399,10 +4399,10 @@
    "p_model_win": 0.21375000476837158,
    "licensed_books": 6,
    "units": 1.2,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "loss",
+   "actual": 0.0,
+   "net": -1.2,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_KC_BUF|00-0038997|wrte_rec",
@@ -4433,10 +4433,10 @@
    "p_model_win": 0.69,
    "licensed_books": 4,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 1.0,
+   "net": 1.7999999999999998,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_KC_BUF|00-0034827|wrte_rec",
@@ -4467,10 +4467,10 @@
    "p_model_win": 0.55,
    "licensed_books": 4,
    "units": 2.0,
-   "result": null,
-   "actual": null,
-   "net": null,
-   "graded_utc": null
+   "result": "win",
+   "actual": 2.0,
+   "net": 2.5599999999999996,
+   "graded_utc": "2026-11-27T19:45:20+00:00"
   },
   {
    "id": "2026_12_DEN_PIT|00-0036894|anytime_td",
@@ -4809,18 +4809,18 @@
  },
  "summary": {
   "overall": {
-   "win": 52,
-   "loss": 62,
+   "win": 58,
+   "loss": 68,
    "push": 0,
    "void": 7,
-   "pending": 15,
-   "units_staked": 200.6,
-   "net_units": 5.819999999999997,
-   "roi": 0.029012961116650034,
-   "weeks_graded": 3,
+   "pending": 3,
+   "units_staked": 221.9,
+   "net_units": 15.479999999999995,
+   "roi": 0.06976115367282558,
+   "weeks_graded": 4,
    "roi_ci95": [
-    -0.19775262132191482,
-    0.25772692822266857
+    -0.16165617475713404,
+    0.28538136046468854
    ],
    "graduated": false
   },
@@ -4882,15 +4882,19 @@
    {
     "season": 2026,
     "week": 12,
-    "win": 0,
-    "loss": 0,
+    "win": 6,
+    "loss": 6,
     "push": 0,
     "void": 0,
-    "pending": 15,
-    "units_staked": 0,
-    "net_units": 0,
-    "roi": null,
-    "weeks_graded": 0,
+    "pending": 3,
+    "units_staked": 21.3,
+    "net_units": 9.66,
+    "roi": 0.4535211267605634,
+    "weeks_graded": 1,
+    "roi_ci95": [
+     -0.17105263157894737,
+     0.9009900990099011
+    ],
     "graduated": false
    }
   ]
@@ -4926,7 +4930,7 @@
   ],
   "graduate_weeks": 8
  },
- "updated_utc": "2026-11-25T22:51:07+00:00",
+ "updated_utc": "2026-11-27T19:45:20+00:00",
  "blend": {
   "picks": [
    {
@@ -7510,10 +7514,10 @@
     "p_model_win": 0.08474999666213989,
     "licensed_books": 6,
     "units": 0.4,
-    "result": null,
+    "result": "void",
     "actual": null,
-    "net": null,
-    "graded_utc": null
+    "net": 0.0,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_11_CIN_WAS|00-0037809|wrte_rec_yds",
@@ -7646,10 +7650,10 @@
     "p_model_win": 0.61,
     "licensed_books": 4,
     "units": 2.0,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "win",
+    "actual": 3.0,
+    "net": 2.58,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_GB_LA|00-0040009|anytime_td",
@@ -7680,10 +7684,10 @@
     "p_model_win": 0.19474999606609344,
     "licensed_books": 6,
     "units": 0.6,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "loss",
+    "actual": 0.0,
+    "net": -0.6,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_GB_LA|00-0040667|wrte_rec",
@@ -7714,10 +7718,10 @@
     "p_model_win": 0.6,
     "licensed_books": 4,
     "units": 2.0,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "win",
+    "actual": 1.0,
+    "net": 2.12,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_CHI_DET|00-0036275|rb_rush_att",
@@ -7748,10 +7752,10 @@
     "p_model_win": 0.69,
     "licensed_books": 1,
     "units": 2.0,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "win",
+    "actual": 9.0,
+    "net": 1.6600000000000001,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_CHI_DET|00-0040236|rb_rush_att",
@@ -7782,10 +7786,10 @@
     "p_model_win": 0.57,
     "licensed_books": 2,
     "units": 1.3,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "win",
+    "actual": 8.0,
+    "net": 1.261,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_PHI_DAL|00-0030061|anytime_td",
@@ -7816,10 +7820,10 @@
     "p_model_win": 0.12349999696016312,
     "licensed_books": 6,
     "units": 0.9,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "loss",
+    "actual": 0.0,
+    "net": -0.9,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_PHI_DAL|00-0040024|anytime_td",
@@ -7850,10 +7854,10 @@
     "p_model_win": 0.2409999966621399,
     "licensed_books": 6,
     "units": 1.5,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "loss",
+    "actual": 0.0,
+    "net": -1.5,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_PHI_DAL|00-0040867|anytime_td",
@@ -7884,10 +7888,10 @@
     "p_model_win": 0.28725001215934753,
     "licensed_books": 6,
     "units": 1.5,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "win",
+    "actual": 1.0,
+    "net": 6.375,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_KC_BUF|00-0039894|anytime_td",
@@ -7918,10 +7922,10 @@
     "p_model_win": 0.21375000476837158,
     "licensed_books": 6,
     "units": 0.9,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "loss",
+    "actual": 0.0,
+    "net": -0.9,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_KC_BUF|00-0038997|wrte_rec",
@@ -7952,10 +7956,10 @@
     "p_model_win": 0.69,
     "licensed_books": 4,
     "units": 2.0,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "win",
+    "actual": 1.0,
+    "net": 1.7999999999999998,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_KC_BUF|00-0034827|wrte_rec",
@@ -7986,10 +7990,10 @@
     "p_model_win": 0.55,
     "licensed_books": 4,
     "units": 2.0,
-    "result": null,
-    "actual": null,
-    "net": null,
-    "graded_utc": null
+    "result": "win",
+    "actual": 2.0,
+    "net": 2.5599999999999996,
+    "graded_utc": "2026-11-27T19:45:20+00:00"
    },
    {
     "id": "2026_12_DEN_PIT|00-0036894|anytime_td",
@@ -8253,18 +8257,18 @@
   },
   "summary": {
    "overall": {
-    "win": 23,
-    "loss": 46,
+    "win": 30,
+    "loss": 50,
     "push": 0,
-    "void": 8,
-    "pending": 15,
-    "units_staked": 91.9,
-    "net_units": 0.08199999999999913,
-    "roi": 0.0008922742110990112,
-    "weeks_graded": 2,
+    "void": 9,
+    "pending": 3,
+    "units_staked": 108.6,
+    "net_units": 14.537999999999998,
+    "roi": 0.13386740331491712,
+    "weeks_graded": 3,
     "roi_ci95": [
-     -0.3701515204869582,
-     0.358227016003063
+     -0.20009968327094743,
+     0.4698196043709523
     ],
     "graduated": false
    },
@@ -8293,8 +8297,8 @@
      "win": 8,
      "loss": 23,
      "push": 0,
-     "void": 4,
-     "pending": 1,
+     "void": 5,
+     "pending": 0,
      "units_staked": 37.1,
      "net_units": 1.113999999999999,
      "roi": 0.030026954177897545,
@@ -8308,15 +8312,19 @@
     {
      "season": 2026,
      "week": 12,
-     "win": 0,
-     "loss": 0,
+     "win": 7,
+     "loss": 4,
      "push": 0,
      "void": 0,
-     "pending": 14,
-     "units_staked": 0,
-     "net_units": 0,
-     "roi": null,
-     "weeks_graded": 0,
+     "pending": 3,
+     "units_staked": 16.7,
+     "net_units": 14.456,
+     "roi": 0.86562874251497,
+     "weeks_graded": 1,
+     "roi_ci95": [
+      0.7502590673575129,
+      0.9831288343558283
+     ],
      "graduated": false
     }
    ]
